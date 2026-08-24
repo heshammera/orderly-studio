@@ -1,0 +1,63 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  role      String   @default("EDITOR")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String
+  client      String?
+  industry    String?
+  featured    Boolean  @default(false)
+  status      String   @default("PUBLISHED")
+  order       Int      @default(0)
+  description String
+  stack       String?
+  coverImage  String?
+  caseStudy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String
+  excerpt     String?
+  content     String
+  coverImage  String?
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  company     String?
+  country     String?
+  projectType String
+  services    String
+  successGoal String?
+  description String?
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
