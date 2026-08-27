@@ -2,22 +2,33 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Orbit } from "lucide-react";
 import { Header } from "@/components/navigation/Header";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
 import { ProjectBuilderModal } from "@/components/home/ProjectBuilderModal";
+import { WorldPortal } from "@/components/worlds/WorldPortal";
+import type { WorldId } from "@/components/worlds/WorldCanvas";
 
 export default function ServicesPage() {
   const [locale, setLocale] = useState<"en" | "ar">("en");
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [activeWorld, setActiveWorld] = useState<WorldId | null>(null);
   const isAr = locale === "ar";
 
-  const categories = [
+  const categories: {
+    title: string;
+    desc: string;
+    color: string;
+    link: string;
+    worldId: WorldId;
+    items: string[];
+  }[] = [
     {
       title: isAr ? "الهندسة والبرمجيات // ENGINEERING" : "01 // SOFTWARE ENGINEERING",
       desc: isAr ? "أنظمة برمجية سحابية، منصات SaaS، وتطبيقات ويب فائقة السرعة." : "Cloud distributed architectures, reactive web applications, APIs, and headless commerce.",
       color: "border-engineering-blue text-engineering-blue",
       link: "/#work",
+      worldId: "engineering",
       items: isAr
         ? ["منصات SaaS وتطبيقات الويب", "معمارية الـ APIs والـ Microservices", "تطبيقات الويب بـ WebGL", "التجارة الإلكترونية المفصولة الرأس"]
         : ["SaaS & Cloud Multi-Tenancy", "Connected API Gateways", "WebGL Data Visualizers", "Headless E-Commerce"],
@@ -27,6 +38,7 @@ export default function ServicesPage() {
       desc: isAr ? "نماذج الذكاء الاصطناعي التوليدي، الأتمتة الذكية، وتحليل البيانات الفوري." : "Custom LLM inference pipelines, autonomous agents, and workflow automations.",
       color: "border-engineering-violet text-engineering-violet",
       link: "/#work",
+      worldId: "ai",
       items: isAr
         ? ["تكامل نماذج الذكاء الاصطناعي AI", "أتمتة العمليات ومحركات سير العمل", "محركات البحث الدلالية", "معالجة البيانات الفورية"]
         : ["Custom LLM Integration", "Workflow Engine Automations", "Semantic Search Systems", "Real-Time Telemetry"],
@@ -36,6 +48,7 @@ export default function ServicesPage() {
       desc: isAr ? "تصميم الهويات التجارية، واجهات وتجربة المستخدم، والتغليف الفاخر." : "Art-directed brand systems, luxury packaging, and conversion-engineered UI/UX.",
       color: "border-creative-coral text-creative-coral",
       link: "/#work",
+      worldId: "branding",
       items: isAr
         ? ["استراتيجية وبناء الهوية البصرية", "تصميم واجهات وتجربة المستخدم UI/UX", "تصميم التغليف ثلاثي الأبعاد 3D", "الموشن جرافيكس والإخراج الإبداعي"]
         : ["Strategic Brand Identity", "UI / UX Design Systems", "3D & Tactile Packaging", "Cinematic Motion Design"],
@@ -45,6 +58,7 @@ export default function ServicesPage() {
       desc: isAr ? "استراتيجيات تسويقية مبنية على البيانات تحقق نمواً حقيقياً وقابلاً للقياس." : "Data-driven marketing strategies that deliver measurable reach, engagement, and revenue growth.",
       color: "border-emerald-400 text-emerald-400",
       link: "/marketing",
+      worldId: "marketing",
       items: isAr
         ? ["استراتيجية التسويق الرقمي", "تحسين محركات البحث SEO", "إدارة منصات التواصل الاجتماعي", "الإعلانات المدفوعة Paid Media", "التسويق عبر البريد CRM"]
         : ["Digital Marketing Strategy", "SEO & Organic Growth", "Social Media Management", "Paid Media & Performance", "Email & CRM Automation"],
@@ -73,7 +87,7 @@ export default function ServicesPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
           {categories.map((cat, idx) => (
-            <div key={idx} className="p-8 sm:p-10 rounded-3xl bg-soft-black border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between shadow-2xl">
+            <div key={idx} className="group p-8 sm:p-10 rounded-3xl bg-soft-black border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between shadow-2xl relative overflow-hidden">
               <div>
                 <span className={`text-xs font-mono font-bold tracking-widest block pb-4 mb-6 border-b ${cat.color}`}>
                   {cat.title}
@@ -89,22 +103,23 @@ export default function ServicesPage() {
                 </ul>
               </div>
 
-              <div className="pt-8 mt-8 border-t border-white/5 flex items-center justify-between">
+              <div className="pt-8 mt-8 border-t border-white/5 flex items-center justify-between gap-3">
                 <button
                   onClick={() => setIsBuilderOpen(true)}
                   className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white hover:text-engineering-blue transition-colors"
                 >
                   <span>{isAr ? "طلب استشارة ←" : "Request a consultation →"}</span>
                 </button>
-                {cat.link === "/marketing" && (
-                  <Link
-                    href="/marketing"
-                    className="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-400 hover:underline"
-                  >
-                    <span>{isAr ? "صفحة التسويق" : "Marketing Page"}</span>
-                    <ArrowUpRight size={13} />
-                  </Link>
-                )}
+
+                {/* ── Enter World button ── */}
+                <button
+                  onClick={() => setActiveWorld(cat.worldId)}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-mono font-bold tracking-widest uppercase transition-all duration-300 ${cat.color} border-current opacity-50 hover:opacity-100 hover:bg-white/5`}
+                  data-cursor="EXPLORE"
+                >
+                  <Orbit size={11} />
+                  <span>{isAr ? "ادخل العالم" : "ENTER WORLD"}</span>
+                </button>
               </div>
             </div>
           ))}
@@ -131,6 +146,17 @@ export default function ServicesPage() {
       </div>
 
       <ProjectBuilderModal isOpen={isBuilderOpen} onClose={() => setIsBuilderOpen(false)} locale={locale} />
+
+      {/* World Portal — opens on top of everything */}
+      {activeWorld && (
+        <WorldPortal
+          worldId={activeWorld}
+          isOpen={activeWorld !== null}
+          onClose={() => setActiveWorld(null)}
+          locale={locale}
+          onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        />
+      )}
     </main>
   );
 }

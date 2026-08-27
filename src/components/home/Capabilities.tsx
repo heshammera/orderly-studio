@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Orbit } from "lucide-react";
+import { WorldPortal } from "@/components/worlds/WorldPortal";
+import type { WorldId } from "@/components/worlds/WorldCanvas";
 
 interface CapabilitiesProps {
   locale: "en" | "ar";
@@ -10,11 +12,18 @@ interface CapabilitiesProps {
 
 export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
   const isAr = locale === "ar";
+  const [activeWorld, setActiveWorld] = useState<WorldId | null>(null);
 
-  const matrix = [
+  const matrix: {
+    category: string;
+    accent: string;
+    worldId: WorldId;
+    items: string[];
+  }[] = [
     {
       category: isAr ? "نبني // BUILD" : "BUILD",
       accent: "border-engineering-blue text-engineering-blue",
+      worldId: "engineering",
       items: isAr
         ? ["مواقع الويب الفاخرة", "تطبيقات الويب (Web Apps)", "منصات SaaS السحابية", "الواجهات البرمجية APIs", "الأنظمة الموزعة"]
         : ["Studio Websites", "Web Applications", "SaaS Platforms", "API Gateways", "Distributed Systems"],
@@ -22,6 +31,7 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
     {
       category: isAr ? "نؤتمت // AUTOMATE" : "AUTOMATE",
       accent: "border-engineering-violet text-engineering-violet",
+      worldId: "ai",
       items: isAr
         ? ["حلول الذكاء الاصطناعي AI", "أتمتة العمليات التجارية", "محركات سير العمل", "التكاملات السحابية", "تحليل البيانات الفوري"]
         : ["Custom AI & LLMs", "Workflow Automation", "Event Pipelines", "Cloud Integrations", "Real-Time Telemetry"],
@@ -29,6 +39,7 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
     {
       category: isAr ? "نصمم // DESIGN" : "DESIGN",
       accent: "border-creative-coral text-creative-coral",
+      worldId: "uiux",
       items: isAr
         ? ["بناء الهوية التجارية", "واجهات وتجربة المستخدم UI/UX", "الخطوط الطباعية", "تصميم التغليف", "أنظمة التصميم Design Systems"]
         : ["Brand Identity", "UI / UX Design", "Custom Typography", "Structural Packaging", "Design Systems"],
@@ -36,6 +47,7 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
     {
       category: isAr ? "نبتكر // CREATE" : "CREATE",
       accent: "border-creative-peach text-creative-peach",
+      worldId: "motion",
       items: isAr
         ? ["الرسوم ثلاثية الأبعاد 3D", "الموشن جرافيكس", "التصوير التجاري الفني", "الإخراج الإبداعي", "التجارب المكانية Spatial"]
         : ["3D Art & Shaders", "Motion Graphics", "Art Direction", "Commercial Photography", "Spatial Experiences"],
@@ -43,6 +55,7 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
     {
       category: isAr ? "نسوّق // MARKET" : "MARKET",
       accent: "border-emerald-400 text-emerald-400",
+      worldId: "marketing",
       items: isAr
         ? ["استراتيجية التسويق الرقمي", "تحسين محركات البحث SEO", "إدارة منصات التواصل", "الإعلانات المدفوعة Paid Media", "التسويق عبر البريد CRM"]
         : ["Digital Strategy", "SEO & Organic Growth", "Social Media & Content", "Paid Media & Ads", "Email Marketing & CRM"],
@@ -75,7 +88,9 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
           {matrix.map((col, idx) => (
             <div
               key={idx}
-              className="p-8 rounded-3xl bg-soft-black border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between"
+              className="group p-8 rounded-3xl bg-soft-black border border-white/10 hover:border-white/25 transition-all flex flex-col justify-between cursor-pointer"
+              onClick={() => setActiveWorld(col.worldId)}
+              data-cursor="EXPLORE"
             >
               <div>
                 <span className={`text-xs font-mono font-bold tracking-widest block pb-4 mb-6 border-b ${col.accent}`}>
@@ -92,8 +107,13 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
                 </ul>
               </div>
 
-              <div className="pt-8 text-[11px] font-mono text-white/30">
-                <span>DISCIPLINE 0{idx + 1}</span>
+              <div className="pt-8 flex items-center justify-between">
+                <span className="text-[11px] font-mono text-white/30">DISCIPLINE 0{idx + 1}</span>
+                {/* Subtle Enter World hint on hover */}
+                <span className={`opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-mono flex items-center gap-1 ${col.accent}`}>
+                  <Orbit size={10} />
+                  <span>{isAr ? "ادخل" : "ENTER"}</span>
+                </span>
               </div>
             </div>
           ))}
@@ -110,6 +130,16 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
           </Link>
         </div>
       </div>
+
+      {/* World Portal overlay */}
+      {activeWorld && (
+        <WorldPortal
+          worldId={activeWorld}
+          isOpen={activeWorld !== null}
+          onClose={() => setActiveWorld(null)}
+          locale={locale}
+        />
+      )}
     </section>
   );
 };
