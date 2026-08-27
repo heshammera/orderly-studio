@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
@@ -12,6 +12,8 @@ import { EngineeringWork } from "@/components/home/EngineeringWork";
 import { Transformation } from "@/components/home/Transformation";
 import { Creative } from "@/components/home/Creative";
 import { CreativeWork } from "@/components/home/CreativeWork";
+import { Marketing } from "@/components/home/Marketing";
+import { MarketingWork } from "@/components/home/MarketingWork";
 import { Hybrid } from "@/components/home/Hybrid";
 import { Capabilities } from "@/components/home/Capabilities";
 import { Process } from "@/components/home/Process";
@@ -118,7 +120,16 @@ export default function HomePage() {
         onOpenProjectBuilder={() => setIsBuilderOpen(true)}
       />
 
-      {/* 13 Hybrid World (Technology × Design) */}
+      {/* 13 Marketing World — Strategy, Growth & Performance */}
+      <Marketing locale={locale} />
+
+      {/* 14 Selected Marketing Work */}
+      <MarketingWork
+        locale={locale}
+        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+      />
+
+      {/* 15 Hybrid World (Technology × Design × Marketing) */}
       <Hybrid locale={locale} />
 
       {/* 14 Capabilities Matrix */}

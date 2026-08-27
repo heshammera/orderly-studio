@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { Menu, ArrowUpRight, Globe } from "lucide-react";
@@ -88,6 +88,13 @@ export const Header: React.FC<HeaderProps> = ({
               data-cursor="EXPLORE"
             >
               {isAr ? "المنهجية" : "PROCESS"}
+            </a>
+            <a
+              href="#marketing"
+              className="text-emerald-400/90 hover:text-emerald-300 transition-colors"
+              data-cursor="EXPLORE"
+            >
+              {isAr ? "التسويق" : "MARKETING"}
             </a>
           </nav>
 

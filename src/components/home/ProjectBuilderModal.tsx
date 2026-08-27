@@ -46,6 +46,10 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
         { id: "branding", label: "هوية بصرية وعلامة تجارية" },
         { id: "ui_ux", label: "تصميم واجهات وتجربة مستخدم" },
         { id: "packaging_3d", label: "تصميم تغليف ومجسمات 3D" },
+        { id: "marketing_strategy", label: "استراتيجية تسويق رقمي" },
+        { id: "social_media", label: "إدارة وسائل التواصل الاجتماعي" },
+        { id: "seo_sem", label: "تحسين محركات البحث SEO / SEM" },
+        { id: "paid_media", label: "إعلانات مدفوعة وبريد إلكتروني" },
       ]
     : [
         { id: "saas", label: "SaaS Platform" },
@@ -57,6 +61,10 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
         { id: "branding", label: "Brand Identity" },
         { id: "ui_ux", label: "UI / UX Design" },
         { id: "packaging_3d", label: "Packaging & 3D" },
+        { id: "marketing_strategy", label: "Marketing Strategy" },
+        { id: "social_media", label: "Social Media Management" },
+        { id: "seo_sem", label: "SEO / SEM Campaign" },
+        { id: "paid_media", label: "Paid Media & Email" },
       ];
 
   const serviceOptions = isAr
@@ -70,6 +78,12 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
         "الأتمتة وتكامل الأنظمة",
         "نظام الهوية البصرية والموشن",
         "تصميم التغليف والمواد الملموسة",
+        "استراتيجية التسويق الرقمي",
+        "تحسين محركات البحث SEO",
+        "إدارة منصات التواصل الاجتماعي",
+        "الإعلانات المدفوعة Paid Media",
+        "التسويق عبر البريد الإلكتروني",
+        "التحليلات وتقارير النمو",
       ]
     : [
         "Product Strategy",
@@ -81,6 +95,12 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
         "Workflow Automation",
         "Visual Identity & Motion",
         "Packaging & Physical Media",
+        "Digital Marketing Strategy",
+        "SEO & Organic Growth",
+        "Social Media Management",
+        "Paid Media & Ads",
+        "Email Marketing & CRM",
+        "Analytics & Growth Reporting",
       ];
 
   const toggleSelection = (key: "projectType" | "services", val: string) => {

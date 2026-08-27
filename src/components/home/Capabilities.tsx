@@ -40,6 +40,13 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
         ? ["الرسوم ثلاثية الأبعاد 3D", "الموشن جرافيكس", "التصوير التجاري الفني", "الإخراج الإبداعي", "التجارب المكانية Spatial"]
         : ["3D Art & Shaders", "Motion Graphics", "Art Direction", "Commercial Photography", "Spatial Experiences"],
     },
+    {
+      category: isAr ? "نسوّق // MARKET" : "MARKET",
+      accent: "border-emerald-400 text-emerald-400",
+      items: isAr
+        ? ["استراتيجية التسويق الرقمي", "تحسين محركات البحث SEO", "إدارة منصات التواصل", "الإعلانات المدفوعة Paid Media", "التسويق عبر البريد CRM"]
+        : ["Digital Strategy", "SEO & Organic Growth", "Social Media & Content", "Paid Media & Ads", "Email Marketing & CRM"],
+    },
   ];
 
   return (
@@ -64,7 +71,7 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-12">
           {matrix.map((col, idx) => (
             <div
               key={idx}

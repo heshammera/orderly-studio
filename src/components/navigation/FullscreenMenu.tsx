@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -43,6 +43,12 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
       href: "#process",
       sub: isAr ? "من الفكرة إلى الإطلاق والتطوير" : "From Concept to Scale",
     },
+    {
+      title: isAr ? "التسويق الرقمي" : "Marketing",
+      href: "/marketing",
+      sub: isAr ? "استراتيجية، SEO، إعلانات، وتحليلات النمو" : "Strategy, SEO, Paid Media & Growth Analytics",
+      accent: true,
+    },
   ];
 
   return (
@@ -75,12 +81,20 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
               data-cursor="GO"
             >
               <div className="flex items-center justify-between">
-                <span className="text-3xl md:text-5xl font-display font-bold tracking-tight text-white group-hover:text-engineering-blue transition-colors">
+                <span className={`text-3xl md:text-5xl font-display font-bold tracking-tight transition-colors ${
+                  (link as { accent?: boolean }).accent
+                    ? "text-emerald-400 group-hover:text-emerald-300"
+                    : "text-white group-hover:text-engineering-blue"
+                }`}>
                   {link.title}
                 </span>
                 <ArrowUpRight
                   size={28}
-                  className="text-white/20 group-hover:text-engineering-blue group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
+                  className={`group-hover:translate-x-1 group-hover:-translate-y-1 transition-all ${
+                    (link as { accent?: boolean }).accent
+                      ? "text-emerald-400/30 group-hover:text-emerald-400"
+                      : "text-white/20 group-hover:text-engineering-blue"
+                  }`}
                 />
               </div>
               <span className="text-xs font-mono text-neutral-cool mt-1 tracking-wider">
