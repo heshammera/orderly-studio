@@ -2,14 +2,31 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight, CheckCircle2, Send, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Send,
+  Loader2,
+  Orbit,
+  Sparkles,
+  Layers,
+  Cpu,
+  Palette,
+  Film,
+  TrendingUp,
+} from "lucide-react";
 import { Header } from "@/components/navigation/Header";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
 import { Symbol } from "@/components/brand/Symbol";
 import { submitProjectBrief } from "@/actions/leads";
+import { WorldCanvas, type WorldId } from "@/components/worlds/WorldCanvas";
+import { WORLD_CONFIGS } from "@/components/worlds/worlds-config";
 
 export default function StartAProjectPage() {
   const [locale, setLocale] = useState<"en" | "ar">("en");
+  const [selectedWorld, setSelectedWorld] = useState<WorldId>("uiux");
+  const [hoveredWorld, setHoveredWorld] = useState<WorldId | null>(null);
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -27,52 +44,116 @@ export default function StartAProjectPage() {
     country: "",
   });
 
-  const projectTypes = isAr
-    ? [
-        { id: "saas", label: "منصة SaaS / برمجيات" },
-        { id: "digital_product", label: "منتج رقمي متكامل" },
-        { id: "webapp", label: "تطبيق ويب تفاعلي" },
-        { id: "website", label: "موقع ويب واستوديو" },
-        { id: "ai_automation", label: "ذكاء اصطناعي وأتمتة" },
-        { id: "ecommerce", label: "تجارة إلكترونية متقدمة" },
-        { id: "branding", label: "هوية بصرية وعلامة تجارية" },
-        { id: "ui_ux", label: "تصميم واجهات وتجربة مستخدم" },
-        { id: "packaging_3d", label: "تصميم تغليف ومجسمات 3D" },
-      ]
-    : [
-        { id: "saas", label: "SaaS Platform" },
-        { id: "digital_product", label: "Digital Product" },
-        { id: "webapp", label: "Web Application" },
-        { id: "website", label: "Studio Website" },
-        { id: "ai_automation", label: "AI & Automation" },
-        { id: "ecommerce", label: "E-Commerce" },
-        { id: "branding", label: "Brand Identity" },
-        { id: "ui_ux", label: "UI / UX Design" },
-        { id: "packaging_3d", label: "Packaging & 3D" },
-      ];
+  const activeWorldId = hoveredWorld || selectedWorld;
+  const currentWorldConfig = WORLD_CONFIGS[activeWorldId];
+
+  const worldsList: {
+    id: WorldId;
+    icon: React.ReactNode;
+    titleEn: string;
+    titleAr: string;
+    subEn: string;
+    subAr: string;
+    accent: string;
+    border: string;
+    bg: string;
+  }[] = [
+    {
+      id: "uiux",
+      icon: <Layers size={22} />,
+      titleEn: "UI / UX & Product Design",
+      titleAr: "تصميم الواجهات وتجربة المستخدم",
+      subEn: "Design systems, spatial UI, conversion flows & prototypes",
+      subAr: "أنظمة تصميم متكاملة، تجارب مستخدم تفاعلية، ونماذج أولية",
+      accent: "text-violet-400",
+      border: "border-violet-500/40",
+      bg: "bg-violet-500/10",
+    },
+    {
+      id: "engineering",
+      icon: <Cpu size={22} />,
+      titleEn: "Software Engineering & SaaS",
+      titleAr: "الهندسة والبرمجيات السحابية",
+      subEn: "Cloud architectures, APIs, full-stack web apps & scale",
+      subAr: "معماريات سحابية، واجهات برمجية، وتطبيقات ويب متقدمة",
+      accent: "text-sky-400",
+      border: "border-sky-500/40",
+      bg: "bg-sky-500/10",
+    },
+    {
+      id: "branding",
+      icon: <Palette size={22} />,
+      titleEn: "Brand Identity & Systems",
+      titleAr: "الهوية البصرية والعلامة التجارية",
+      subEn: "Strategic positioning, visual identity & typography",
+      subAr: "استراتيجية التموضع، الهوية البصرية، والخطوط المخصصة",
+      accent: "text-amber-400",
+      border: "border-amber-500/40",
+      bg: "bg-amber-500/10",
+    },
+    {
+      id: "ai",
+      icon: <Sparkles size={22} />,
+      titleEn: "AI & Neural Automation",
+      titleAr: "الذكاء الاصطناعي والأتمتة",
+      subEn: "Custom LLMs, autonomous workflows & intelligence",
+      subAr: "نماذج لغوية مخصصة، أتمتة العمليات، ووكلاء أذكياء",
+      accent: "text-purple-400",
+      border: "border-purple-500/40",
+      bg: "bg-purple-500/10",
+    },
+    {
+      id: "motion",
+      icon: <Film size={22} />,
+      titleEn: "Motion Design & 3D Craft",
+      titleAr: "الموشن جرافيكس والرسوم ثلاثية الأبعاد",
+      subEn: "Cinematic brand films, 3D assets & shaders",
+      subAr: "أفلام سينمائية للعلامة التجارية وتجسيد ثلاثي الأبعاد",
+      accent: "text-rose-400",
+      border: "border-rose-500/40",
+      bg: "bg-rose-500/10",
+    },
+    {
+      id: "marketing",
+      icon: <TrendingUp size={22} />,
+      titleEn: "Digital Marketing & Growth",
+      titleAr: "التسويق الرقمي ونمو الأعمال",
+      subEn: "Full-funnel strategy, SEO, paid ads & analytics",
+      subAr: "استراتيجيات التسويق الرقمي، تحسين SEO، والإعلانات",
+      accent: "text-emerald-400",
+      border: "border-emerald-500/40",
+      bg: "bg-emerald-500/10",
+    },
+  ];
 
   const serviceOptions = isAr
     ? [
-        "استراتيجية المنتج",
+        "استراتيجية المنتج والتموضع",
         "تصميم تجربة المستخدم UX",
-        "تصميم الواجهات UI",
-        "تطوير الواجهات الأمامية",
+        "تصميم الواجهات UI System",
+        "تطوير الواجهات الأمامية Next.js",
         "تطوير البنية الخلفية والـ APIs",
-        "حلول الذكاء الاصطناعي",
+        "حلول الذكاء الاصطناعي LLM",
         "الأتمتة وتكامل الأنظمة",
         "نظام الهوية البصرية والموشن",
-        "تصميم التغليف والمواد الملموسة",
+        "تصميم التغليف والمجسمات 3D",
+        "استراتيجية التسويق الرقمي",
+        "تحسين محركات البحث SEO",
+        "الإعلانات المدفوعة Paid Media",
       ]
     : [
-        "Product Strategy",
-        "UX Architecture",
+        "Product Strategy & Positioning",
+        "UX Journey & Architecture",
         "UI Design System",
-        "Frontend Engineering",
+        "Frontend Next.js Engineering",
         "Backend & API Architecture",
-        "AI Solutions",
-        "Workflow Automation",
+        "Custom AI / LLM Integration",
+        "Workflow Automations",
         "Visual Identity & Motion",
-        "Packaging & Physical Media",
+        "3D & Tactile Packaging",
+        "Digital Marketing Strategy",
+        "SEO & Organic Growth",
+        "Paid Ads & Performance",
       ];
 
   const toggleSelection = (key: "projectType" | "services", val: string) => {
@@ -98,102 +179,215 @@ export default function StartAProjectPage() {
       email: formData.email,
       company: formData.company,
       country: formData.country,
-      projectType: formData.projectType,
+      projectType: [selectedWorld, ...formData.projectType],
       services: formData.services,
       successGoal: formData.successGoal,
       description: formData.description,
     });
 
     setLoading(false);
+
     if (res.success) {
       setSubmitted(true);
     } else {
-      setErrorMsg(res.error || "An error occurred.");
+      setErrorMsg(
+        isAr
+          ? res.error || "حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى."
+          : res.error || "An error occurred. Please try again."
+      );
     }
   };
 
   return (
-    <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-obsidian text-white pt-28 pb-24 ${isAr ? "font-arabic" : "font-sans"}`}>
+    <main
+      dir={isAr ? "rtl" : "ltr"}
+      className={`min-h-screen bg-[#07070A] text-white pt-28 pb-20 relative overflow-hidden ${
+        isAr ? "font-arabic" : "font-sans"
+      }`}
+    >
       <CustomCursor />
-      <Header locale={locale} onToggleLocale={() => setLocale(l => l === "en" ? "ar" : "en")} onOpenProjectBuilder={() => {}} />
+      <Header
+        locale={locale}
+        onToggleLocale={() => setLocale((l) => (l === "en" ? "ar" : "en"))}
+        onOpenProjectBuilder={() => {}}
+        currentWorld="neutral"
+      />
 
-      <div className="max-w-4xl mx-auto px-6 md:px-12">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs font-mono text-neutral-cool hover:text-white uppercase tracking-wider mb-10 transition-colors">
-          <ArrowLeft size={14} className="rtl:rotate-180" />
-          <span>{isAr ? "العودة للرئيسية" : "BACK TO HOMEPAGE"}</span>
-        </Link>
+      {/* ── Live Canvas Background of active world ── */}
+      <div className="fixed inset-0 pointer-events-none opacity-40 z-0 transition-opacity duration-700">
+        <WorldCanvas worldId={activeWorldId} />
+      </div>
+      <div className="fixed inset-0 bg-gradient-to-b from-[#07070A]/85 via-[#07070A]/90 to-[#07070A]/98 pointer-events-none z-0" />
 
-        <div className="rounded-3xl bg-soft-black border border-white/15 p-8 sm:p-14 shadow-2xl relative overflow-hidden">
-          <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-10">
-            <div className="flex items-center gap-3">
-              <Symbol size={28} variant="engineering" />
-              <span className="font-display font-bold text-base tracking-widest uppercase text-white">
-                ORDERLY // PROJECT BUILDER
-              </span>
+      <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10">
+        {/* Navigation back */}
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-xs font-mono text-white/50 hover:text-white uppercase tracking-wider transition-colors"
+          >
+            <ArrowLeft size={14} className="rtl:rotate-180" />
+            <span>{isAr ? "العودة للرئيسية" : "BACK TO HOMEPAGE"}</span>
+          </Link>
+
+          <span className="text-xs font-mono text-white/40">
+            {isAr ? "عالم المشروع:" : "Active Universe:"}{" "}
+            <span className={currentWorldConfig.accentColor}>
+              {isAr ? currentWorldConfig.labelAr : currentWorldConfig.label}
+            </span>
+          </span>
+        </div>
+
+        {/* Card Container */}
+        <div className="rounded-3xl bg-soft-black/80 border border-white/10 backdrop-blur-xl p-8 sm:p-12 shadow-2xl">
+          {submitted ? (
+            <div className="text-center py-12 animate-in zoom-in-95 duration-500">
+              <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-6">
+                <CheckCircle2 size={40} />
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-display font-black text-white mb-4">
+                {isAr ? "تم إطلاق طلبك بنجاح!" : "Project Brief Launched!"}
+              </h1>
+              <p className="text-neutral-cool text-base max-w-lg mx-auto leading-relaxed mb-8">
+                {isAr
+                  ? "شكراً لتواصلك مع ORDERLY. فريقنا الهندسي والإبداعي يراجع متطلباتك الآن وسنتواصل معك خلال 24 ساعة بمقترح مفصل."
+                  : "Thank you for reaching out to ORDERLY. Our multidisciplinary team is analyzing your project brief and will follow up within 24 hours."}
+              </p>
+              <Link
+                href="/"
+                className="inline-block px-8 py-3.5 rounded-full bg-white text-obsidian font-bold text-xs tracking-widest uppercase hover:bg-neutral-200 transition-colors"
+              >
+                {isAr ? "العودة للرئيسية" : "RETURN TO HOME"}
+              </Link>
             </div>
-            {!submitted && (
-              <span className="text-xs font-mono text-neutral-cool tracking-wider">
-                {isAr ? `الخطوة ${step} من 5` : `STEP 0${step} / 05`}
-              </span>
-            )}
-          </div>
-
-          {!submitted ? (
+          ) : (
             <div>
+              {/* Progress Steps */}
+              <div className="flex items-center justify-between pb-8 mb-8 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <Symbol size={22} variant="engineering" />
+                  <span className="font-mono text-xs text-white/60 tracking-widest uppercase">
+                    {isAr ? `الخطوة 0${step} من 05` : `STEP 0${step} OF 05`}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <div
+                      key={s}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        s === step
+                          ? "w-8 bg-white"
+                          : s < step
+                          ? "w-4 bg-white/40"
+                          : "w-2 bg-white/15"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Step 1: Universe */}
               {step === 1 && (
-                <div className="animate-in fade-in duration-300">
-                  <span className="text-xs font-mono text-engineering-blue uppercase tracking-widest block mb-2 font-bold">
-                    01 // PROJECT SCOPE
-                  </span>
-                  <h2 className="text-3xl font-display font-bold text-white mb-8">
-                    {isAr ? "ما الذي تتطلع إلى بنائه؟" : "What are you looking to create?"}
-                  </h2>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-                    {projectTypes.map((item) => {
-                      const active = formData.projectType.includes(item.label);
+                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="mb-8">
+                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                      {isAr ? "الخطوة 01 // اختيار البيئة" : "STEP 01 // UNIVERSE GATEWAY"}
+                    </span>
+                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white mb-2">
+                      {isAr ? "اختر عالم مشروعك الأساسي" : "Choose Your Project Universe"}
+                    </h2>
+                    <p className="text-white/50 text-sm">
+                      {isAr
+                        ? "حدد التخصص الرئيسي لمشروعك لندخلك العالم المناسب ونخصص المتطلبات بدقة."
+                        : "Select the primary domain for your initiative to immerse in the matching workspace."}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    {worldsList.map((world) => {
+                      const isSelected = selectedWorld === world.id;
                       return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => toggleSelection("projectType", item.label)}
-                          className={`p-5 rounded-2xl text-start text-xs sm:text-sm font-medium transition-all border ${
-                            active
-                              ? "bg-engineering-blue text-white border-engineering-blue shadow-lg scale-[1.02]"
-                              : "bg-white/[0.03] text-white/80 border-white/10 hover:border-white/25 hover:bg-white/[0.06]"
+                        <div
+                          key={world.id}
+                          onMouseEnter={() => setHoveredWorld(world.id)}
+                          onMouseLeave={() => setHoveredWorld(null)}
+                          onClick={() => {
+                            setSelectedWorld(world.id);
+                            setFormData((prev) => ({
+                              ...prev,
+                              projectType: [world.id],
+                            }));
+                          }}
+                          className={`p-6 rounded-2xl border cursor-pointer transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${
+                            isSelected
+                              ? `${world.border} ${world.bg} shadow-2xl scale-[1.02]`
+                              : "border-white/10 bg-white/[0.02] hover:border-white/25 hover:bg-white/[0.04]"
                           }`}
                         >
-                          {item.label}
-                        </button>
+                          <div>
+                            <div
+                              className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${
+                                isSelected ? `${world.bg} ${world.accent}` : "bg-white/5 text-white/60"
+                              }`}
+                            >
+                              {world.icon}
+                            </div>
+                            <h3 className={`text-lg font-display font-bold mb-1.5 ${
+                              isSelected ? world.accent : "text-white"
+                            }`}>
+                              {isAr ? world.titleAr : world.titleEn}
+                            </h3>
+                            <p className="text-white/45 text-xs leading-relaxed">
+                              {isAr ? world.subAr : world.subEn}
+                            </p>
+                          </div>
+
+                          <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono">
+                            <span className={isSelected ? world.accent : "text-white/30"}>
+                              {isSelected ? (isAr ? "العالم المختار ✓" : "SELECTED ✓") : (isAr ? "اضغط للدخول" : "ENTER WORLD")}
+                            </span>
+                            <Orbit size={12} className={isSelected ? "text-white" : "text-white/20"} />
+                          </div>
+                        </div>
                       );
                     })}
                   </div>
                 </div>
               )}
 
+              {/* Step 2: Specific Services */}
               {step === 2 && (
-                <div className="animate-in fade-in duration-300">
-                  <span className="text-xs font-mono text-creative-coral uppercase tracking-widest block mb-2 font-bold">
-                    02 // DISCIPLINES
-                  </span>
-                  <h2 className="text-3xl font-display font-bold text-white mb-8">
-                    {isAr ? "ما هي الخدمات والقدرات المطلوبة؟" : "Which capabilities do you need?"}
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    {serviceOptions.map((srv, idx) => {
-                      const active = formData.services.includes(srv);
+                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="mb-8">
+                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                      {isAr ? "الخطوة 02 // الخدمات المطلوبة" : "STEP 02 // CAPABILITIES"}
+                    </span>
+                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white mb-2">
+                      {isAr ? "ما هي الخدمات المحددة التي تحتاجها؟" : "Select Required Disciplines"}
+                    </h2>
+                    <p className="text-white/50 text-sm">
+                      {isAr
+                        ? "يمكنك اختيار أكثر من خدمة لبناء مشروع متكامل يجمع عدة تخصصات."
+                        : "Select all disciplines that apply to your initiative."}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-8">
+                    {serviceOptions.map((svc) => {
+                      const isSelected = formData.services.includes(svc);
                       return (
                         <button
-                          key={idx}
+                          key={svc}
                           type="button"
-                          onClick={() => toggleSelection("services", srv)}
-                          className={`p-4 rounded-xl text-start text-xs sm:text-sm font-medium transition-all border flex items-center justify-between ${
-                            active
-                              ? "bg-creative-coral text-white border-creative-coral shadow-lg"
-                              : "bg-white/[0.03] text-white/80 border-white/10 hover:border-white/25 hover:bg-white/[0.06]"
+                          onClick={() => toggleSelection("services", svc)}
+                          className={`p-4 rounded-xl text-start text-xs sm:text-sm font-medium border transition-all duration-200 flex items-center justify-between ${
+                            isSelected
+                              ? "border-white bg-white text-obsidian font-bold shadow-lg"
+                              : "border-white/10 bg-white/[0.03] text-white/80 hover:border-white/25"
                           }`}
                         >
-                          <span>{srv}</span>
-                          {active && <CheckCircle2 size={16} />}
+                          <span>{svc}</span>
+                          {isSelected && <CheckCircle2 size={16} className="text-obsidian flex-shrink-0" />}
                         </button>
                       );
                     })}
@@ -201,157 +395,227 @@ export default function StartAProjectPage() {
                 </div>
               )}
 
+              {/* Step 3: Vision & Goals */}
               {step === 3 && (
-                <div className="animate-in fade-in duration-300">
-                  <span className="text-xs font-mono text-engineering-violet uppercase tracking-widest block mb-2 font-bold">
-                    03 // SUCCESS METRICS
-                  </span>
-                  <h2 className="text-3xl font-display font-bold text-white mb-8">
-                    {isAr ? "كيف يبدو النجاح بالنسبة لمشروعك؟" : "What does success look like?"}
-                  </h2>
-                  <textarea
-                    rows={5}
-                    value={formData.successGoal}
-                    onChange={(e) => setFormData({ ...formData, successGoal: e.target.value })}
-                    placeholder={
-                      isAr
-                        ? "مثال: إطلاق منتج رقمي سريع، رفع معدل التحويل، أو بناء علامة تجارية رائدة عالمياً..."
-                        : "e.g. Launching a scalable product, securing enterprise contracts, redefining the visual industry standard..."
-                    }
-                    className="w-full p-5 rounded-2xl bg-white/[0.03] border border-white/15 text-white placeholder:text-neutral-cool text-sm focus:outline-none focus:border-engineering-blue transition-colors"
-                  />
-                </div>
-              )}
-
-              {step === 4 && (
-                <div className="animate-in fade-in duration-300">
-                  <span className="text-xs font-mono text-white/60 uppercase tracking-widest block mb-2 font-bold">
-                    04 // THE IDEA
-                  </span>
-                  <h2 className="text-3xl font-display font-bold text-white mb-8">
-                    {isAr ? "أخبرنا عن تفاصيل الفكرة" : "Tell us about the idea"}
-                  </h2>
-                  <textarea
-                    rows={6}
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder={
-                      isAr
-                        ? "اشرح التحدي، الجمهور المستهدف، الجدول الزمني المتوقع، أو أي متطلبات خاصة..."
-                        : "Describe the core challenge, target audience, expected timeline, or technical requirements..."
-                    }
-                    className="w-full p-5 rounded-2xl bg-white/[0.03] border border-white/15 text-white placeholder:text-neutral-cool text-sm focus:outline-none focus:border-engineering-blue transition-colors"
-                  />
-                </div>
-              )}
-
-              {step === 5 && (
-                <div className="animate-in fade-in duration-300">
-                  <span className="text-xs font-mono text-engineering-blue uppercase tracking-widest block mb-2 font-bold">
-                    05 // CONTACT DETAILS
-                  </span>
-                  <h2 className="text-3xl font-display font-bold text-white mb-8">
-                    {isAr ? "بيانات التواصل" : "How do we reach you?"}
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      required
-                      placeholder={isAr ? "الاسم الكريم *" : "Your Name *"}
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="p-4 rounded-xl bg-white/[0.03] border border-white/15 text-white text-sm focus:outline-none focus:border-engineering-blue"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder={isAr ? "البريد الإلكتروني *" : "Email Address *"}
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="p-4 rounded-xl bg-white/[0.03] border border-white/15 text-white text-sm focus:outline-none focus:border-engineering-blue"
-                    />
-                    <input
-                      type="text"
-                      placeholder={isAr ? "اسم الشركة / المشروع" : "Company / Project Name"}
-                      value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                      className="p-4 rounded-xl bg-white/[0.03] border border-white/15 text-white text-sm focus:outline-none focus:border-engineering-blue"
-                    />
-                    <input
-                      type="text"
-                      placeholder={isAr ? "الدولة / المدينة" : "Country / City"}
-                      value={formData.country}
-                      onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-                      className="p-4 rounded-xl bg-white/[0.03] border border-white/15 text-white text-sm focus:outline-none focus:border-engineering-blue"
-                    />
+                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="mb-8">
+                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                      {isAr ? "الخطوة 03 // الرؤية والهدف" : "STEP 03 // VISION & GOALS"}
+                    </span>
+                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white mb-2">
+                      {isAr ? "ما هو هدف النجاح الأساسي؟" : "What is Your Primary Success Goal?"}
+                    </h2>
                   </div>
+
+                  <div className="space-y-6 mb-8">
+                    <div>
+                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                        {isAr ? "الهدف الرئيسي للنجاح" : "PRIMARY SUCCESS METRIC / GOAL"}
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.successGoal}
+                        onChange={(e) => setFormData({ ...formData, successGoal: e.target.value })}
+                        placeholder={
+                          isAr
+                            ? "مثال: إطلاق MVP خلال 6 أسابيع / مضاعفة التحويلات 3× / بناء هوية لجمع تمويل"
+                            : "e.g., Launch MVP in 6 weeks / Triple conversion rate / Series A Brand Identity"
+                        }
+                        className="w-full px-5 py-4 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                        {isAr ? "نبذة عن المشروع أو الفكرة (اختياري)" : "PROJECT BRIEF / VISION (OPTIONAL)"}
+                      </label>
+                      <textarea
+                        rows={4}
+                        value={formData.description}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        placeholder={
+                          isAr
+                            ? "صف رؤيتك للمشروع، الفئة المستهدفة، أو أي مراجع تفضلها..."
+                            : "Describe your vision, target audience, technical needs, or references..."
+                        }
+                        className="w-full px-5 py-4 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white resize-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Contact details */}
+              {step === 4 && (
+                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="mb-8">
+                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                      {isAr ? "الخطوة 04 // بيانات التواصل" : "STEP 04 // CONTACT DETAILS"}
+                    </span>
+                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white mb-2">
+                      {isAr ? "من نتواصل معه؟" : "Who Are We Partnering With?"}
+                    </h2>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                    <div>
+                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                        {isAr ? "الاسم الكامل *" : "FULL NAME *"}
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        placeholder={isAr ? "هشام مرعي" : "John Doe"}
+                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                        {isAr ? "البريد الإلكتروني *" : "EMAIL ADDRESS *"}
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="name@company.com"
+                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                        {isAr ? "اسم الشركة / العلامة التجارية" : "COMPANY / BRAND NAME"}
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        placeholder={isAr ? "شركة المستقبل" : "Acme Corp"}
+                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                        {isAr ? "الدولة / المدينة" : "COUNTRY / CITY"}
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.country}
+                        onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+                        placeholder={isAr ? "الرياض، المملكة العربية السعودية" : "Dubai, UAE"}
+                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 5: Review & Submit */}
+              {step === 5 && (
+                <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+                  <div className="mb-8">
+                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                      {isAr ? "الخطوة 05 // مراجعة وإطلاق الطلب" : "STEP 05 // REVIEW & LAUNCH"}
+                    </span>
+                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white mb-2">
+                      {isAr ? "تأكيد تفاصيل المشروع" : "Ready to Launch Your Brief"}
+                    </h2>
+                  </div>
+
+                  <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-4 mb-8 text-sm">
+                    <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                      <span className="text-white/50">{isAr ? "العالم المختار:" : "Chosen Universe:"}</span>
+                      <span className={`font-bold uppercase ${currentWorldConfig.accentColor}`}>
+                        {isAr ? currentWorldConfig.labelAr : currentWorldConfig.label}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                      <span className="text-white/50">{isAr ? "صاحب الطلب:" : "Contact:"}</span>
+                      <span className="text-white font-medium">
+                        {formData.name || "—"} ({formData.email || "—"})
+                      </span>
+                    </div>
+
+                    {formData.services.length > 0 && (
+                      <div className="pb-3 border-b border-white/5">
+                        <span className="text-white/50 block mb-2">{isAr ? "الخدمات المحددة:" : "Services:"}</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {formData.services.map((s) => (
+                            <span key={s} className="px-2.5 py-1 rounded-md bg-white/10 text-xs text-white">
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {formData.successGoal && (
+                      <div>
+                        <span className="text-white/50 block mb-1">{isAr ? "هدف النجاح:" : "Goal:"}</span>
+                        <span className="text-white font-medium">{formData.successGoal}</span>
+                      </div>
+                    )}
+                  </div>
+
                   {errorMsg && (
-                    <p className="text-xs font-mono text-rose-400 mt-3">{errorMsg}</p>
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs mb-6">
+                      {errorMsg}
+                    </div>
                   )}
                 </div>
               )}
 
-              <div className="flex items-center justify-between mt-10 pt-8 border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={handlePrev}
-                  disabled={step === 1 || loading}
-                  className={`flex items-center gap-2 text-xs font-mono tracking-wider uppercase transition-opacity ${
-                    step === 1 ? "opacity-0 pointer-events-none" : "text-neutral-cool hover:text-white"
-                  }`}
-                >
-                  {isAr ? <ArrowRight size={14} /> : <ArrowLeft size={14} />}
-                  <span>{isAr ? "السابق" : "PREVIOUS"}</span>
-                </button>
+              {/* Bottom Buttons */}
+              <div className="pt-6 border-t border-white/10 flex items-center justify-between">
+                {step > 1 ? (
+                  <button
+                    type="button"
+                    onClick={handlePrev}
+                    className="px-6 py-3 rounded-full border border-white/15 text-white/70 hover:text-white text-xs font-mono uppercase tracking-wider flex items-center gap-2 hover:bg-white/5 transition-all"
+                  >
+                    <ArrowLeft size={14} className="rtl:rotate-180" />
+                    <span>{isAr ? "السابق" : "BACK"}</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
 
                 {step < 5 ? (
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="flex items-center gap-2 px-8 py-4 rounded-full bg-white text-obsidian font-bold text-xs tracking-wider uppercase hover:bg-engineering-blue hover:text-white transition-all shadow-lg"
+                    className="px-8 py-3.5 rounded-full bg-white text-obsidian font-bold text-xs tracking-widest uppercase flex items-center gap-2 hover:bg-neutral-200 transition-all shadow-xl"
                   >
-                    <span>{isAr ? "التالي" : "CONTINUE"}</span>
-                    {isAr ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+                    <span>{isAr ? "متابعة" : "NEXT STEP"}</span>
+                    <ArrowRight size={14} className="rtl:rotate-180" />
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={handleSubmit}
-                    disabled={loading}
-                    className="flex items-center gap-2 px-10 py-4 rounded-full bg-engineering-blue text-white font-bold text-xs tracking-wider uppercase hover:bg-blue-600 transition-all shadow-xl disabled:opacity-50"
+                    disabled={loading || !formData.name || !formData.email}
+                    className="px-10 py-3.5 rounded-full bg-emerald-500 text-white font-bold text-xs tracking-widest uppercase flex items-center gap-2 hover:bg-emerald-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-xl shadow-emerald-500/25"
                   >
                     {loading ? (
-                      <Loader2 size={16} className="animate-spin" />
+                      <>
+                        <Loader2 size={14} className="animate-spin" />
+                        <span>{isAr ? "جارٍ الإرسال..." : "SUBMITTING..."}</span>
+                      </>
                     ) : (
                       <>
-                        <span>{isAr ? "إرسال موجز المشروع" : "SUBMIT BRIEF"}</span>
                         <Send size={14} />
+                        <span>{isAr ? "إطلاق الطلب الآن" : "LAUNCH PROJECT BRIEF"}</span>
                       </>
                     )}
                   </button>
                 )}
               </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center text-center py-12 animate-in zoom-in-95 duration-500">
-              <Symbol size={72} variant="engineering" animated={true} className="mb-8" />
-              <span className="text-xs font-mono text-engineering-blue tracking-widest uppercase mb-3 font-bold">
-                {isAr ? "تم استلام وحفظ الطلب بنجاح" : "TRANSMISSION RECORDED"}
-              </span>
-              <h2 className="text-4xl font-display font-bold text-white mb-4">
-                {isAr ? "وصلتنا فكرتك. سنضعها في نظام." : "WE'VE GOT IT."}
-              </h2>
-              <p className="text-neutral-cool text-base max-w-lg mb-10 leading-relaxed">
-                {isAr
-                  ? "تم حفظ موجز مشروعك بنجاح في قاعدة بيانات أوردرلي، وسيتواصل معك الفريق الفني خلال 24 ساعة لبدء تحويل الفكرة إلى واقع."
-                  : "Your project brief has been securely stored in our system. The ORDERLY team is reviewing your specifications and will respond within 24 hours."}
-              </p>
-              <Link
-                href="/"
-                className="px-8 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-mono text-xs uppercase tracking-wider transition-all"
-              >
-                {isAr ? "العودة للرئيسية" : "BACK TO HOME"}
-              </Link>
             </div>
           )}
         </div>
