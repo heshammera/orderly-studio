@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/admin/",
+      disallow: ["/admin/", "/admin/leads/", "/api/"],
     },
-    sitemap: "https://orderlyshops.com/sitemap.xml",
+    sitemap: "https://orderly-studio.vercel.app/sitemap.xml",
   };
 }
