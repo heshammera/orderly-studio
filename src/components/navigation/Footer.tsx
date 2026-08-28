@@ -141,6 +141,12 @@ export const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
+                <Link href="/estimator" className="text-emerald-400 hover:text-emerald-300 font-bold flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>{isAr ? "حاسبة نطاق المشروع" : "Scope Estimator"}</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/careers" className="text-slate-300 hover:text-white transition-colors">
                   {isAr ? "انضم للشبكة (Careers)" : "Join the Network"}
                 </Link>

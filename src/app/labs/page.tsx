@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/navigation/Header";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
+import { Footer } from "@/components/navigation/Footer";
 import { useLocale } from "@/context/LocaleContext";
 import { ProjectDiscoveryWizard } from "@/components/discovery/ProjectDiscoveryWizard";
 
@@ -176,6 +177,8 @@ export default function LabsPage() {
           </button>
         </div>
       </div>
+
+      <Footer />
 
       <ProjectDiscoveryWizard
         isOpen={isWizardOpen}
