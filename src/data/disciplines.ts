@@ -7,7 +7,7 @@ export type DisciplineId =
   | "marketing";
 
 export interface DeliverableItem {
-  icon: string; // Icon identifier
+  icon: string;
   titleEn: string;
   titleAr: string;
   descEn: string;
@@ -35,6 +35,7 @@ export interface DisciplineData {
   timelineEn: string;
   timelineAr: string;
   accentColor: string;
+  accentBorder: string;
   badgeBg: string;
   badgeBorder: string;
   badgeText: string;
@@ -62,16 +63,17 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
     timelineEn: "3 – 5 Weeks",
     timelineAr: "3 – 5 أسابيع",
     accentColor: "text-violet-400",
-    badgeBg: "bg-violet-500/10",
-    badgeBorder: "border-violet-500/30",
-    badgeText: "text-violet-400",
-    glowColor: "rgba(139, 92, 246, 0.15)",
+    accentBorder: "border-violet-500/40",
+    badgeBg: "bg-violet-500/15",
+    badgeBorder: "border-violet-500/40",
+    badgeText: "text-violet-300",
+    glowColor: "rgba(139, 92, 246, 0.35)",
     deliverables: [
       {
         icon: "layout",
         titleEn: "Complete Web & Mobile Screens",
         titleAr: "شاشات التطبيق والموقع الكاملة",
-        descEn: "Pixel-perfect screens tailored for mobile, tablet, and ultra-wide desktops.",
+        descEn: "Pixel-perfect responsive screens tailored for mobile, tablet, and ultra-wide desktops.",
         descAr: "تصاميم متكاملة بدقة بكسل متناهية لكل أحجام الشاشات والموبايل.",
         featuresEn: ["Figma Source Files", "Dark & Light Themes", "Responsive Layouts"],
         featuresAr: ["ملفات Figma الأصلية", "وضع النهار والليل", "متجاوب مع كل الأجهزة"],
@@ -146,10 +148,11 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
     timelineEn: "4 – 8 Weeks",
     timelineAr: "4 – 8 أسابيع",
     accentColor: "text-sky-400",
-    badgeBg: "bg-sky-500/10",
-    badgeBorder: "border-sky-500/30",
-    badgeText: "text-sky-400",
-    glowColor: "rgba(56, 189, 248, 0.15)",
+    accentBorder: "border-sky-500/40",
+    badgeBg: "bg-sky-500/15",
+    badgeBorder: "border-sky-500/40",
+    badgeText: "text-sky-300",
+    glowColor: "rgba(56, 189, 248, 0.35)",
     deliverables: [
       {
         icon: "globe",
@@ -203,7 +206,7 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
       },
     ],
     includedGuaranteesEn: [
-      "100% Clean Clean Code & Full Git Repo Handover",
+      "100% Clean Code & Full Git Repo Handover",
       "99.9% Uptime Ready Cloud Setup",
       "30 Days Free Technical Bug Warranty",
     ],
@@ -229,11 +232,12 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
       "بناء استراتيجية التموضع، تصميم الشعار والرمز، اختيار وتنسيق الخطوط، وتصميم التغليف الفاخر.",
     timelineEn: "3 – 6 Weeks",
     timelineAr: "3 – 6 أسابيع",
-    accentColor: "text-amber-400",
-    badgeBg: "bg-amber-500/10",
-    badgeBorder: "border-amber-500/30",
-    badgeText: "text-amber-400",
-    glowColor: "rgba(245, 158, 11, 0.15)",
+    accentColor: "text-amber-300",
+    accentBorder: "border-amber-500/40",
+    badgeBg: "bg-amber-500/15",
+    badgeBorder: "border-amber-500/40",
+    badgeText: "text-amber-300",
+    glowColor: "rgba(245, 158, 11, 0.35)",
     deliverables: [
       {
         icon: "sparkles",
@@ -241,7 +245,7 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
         titleAr: "الشعار والرمز الملكي المتكامل",
         descEn: "A distinct, timeless mark crafted with full horizontal, vertical, and icon variants.",
         descAr: "شعار مميز واستثنائي بمقاسات واستخدامات متعددة (أفقي، عمودي، أيقونة مصغرة).",
-        featuresEn: ["Vector Vector Files (SVG/AI)", "Monogram Symbol", "Favicon & App Icon"],
+        featuresEn: ["Vector Files (SVG/AI)", "Monogram Symbol", "Favicon & App Icon"],
         featuresAr: ["ملفات فيكتور أصلية قابلة للتكبير", "رمز مونوغرام أيقوني", "أيقونات الموقع والتطبيق"],
       },
       {
@@ -313,11 +317,12 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
       "دمج نماذج الذكاء الاصطناعي التوليدي، بناء روبوتات خدمة عملاء ذكية، وأتمتة سير العمل بالكامل.",
     timelineEn: "3 – 6 Weeks",
     timelineAr: "3 – 6 أسابيع",
-    accentColor: "text-purple-400",
-    badgeBg: "bg-purple-500/10",
-    badgeBorder: "border-purple-500/30",
-    badgeText: "text-purple-400",
-    glowColor: "rgba(168, 85, 247, 0.15)",
+    accentColor: "text-fuchsia-400",
+    accentBorder: "border-fuchsia-500/40",
+    badgeBg: "bg-fuchsia-500/15",
+    badgeBorder: "border-fuchsia-500/40",
+    badgeText: "text-fuchsia-300",
+    glowColor: "rgba(217, 70, 239, 0.35)",
     deliverables: [
       {
         icon: "bot",
@@ -398,10 +403,11 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
     timelineEn: "3 – 6 Weeks",
     timelineAr: "3 – 6 أسابيع",
     accentColor: "text-rose-400",
-    badgeBg: "bg-rose-500/10",
-    badgeBorder: "border-rose-500/30",
-    badgeText: "text-rose-400",
-    glowColor: "rgba(244, 63, 94, 0.15)",
+    accentBorder: "border-rose-500/40",
+    badgeBg: "bg-rose-500/15",
+    badgeBorder: "border-rose-500/40",
+    badgeText: "text-rose-300",
+    glowColor: "rgba(244, 63, 94, 0.35)",
     deliverables: [
       {
         icon: "film",
@@ -482,10 +488,11 @@ export const DISCIPLINES: Record<DisciplineId, DisciplineData> = {
     timelineEn: "Ongoing / Monthly",
     timelineAr: "حملات شهرية مستمرة",
     accentColor: "text-emerald-400",
-    badgeBg: "bg-emerald-500/10",
-    badgeBorder: "border-emerald-500/30",
-    badgeText: "text-emerald-400",
-    glowColor: "rgba(16, 185, 129, 0.15)",
+    accentBorder: "border-emerald-500/40",
+    badgeBg: "bg-emerald-500/15",
+    badgeBorder: "border-emerald-500/40",
+    badgeText: "text-emerald-300",
+    glowColor: "rgba(16, 185, 129, 0.35)",
     deliverables: [
       {
         icon: "trending-up",

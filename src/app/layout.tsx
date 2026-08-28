@@ -1,6 +1,35 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans, Cairo, Alexandria, JetBrains_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { LocaleProvider } from "@/context/LocaleContext";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  variable: "--font-arabic",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const alexandria = Alexandria({
+  subsets: ["arabic", "latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+  weight: ["400", "500", "700"],
+});
 
 export const metadata: Metadata = {
   title: "ORDERLY — Creative Technology Studio | التكنولوجيا × التصميم",
@@ -38,15 +67,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Cairo:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html
+      lang="en"
+      className={`dark ${jakarta.variable} ${cairo.variable} ${alexandria.variable} ${mono.variable}`}
+    >
       <body className="font-sans antialiased bg-obsidian text-white selection:bg-engineering-blue selection:text-white">
         <div className="noise-overlay" />
         <LocaleProvider>{children}</LocaleProvider>

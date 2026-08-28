@@ -1,4 +1,4 @@
-﻿import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -10,21 +10,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        obsidian: "#0A0A0C",
-        "soft-black": "#111114",
-        "off-white": "#F5F4F0",
+        obsidian: "#070709",
+        "soft-black": "#0E0E12",
+        "card-dark": "#121218",
+        "off-white": "#F8F8F6",
         "engineering-blue": "#2B6CFF",
-        "engineering-violet": "#7C3AED",
+        "engineering-cyan": "#0EA5E9",
+        "engineering-violet": "#8B5CF6",
         "creative-coral": "#E8614A",
         "creative-peach": "#F2A07B",
-        "neutral-cool": "#8B8C9E",
-        "neutral-warm": "#9E8E7E",
+        "brand-gold": "#F59E0B",
+        "brand-emerald": "#10B981",
+        "neutral-cool": "#94A3B8",
+        "neutral-warm": "#A8A29E",
         "grid-line": "#1E1E24",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "sans-serif"],
-        display: ["var(--font-display)", "sans-serif"],
-        arabic: ["var(--font-arabic)", "Almarai", "Cairo", "sans-serif"],
+        sans: ["var(--font-sans)", "var(--font-arabic)", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "var(--font-arabic)", "sans-serif"],
+        arabic: ["var(--font-arabic)", "var(--font-display)", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
       },
       letterSpacing: {
