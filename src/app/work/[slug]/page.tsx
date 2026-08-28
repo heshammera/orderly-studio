@@ -2,153 +2,153 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu, Globe, Layers } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, CheckCircle2, Cpu, Globe, Layers, ShieldCheck, Sparkles } from "lucide-react";
 import { Header } from "@/components/navigation/Header";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
-import { ProjectBuilderModal } from "@/components/home/ProjectBuilderModal";
+import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
+import { REAL_PROJECTS } from "@/data/projects";
+import { useLocale } from "@/context/LocaleContext";
 
 export default function CaseStudyPage({ params }: { params: { slug: string } }) {
-  const [locale, setLocale] = useState<"en" | "ar">("en");
+  const { isAr } = useLocale();
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
-  const isAr = locale === "ar";
 
-  const caseStudies: Record<string, any> = {
-    "nova-neural-engine": {
-      title: isAr ? "منصة Nova لتحليل البيانات الفورية" : "Nova Neural Engine",
-      subtitle: "Enterprise SaaS & Telemetry Architecture",
-      category: "ENGINEERING",
-      client: "Nova Systems International",
-      timeline: "4 Months // Production Deployment",
-      challenge: isAr
-        ? "بناء بنية تحتية سحابية قادرة على استيعاب ومعالجة أكثر من 50,000 حدث متزامن في الثانية بدون أي تأخير، مع توفير واجهة مستخدم مبنية بـ WebGL تعرض الرسوم البيانية المكانية ثلاثية الأبعاد."
-        : "Architecting a zero-latency real-time pipeline capable of ingesting and querying 50,000+ telemetry events per second, visualised through interactive WebGL spatial dashboards.",
-      strategy: isAr
-        ? "تصميم معمارية موزعة عبر الحافة (Edge Compute) مع معالجة غير متزامنة بقواعد بيانات Redis و ClickHouse، وواجهة أمامية فائقة السرعة بـ Next.js و React Three Fiber."
-        : "Leveraged distributed edge workers, in-memory caching queues, and GPU-accelerated client rendering to keep roundtrip latency under 15 milliseconds.",
-      metrics: [
-        { label: isAr ? "زمن الاستجابة" : "Avg Latency", value: "< 15ms" },
-        { label: isAr ? "معدل المعالجة" : "Throughput", value: "50k/sec" },
-        { label: isAr ? "نسبة التوفر" : "Uptime", value: "99.99%" },
-        { label: isAr ? "درجة الأداء" : "Lighthouse", value: "100/100" },
-      ],
-      stack: ["Next.js 14", "TypeScript", "Python / PyTorch", "WebGL / Three.js", "Redis", "ClickHouse"],
-    },
-    "orion-haute-horlogerie": {
-      title: isAr ? "دار أوريون للساعات الفاخرة" : "Orion Haute Horlogerie",
-      subtitle: "Bespoke Brand Identity & Tactile 3D Packaging",
-      category: "CREATIVE",
-      client: "Orion Watchmaker Geneva",
-      timeline: "3 Months // Global Brand Launch",
-      challenge: isAr
-        ? "إعادة صياغة الهوية البصرية والتغليف الفاخر لدار ساعات سويسرية رائدة لمخاطبة جيل جديد من هواة الفخامة والتقنية."
-        : "Re-imagining a prestigious heritage watchmaker's identity system and tactile unboxing experience for a digital-native luxury audience.",
-      strategy: isAr
-        ? "ابتكار خط طباعي مخصص، نظام شبكة هندسي مستوحى من حركة التروس الميكانيكية، وتصميم علب ثلاثية الأبعاد بأفخر الخامات البيئية."
-        : "Constructed a custom geometric typeface, golden-ratio packaging mechanics, and interactive spatial 3D showcase.",
-      metrics: [
-        { label: isAr ? "الزيادة في المبيعات" : "Conversion Lift", value: "+140%" },
-        { label: isAr ? "التفاعل الرقمي" : "Engagement", value: "4.8x" },
-        { label: isAr ? "التغطية العالمية" : "Global Press", value: "35+ Outlets" },
-        { label: isAr ? "معدل الرضا" : "Brand Index", value: "98%" },
-      ],
-      stack: ["Brand Strategy", "Custom Typography", "3D Packaging", "Motion Graphics", "Art Direction"],
-    },
-  };
-
-  const project = caseStudies[params.slug] || caseStudies["nova-neural-engine"];
+  const project =
+    REAL_PROJECTS[params.slug] || REAL_PROJECTS["faalek-proptech"];
 
   return (
-    <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-obsidian text-white pt-28 pb-32 ${isAr ? "font-arabic" : "font-sans"}`}>
+    <main
+      dir={isAr ? "rtl" : "ltr"}
+      className={`min-h-screen bg-[#07070A] text-white pt-28 pb-32 ${isAr ? "font-arabic" : "font-sans"}`}
+    >
       <CustomCursor />
       <Header onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
 
       <div className="max-w-5xl mx-auto px-6 md:px-12">
         {/* Back Link */}
-        <Link href="/work" className="inline-flex items-center gap-2 text-xs font-mono text-neutral-cool hover:text-white uppercase tracking-wider mb-10 transition-colors">
-          <ArrowLeft size={14} className="rtl:rotate-180" />
-          <span>{isAr ? "العودة لكافة الأعمال" : "BACK TO ALL WORK"}</span>
+        <Link
+          href="/work"
+          className="inline-flex items-center gap-2 text-xs font-mono text-slate-400 hover:text-white uppercase tracking-wider mb-10 transition-colors"
+        >
+          <ArrowLeft size={14} className={isAr ? "rotate-180" : ""} />
+          <span>{isAr ? "العودة لمعرض المشاريع" : "BACK TO ALL WORKS"}</span>
         </Link>
 
-        {/* Hero Section */}
-        <div className="border-b border-white/10 pb-12 mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="px-3 py-1 rounded-full bg-engineering-blue/15 border border-engineering-blue/30 text-engineering-blue text-xs font-mono font-bold uppercase">
+        {/* Project Header */}
+        <div className="mb-14 pb-8 border-b border-white/10">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="px-3.5 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-mono font-bold text-emerald-400">
               {project.category}
             </span>
-            <span className="text-xs font-mono text-neutral-cool">{project.timeline}</span>
+            <span className="text-xs font-mono text-slate-400">
+              {isAr ? `${project.clientAr} • ${project.locationAr}` : `${project.clientEn} • ${project.locationEn}`}
+            </span>
+            <span className="text-xs font-mono text-slate-400">
+              {project.year}
+            </span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-display font-black text-white mb-4 leading-tight">
-            {project.title}
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-white mb-4 leading-tight">
+            {isAr ? project.titleAr : project.titleEn}
           </h1>
-          <p className="text-xl font-display text-neutral-cool">{project.subtitle}</p>
+
+          <p className="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
+            {isAr ? project.subtitleAr : project.subtitleEn}
+          </p>
         </div>
 
-        {/* Metrics Grid */}
+        {/* Key Metrics Banner */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-6 sm:p-8 rounded-3xl bg-soft-black border border-white/10 mb-16 shadow-2xl">
-          {project.metrics.map((m: any, idx: number) => (
-            <div key={idx} className="text-center p-3">
-              <span className="text-3xl sm:text-4xl font-display font-black text-white block mb-1">{m.value}</span>
-              <span className="text-xs font-mono text-neutral-cool uppercase">{m.label}</span>
+          {project.metrics.map((m, i) => (
+            <div key={i} className="text-center p-3">
+              <span className="text-2xl sm:text-3xl font-display font-black text-emerald-400 block mb-1">
+                {m.value}
+              </span>
+              <span className="text-xs font-mono text-slate-400 uppercase font-semibold">
+                {isAr ? m.labelAr : m.labelEn}
+              </span>
             </div>
           ))}
         </div>
 
-        {/* Modular Story Blocks */}
-        <div className="space-y-16">
-          {/* Challenge Block */}
-          <div className="p-8 sm:p-12 rounded-3xl bg-soft-black border border-white/10">
-            <span className="text-xs font-mono text-creative-coral uppercase tracking-widest block mb-3 font-bold">
-              01 // THE CHALLENGE
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-4">
-              {isAr ? "تفكيك المشكلة المعقدة" : "Deconstructing the Core Complexity"}
-            </h3>
-            <p className="text-neutral-cool text-base sm:text-lg leading-relaxed">{project.challenge}</p>
-          </div>
+        {/* Narrative & Case Study Body */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+          {/* Main Case Details */}
+          <div className="md:col-span-8 space-y-12">
+            <div>
+              <span className="text-xs font-mono text-slate-400 uppercase tracking-widest block mb-3 font-bold">
+                {isAr ? "01 // التحدي والاحتياج الأساسي:" : "01 // THE CHALLENGE"}
+              </span>
+              <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
+                {isAr ? project.challengeAr : project.challengeEn}
+              </p>
+            </div>
 
-          {/* Strategy & Architecture Block */}
-          <div className="p-8 sm:p-12 rounded-3xl bg-soft-black border border-white/10">
-            <span className="text-xs font-mono text-engineering-blue uppercase tracking-widest block mb-3 font-bold">
-              02 // THE STRATEGY & ARCHITECTURE
-            </span>
-            <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-4">
-              {isAr ? "المعمارية التقنية والتنفيذ" : "Architectural Execution & Systems"}
-            </h3>
-            <p className="text-neutral-cool text-base sm:text-lg leading-relaxed mb-8">{project.strategy}</p>
-
-            <div className="pt-6 border-t border-white/10">
-              <span className="text-xs font-mono text-white/50 block mb-3">PRODUCTION TECH STACK</span>
-              <div className="flex flex-wrap gap-2">
-                {project.stack.map((stk: string, idx: number) => (
-                  <span key={idx} className="px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-white">
-                    {stk}
-                  </span>
-                ))}
-              </div>
+            <div>
+              <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest block mb-3 font-bold">
+                {isAr ? "02 // الحل الهندسي والتنفيذ:" : "02 // THE SOLUTION & EXECUTION"}
+              </span>
+              <p className="text-slate-200 text-base sm:text-lg leading-relaxed">
+                {isAr ? project.solutionAr : project.solutionEn}
+              </p>
             </div>
           </div>
 
-          {/* CTA Box */}
-          <div className="p-10 sm:p-16 rounded-3xl bg-gradient-to-br from-engineering-blue/20 to-creative-coral/10 border border-white/20 text-center flex flex-col items-center">
-            <h3 className="text-3xl sm:text-4xl font-display font-bold text-white mb-4">
-              {isAr ? "هل لديك مشروع مماثل؟" : "Have a Similar Vision?"}
-            </h3>
-            <p className="text-neutral-cool text-sm sm:text-base max-w-md mb-8">
-              {isAr ? "دعنا نناقش المعمارية والتصميم المخصص لتحويل فكرتك إلى واقع." : "Let's structure your idea into scalable code and iconic visual design."}
-            </p>
-            <button
-              onClick={() => setIsBuilderOpen(true)}
-              className="px-8 py-4 rounded-full bg-white text-obsidian font-bold text-xs tracking-wider uppercase flex items-center gap-3 hover:bg-engineering-blue hover:text-white transition-all shadow-xl"
-            >
-              <span>{isAr ? "ابدأ مشروعك الآن" : "START A PROJECT"}</span>
-              <ArrowUpRight size={16} />
-            </button>
+          {/* Sidebar Specs */}
+          <div className="md:col-span-4 space-y-6">
+            <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-4">
+              <div>
+                <span className="text-[10px] font-mono text-slate-400 uppercase block mb-1 font-bold">
+                  {isAr ? "الجدول الزمني للإنجاز" : "DELIVERY TIMELINE"}
+                </span>
+                <span className="text-xs font-mono font-bold text-white">
+                  {isAr ? project.timelineAr : project.timelineEn}
+                </span>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-mono text-slate-400 uppercase block mb-2 font-bold">
+                  {isAr ? "التقنيات ونطاق العمل" : "TECH STACK & SCOPE"}
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {project.stack.map((tech, tIdx) => (
+                    <span
+                      key={tIdx}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs font-mono text-slate-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick CTA Card */}
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/15 text-center space-y-3">
+              <h3 className="text-base font-display font-bold text-white">
+                {isAr ? "لديك مشروع مماثل؟" : "Need a Similar System?"}
+              </h3>
+              <p className="text-xs text-slate-300">
+                {isAr
+                  ? "دعنا نبني ونطلق منصتك بنفس معايير الجودة والسرعة."
+                  : "Let's build and scale your initiative with verified studio standards."}
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsBuilderOpen(true)}
+                className="w-full py-3 rounded-full bg-white text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-slate-200 transition-all shadow-lg"
+              >
+                {isAr ? "ابدأ مشروعك الآن" : "START A PROJECT"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <ProjectBuilderModal isOpen={isBuilderOpen} onClose={() => setIsBuilderOpen(false)} locale={locale} />
+      <DisciplineShowcaseModal
+        isOpen={isBuilderOpen}
+        onClose={() => setIsBuilderOpen(false)}
+      />
     </main>
   );
 }

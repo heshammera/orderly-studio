@@ -2,7 +2,8 @@
 
 import React from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Cpu, CheckCircle2 } from "lucide-react";
+import { REAL_PROJECTS } from "@/data/projects";
 
 interface EngineeringWorkProps {
   locale: "en" | "ar";
@@ -15,98 +16,98 @@ export const EngineeringWork: React.FC<EngineeringWorkProps> = ({
 }) => {
   const isAr = locale === "ar";
 
-  const projects = [
-    {
-      slug: "nova-neural-engine",
-      title: isAr ? "منصة تحليل البيانات الفورية" : "Nova Neural Engine",
-      category: "AI & High-Throughput Analytics",
-      client: "Enterprise SaaS Platform",
-      stack: "Next.js / Python / Rust / WebGL",
-      desc: isAr
-        ? "معمارية برمجية تعالج أكثر من 50,000 حدث في الثانية مع لوحة تحكم تفاعلية مبنية بتقنيات WebGL."
-        : "A real-time data engine processing 50k events/sec with reactive WebGL telemetry dashboards.",
-      gradient: "from-blue-600/30 to-violet-600/10",
-    },
-    {
-      slug: "aura-headless-commerce",
-      title: isAr ? "نظام التجارة الموزع عبر الحافة" : "Aura Headless Commerce",
-      category: "E-Commerce & Global Edge Architecture",
-      client: "Global Retail Brand",
-      stack: "Next.js / GraphQL / Redis / Stripe",
-      desc: isAr
-        ? "منصة تجارة إلكترونية مفصولة الرأس بزمن استجابة أقل من 25 ميلي ثانية حول العالم مع معدل تحويل قياسي."
-        : "Sub-25ms global checkout architecture handling millions in multi-currency transactions.",
-      gradient: "from-cyan-600/30 to-blue-600/10",
-    },
+  const engineeringProjects = [
+    REAL_PROJECTS["faalek-proptech"],
+    REAL_PROJECTS["quantum-logistics"],
   ];
 
   return (
-    <section id="work" className="py-24 bg-obsidian text-white border-t border-white/10">
+    <section id="work" className="py-24 bg-obsidian text-white border-t border-white/10" dir={isAr ? "rtl" : "ltr"}>
       <div className="max-w-7xl mx-auto px-6 md:px-12">
+        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
           <div>
-            <span className="text-xs font-mono text-engineering-blue uppercase tracking-widest block mb-2 font-bold">
-              {isAr ? "مشاريع برمجية مختارة" : "SELECTED ENGINEERING WORK"}
-            </span>
-            <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-white">
-              {isAr ? "الأنظمة في بيئة العمل الحية" : "Systems in Production"}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/25 text-sky-400 text-xs font-mono mb-4 font-bold">
+              <Cpu size={13} />
+              <span>{isAr ? "مشاريع برمجية حية قيد التشغيل" : "SELECTED ENGINEERING WORK"}</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight text-white leading-tight">
+              {isAr ? "أنظمة برمجية سحابية في بيئة العمل الحية" : "Systems Running in Production"}
             </h2>
           </div>
 
           <Link
             href="/work"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-engineering-blue hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-sky-400 hover:text-white transition-colors font-bold"
           >
             <span>{isAr ? "عرض كل المشاريع ←" : "EXPLORE ALL WORKS →"}</span>
             <ArrowUpRight size={14} />
           </Link>
         </div>
 
+        {/* Project Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {projects.map((proj, idx) => (
+          {engineeringProjects.map((proj, idx) => (
             <Link
               key={idx}
               href={`/work/${proj.slug}`}
-              className="group rounded-3xl bg-soft-black border border-white/10 overflow-hidden hover:border-engineering-blue/50 transition-all duration-500 flex flex-col justify-between shadow-2xl"
+              className="group rounded-3xl bg-soft-black border border-white/10 overflow-hidden hover:border-sky-500/50 transition-all duration-500 flex flex-col justify-between shadow-2xl"
               data-cursor="VIEW"
             >
-              <div className={`h-64 sm:h-80 w-full bg-gradient-to-br ${proj.gradient} p-8 flex flex-col justify-between relative`}>
+              {/* Card Banner */}
+              <div className={`h-64 sm:h-72 w-full bg-gradient-to-br ${proj.accentGradient} p-7 sm:p-8 flex flex-col justify-between relative`}>
                 <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/10 text-[11px] font-mono text-white/90">
+                  <span className="px-3.5 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/15 text-[11px] font-mono font-bold text-white">
                     {proj.category}
                   </span>
-                  <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-engineering-blue transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-sky-500 transition-colors shadow-md">
                     <ArrowUpRight size={18} />
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-xs font-mono text-white/60 block mb-1">{proj.client}</span>
-                  <h3 className="text-2xl sm:text-3xl font-display font-bold text-white group-hover:text-engineering-blue transition-colors">
-                    {proj.title}
+                  <span className="text-xs font-mono text-white/70 block mb-1 font-semibold">
+                    {isAr ? `${proj.clientAr} • ${proj.locationAr}` : `${proj.clientEn} • ${proj.locationEn}`}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white group-hover:text-sky-300 transition-colors leading-snug">
+                    {isAr ? proj.titleAr : proj.titleEn}
                   </h3>
                 </div>
               </div>
 
-              <div className="p-8">
-                <p className="text-neutral-cool text-sm leading-relaxed mb-6">{proj.desc}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs font-mono text-white/50">
-                  <span>STACK</span>
-                  <span className="text-white/80">{proj.stack}</span>
+              {/* Card Body */}
+              <div className="p-7 sm:p-8 flex flex-col flex-1 justify-between">
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed mb-6">
+                  {isAr ? proj.descAr : proj.descEn}
+                </p>
+
+                {/* Real Metrics Grid */}
+                <div className="grid grid-cols-2 gap-3 pt-5 border-t border-white/10 mb-5">
+                  {proj.metrics.slice(0, 2).map((m, mIdx) => (
+                    <div key={mIdx} className="p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                      <span className="text-lg font-display font-black text-sky-400 block">{m.value}</span>
+                      <span className="text-[10px] font-mono text-slate-400 uppercase">{isAr ? m.labelAr : m.labelEn}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between pt-4 border-t border-white/5 text-xs font-mono text-slate-400">
+                  <span className="font-bold">{isAr ? "التقنيات المستخدمة:" : "TECH STACK:"}</span>
+                  <span className="text-white truncate max-w-[200px]">{proj.stack.slice(0, 3).join(" • ")}</span>
                 </div>
               </div>
             </Link>
           ))}
         </div>
 
-        {/* Dedicated Section Navigation Button */}
-        <div className="flex justify-center pt-6">
+        {/* Section Navigation Button */}
+        <div className="flex justify-center pt-4">
           <Link
             href="/work"
-            className="px-8 py-4 rounded-full bg-white/5 border border-white/15 hover:border-engineering-blue hover:bg-engineering-blue/10 text-white font-mono text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-300 shadow-lg"
+            className="px-8 py-4 rounded-full bg-white/5 border border-white/15 hover:border-sky-500 hover:bg-sky-500/10 text-white font-mono text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-300 shadow-lg font-bold"
           >
-            <span>{isAr ? "دخول صفحة معرض الأعمال الكاملة ←" : "VIEW ALL ENGINEERING & HYBRID WORK →"}</span>
-            <ArrowUpRight size={14} className="text-engineering-blue" />
+            <span>{isAr ? "دخول صفحة معرض الأعمال الكاملة ←" : "VIEW ALL CASE STUDIES & CLIENT WORKS →"}</span>
+            <ArrowUpRight size={14} className="text-sky-400" />
           </Link>
         </div>
       </div>
