@@ -12,7 +12,13 @@ export async function loginAdmin(formData: FormData) {
     const password = formData.get("password")?.toString();
 
     if (
-      (username === ADMIN_USER || username === "admin@orderly.studio" || username === "hesham") &&
+      (
+        username === ADMIN_USER ||
+        username === "admin@orderly.studio" ||
+        username === "support@orderlyshops.com" ||
+        username === "hesham.mera@gmail.com" ||
+        username === "hesham"
+      ) &&
       password === ADMIN_PASS
     ) {
       cookies().set(SESSION_COOKIE, "authenticated", {

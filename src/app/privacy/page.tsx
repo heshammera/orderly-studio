@@ -45,9 +45,9 @@ const SECTIONS = [
     titleEn: "5. Your Rights",
     titleAr: "5. حقوقك",
     contentEn:
-      "You have the right to request access to, correction of, or deletion of your personal data at any time. To exercise these rights, contact us at privacy@orderly.studio. We will respond within 72 hours.",
+      "You have the right to request access to, correction of, or deletion of your personal data at any time. To exercise these rights, contact us at support@orderlyshops.com. We will respond within 72 hours.",
     contentAr:
-      "يحق لك طلب الوصول إلى بياناتك الشخصية أو تصحيحها أو حذفها في أي وقت. لممارسة هذه الحقوق، تواصل معنا على privacy@orderly.studio. سنرد خلال 72 ساعة.",
+      "يحق لك طلب الوصول إلى بياناتك الشخصية أو تصحيحها أو حذفها في أي وقت. لممارسة هذه الحقوق، تواصل معنا على support@orderlyshops.com. سنرد خلال 72 ساعة.",
   },
   {
     titleEn: "6. Third-Party Services",
@@ -133,10 +133,10 @@ export default function PrivacyPage() {
               : "Reach out and we'll respond within 72 hours."}
           </p>
           <a
-            href="mailto:privacy@orderly.studio"
+            href="mailto:hesham.mera@gmail.com"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-slate-200 transition-all"
           >
-            privacy@orderly.studio
+            support@orderlyshops.com
           </a>
         </div>
       </div>

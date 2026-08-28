@@ -122,7 +122,7 @@ export default function ContactPage() {
 
             {/* Email */}
             <a
-              href="mailto:hello@orderly.studio"
+              href="mailto:hesham.mera@gmail.com"
               className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/25 hover:bg-white/[0.06] transition-all group"
             >
               <div>
@@ -130,7 +130,7 @@ export default function ContactPage() {
                   {isAr ? "البريد الإلكتروني" : "EMAIL"}
                 </span>
                 <span className="text-base font-display font-bold text-white">
-                  hello@orderly.studio
+                  support@orderlyshops.com
                 </span>
               </div>
               <Mail size={20} className="text-slate-400 group-hover:text-white transition-colors" />

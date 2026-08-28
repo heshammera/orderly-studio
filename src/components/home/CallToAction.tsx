@@ -61,8 +61,8 @@ export const CallToAction: React.FC<CallToActionProps> = ({
           </div>
 
           <div className="flex items-center gap-6">
-            <a href="mailto:hello@orderlyshops.com" className="hover:text-white transition-colors">
-              hello@orderlyshops.com
+            <a href="mailto:hesham.mera@gmail.com" className="hover:text-white transition-colors">
+              support@orderlyshops.com
             </a>
             <span>© {new Date().getFullYear()}</span>
           </div>
