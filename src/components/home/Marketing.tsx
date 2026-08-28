@@ -10,6 +10,8 @@ import {
   BarChart3,
   Zap,
   Globe2,
+  ChevronDown,
+  Layers,
 } from "lucide-react";
 
 interface MarketingProps {
@@ -18,7 +20,7 @@ interface MarketingProps {
 
 export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
   const isAr = locale === "ar";
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(0);
+  const [activeIdx, setActiveIdx] = useState<number>(0);
 
   const marketingDisciplines = [
     {
@@ -26,8 +28,10 @@ export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
       icon: <TrendingUp size={20} />,
       title: isAr ? "استراتيجية التسويق الرقمي" : "Digital Marketing Strategy",
       desc: isAr
-        ? "بناء خرائط تسويقية شاملة تجمع بين البيانات والإبداع لرفع الوعي بالعلامة التجارية وتحقيق الأهداف."
-        : "Full-funnel marketing roadmaps driven by data, audience intelligence, and creative execution.",
+        ? "بناء خرائط تسويقية شاملة تجمع بين تحليل البيانات والإبداع لرفع الوعي بالعلامة التجارية ومضاعفة المبيعات."
+        : "Full-funnel marketing roadmaps driven by data intelligence, audience profiling, and creative execution.",
+      featuresAr: ["خريطة نمو شاملة", "دراسة السوق والمنافسين", "تحديد قنوات الاستحواذ"],
+      featuresEn: ["Full-Funnel Blueprint", "Competitive Audit", "Channel Allocation"],
       accent: "from-emerald-500/20 to-teal-500/20",
       color: "text-emerald-400",
     },
@@ -36,8 +40,10 @@ export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
       icon: <Search size={20} />,
       title: isAr ? "تحسين محركات البحث SEO" : "SEO & Organic Growth",
       desc: isAr
-        ? "تحسين تقني ومحتوى متخصص يضع موقعك في صدارة نتائج البحث وينمو بشكل عضوي مستدام."
+        ? "تهيئة تقنية ومحتوى متخصص يضع موقعك في صدارة نتائج البحث لجلب زيارات مجانية مستدامة."
         : "Technical SEO, semantic content architecture, and link strategies that compound over time.",
+      featuresAr: ["تهيئة Core Web Vitals", "استهداف الكلمات الأكثر طلباً", "تصدر النتائج الأولى"],
+      featuresEn: ["Technical Core Vitals", "High-Intent Keyword Map", "#1 Organic Rankings"],
       accent: "from-teal-500/20 to-cyan-500/20",
       color: "text-teal-400",
     },
@@ -46,8 +52,10 @@ export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
       icon: <Share2 size={20} />,
       title: isAr ? "إدارة منصات التواصل الاجتماعي" : "Social Media & Content",
       desc: isAr
-        ? "إنتاج محتوى إبداعي واستراتيجية نشر احترافية تبني مجتمعاً نشطاً حول علامتك التجارية."
+        ? "إنتاج محتوى بصري وفيديوهات إبداعية تبني مجتمعاً نشطاً وتزيد تفاعل العملاء مع علامتك."
         : "Platform-native content production, community management, and brand voice orchestration.",
+      featuresAr: ["صناعة محتوى إبداعي", "خطة نشر وتوزيع شهرية", "بناء مجتمع متفاعل"],
+      featuresEn: ["Platform-Native Content", "Monthly Content Calendar", "Community Engagement"],
       accent: "from-cyan-500/20 to-sky-500/20",
       color: "text-cyan-400",
     },
@@ -56,18 +64,22 @@ export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
       icon: <BarChart3 size={20} />,
       title: isAr ? "الإعلانات المدفوعة وتحسين الأداء" : "Paid Media & Performance",
       desc: isAr
-        ? "إدارة حملات Google وMeta وTikTok بمنهجية علمية تعظم العائد على الاستثمار بأقل تكلفة اكتساب."
+        ? "إدارة حملات Google وMeta وTikTok بمنهجية علمية تعظم العائد على الاستثمار (ROAS) بأقل تكلفة اكتساب."
         : "Data-driven paid campaigns across Google, Meta, TikTok, and programmatic with continuous CPA optimization.",
+      featuresAr: ["حملات إعلانات ممولة", "عائد استثماري ROAS عالي", "استهداف دقيق للمشترين"],
+      featuresEn: ["High-ROAS Paid Ads", "A/B Creative Testing", "Pixel & API Tracking"],
       accent: "from-sky-500/20 to-blue-500/20",
       color: "text-sky-400",
     },
     {
       id: "email",
       icon: <Mail size={20} />,
-      title: isAr ? "التسويق عبر البريد الإلكتروني" : "Email & CRM Automation",
+      title: isAr ? "التسويق عبر البريد الإلكتروني وأتمتة CRM" : "Email & CRM Automation",
       desc: isAr
-        ? "تصميم رحلات بريدية مخصصة وأتمتة CRM تحوّل العملاء المحتملين إلى عملاء دائمين."
+        ? "تصميم رحلات بريدية مخصصة وأتمتة CRM تحوّل العملاء المحتملين إلى مشترين دائمين."
         : "Personalized drip sequences, behavioral triggers, and CRM automation that convert and retain.",
+      featuresAr: ["رسائل بريدية مؤتمتة", "استرداد السلات المتروكة", "مضاعفة عمليات الشراء"],
+      featuresEn: ["Automated Drip Sequences", "Abandoned Cart Recovery", "Customer Retention"],
       accent: "from-blue-500/20 to-violet-500/20",
       color: "text-blue-400",
     },
@@ -76,133 +88,152 @@ export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
       icon: <Zap size={20} />,
       title: isAr ? "التحليلات والتقارير الذكية" : "Analytics & Intelligent Reporting",
       desc: isAr
-        ? "لوحات تحكم تحليلية مباشرة تترجم البيانات الخام إلى قرارات تسويقية أكثر ذكاءً وسرعة."
-        : "Real-time dashboards, attribution modelling, and AI-assisted insights that accelerate decisions.",
+        ? "لوحات تحكم تحليلية مباشرة تترجم البيانات الخام إلى قرارات تسويقية دقيقة لزيادة الأرباح."
+        : "Real-time dashboards, attribution modelling, and AI-assisted insights that accelerate growth decisions.",
+      featuresAr: ["لوحات تحكم حية", "تقارير أداء أسبوعية", "تتبع دقيق للعائد المالي"],
+      featuresEn: ["Live ROI Dashboards", "Attribution Modeling", "Executive Growth Reports"],
       accent: "from-violet-500/20 to-emerald-500/20",
       color: "text-violet-400",
     },
   ];
 
+  const currentItem = marketingDisciplines[activeIdx] || marketingDisciplines[0];
+
   return (
     <section
       id="marketing"
       className="py-28 bg-obsidian text-white border-t border-white/10 overflow-hidden relative"
+      dir={isAr ? "rtl" : "ltr"}
     >
-      {/* Background ambient glow for marketing world */}
+      {/* Background ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-emerald-500/5 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-8 border-b border-white/10 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-mono mb-5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 text-xs font-mono mb-4 font-bold">
               <Megaphone size={13} />
-              <span>{isAr ? "عالم التسويق الرقمي" : "04 // MARKETING DISCIPLINE"}</span>
+              <span>{isAr ? "04 // عالم التسويق والنمو" : "04 // MARKETING DISCIPLINE"}</span>
             </div>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-white">
-              {isAr ? "نصل إلى الجمهور الصحيح" : "Reach. Engage. Convert."}
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight text-white leading-tight">
+              {isAr ? "نصل إلى الجمهور الصحيح بالرسالة الصحيحة" : "Reach. Engage. Convert."}
             </h2>
           </div>
-          <p className="text-neutral-cool text-sm font-mono max-w-sm leading-relaxed">
+
+          <p className="text-slate-300 text-sm font-medium max-w-md leading-relaxed">
             {isAr
-              ? "استراتيجيات تسويقية مبنية على البيانات والإبداع معاً لبناء حضور رقمي مؤثر وقابل للقياس."
+              ? "استراتيجيات تسويقية مبنية على تحليل البيانات والإبداع لبناء حضور رقمي مؤثر وقابل للقياس."
               : "Data-intelligence meets creative storytelling to build measurable brand reach and revenue growth."}
           </p>
         </div>
 
-        {/* Interactive Service Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left: Discipline List */}
-          <div className="lg:col-span-7 flex flex-col divide-y divide-white/8">
+        {/* ── Responsive Dual Layout ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+          {/* Left: Interactive List / Mobile Accordion */}
+          <div className="lg:col-span-7 flex flex-col divide-y divide-white/10">
             {marketingDisciplines.map((item, idx) => {
-              const active = hoveredIdx === idx;
+              const active = activeIdx === idx;
               return (
                 <div
                   key={item.id}
-                  onMouseEnter={() => setHoveredIdx(idx)}
-                  className="py-6 cursor-pointer group transition-all duration-300"
+                  onClick={() => setActiveIdx(idx)}
+                  className={`py-5 sm:py-6 cursor-pointer transition-all duration-300 group ${
+                    active ? "bg-white/[0.04] px-4 -mx-4 rounded-2xl" : ""
+                  }`}
                   data-cursor="EXPLORE"
                 >
+                  {/* Title Row */}
                   <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3.5">
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                           active
-                            ? `bg-emerald-500/20 ${item.color}`
-                            : "bg-white/5 text-white/40 group-hover:bg-white/10"
+                            ? `bg-emerald-500/20 ${item.color} border border-emerald-500/30 shadow-md`
+                            : "bg-white/5 text-white/40 group-hover:bg-white/10 group-hover:text-white"
                         }`}
                       >
                         {item.icon}
                       </div>
+
                       <h3
-                        className={`text-xl sm:text-3xl font-display font-bold transition-all duration-300 ${
+                        className={`text-lg sm:text-2xl md:text-3xl font-display font-bold transition-all duration-200 ${
                           active
-                            ? `${item.color} translate-x-1 rtl:-translate-x-1`
-                            : "text-white group-hover:text-emerald-400/80"
+                            ? `${item.color}`
+                            : "text-white group-hover:text-emerald-400/90"
                         }`}
                       >
                         {item.title}
                       </h3>
                     </div>
-                    <span className="font-mono text-xs text-white/30">0{idx + 1}</span>
+
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className="font-mono text-xs font-bold text-white/40">0{idx + 1}</span>
+                      <ChevronDown
+                        size={16}
+                        className={`text-white/40 transition-transform duration-300 lg:hidden ${
+                          active ? "rotate-180 text-emerald-400" : ""
+                        }`}
+                      />
+                    </div>
                   </div>
+
+                  {/* Mobile & Desktop Inline Content */}
                   {active && (
-                    <p className="text-neutral-cool text-sm sm:text-base mt-4 max-w-xl leading-relaxed animate-in fade-in slide-in-from-bottom-2 duration-300 pl-[52px] rtl:pl-0 rtl:pr-[52px]">
-                      {item.desc}
-                    </p>
+                    <div className="mt-4 pt-3 border-t border-white/10 animate-in fade-in slide-in-from-top-2 duration-300">
+                      <p className="text-slate-200 text-sm sm:text-base leading-relaxed mb-4">
+                        {item.desc}
+                      </p>
+
+                      {/* Mobile Inline Deliverables Badges */}
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {(isAr ? item.featuresAr : item.featuresEn).map((feat, fIdx) => (
+                          <span
+                            key={fIdx}
+                            className="text-xs font-mono font-medium px-3 py-1 rounded-full bg-white/10 border border-white/15 text-white shadow-sm"
+                          >
+                            ✦ {feat}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
               );
             })}
           </div>
 
-          {/* Right: Visual Preview Card */}
-          <div className="lg:col-span-5 sticky top-24">
-            <div className="rounded-3xl bg-soft-black border border-white/10 p-8 sm:p-10 shadow-2xl flex flex-col justify-between min-h-[420px] relative overflow-hidden">
+          {/* Right: Desktop Visual Preview Card (Hidden on mobile to eliminate detached bottom jumping) */}
+          <div className="hidden lg:block lg:col-span-5 sticky top-32">
+            <div className="rounded-3xl bg-soft-black border border-white/15 p-8 sm:p-10 shadow-2xl flex flex-col justify-between min-h-[440px] relative overflow-hidden transition-all duration-500">
               {/* Dynamic gradient background */}
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${
-                  hoveredIdx !== null
-                    ? marketingDisciplines[hoveredIdx].accent
-                    : "from-emerald-500/10 to-teal-500/10"
-                } transition-all duration-700 pointer-events-none`}
+                className={`absolute inset-0 bg-gradient-to-br ${currentItem.accent} transition-all duration-700 pointer-events-none`}
               />
 
               <div className="relative z-10 flex items-center justify-between">
-                <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest font-bold">
-                  {isAr ? "الأداء التسويقي" : "GROWTH ENGINE"}
+                <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest font-bold flex items-center gap-2">
+                  <Megaphone size={13} />
+                  <span>{isAr ? "محرك النمو والأداء" : "GROWTH ENGINE"}</span>
                 </span>
-                <span className="text-xs font-mono text-white/30">
-                  0{hoveredIdx !== null ? hoveredIdx + 1 : 1} / 06
+                <span className="text-xs font-mono font-bold text-white/60 px-2.5 py-1 rounded-full bg-white/10 border border-white/15">
+                  0{activeIdx + 1} / 06
                 </span>
               </div>
 
               <div className="relative z-10 my-auto text-center">
                 {/* Animated icon ring */}
-                <div className="w-20 h-20 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-5">
-                  <div
-                    className={`${
-                      hoveredIdx !== null
-                        ? marketingDisciplines[hoveredIdx].color
-                        : "text-emerald-400"
-                    } transition-colors duration-500`}
-                  >
-                    {hoveredIdx !== null ? (
-                      React.cloneElement(
-                        marketingDisciplines[hoveredIdx].icon as React.ReactElement,
-                        { size: 36 }
-                      )
-                    ) : (
-                      <Globe2 size={36} />
-                    )}
+                <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center mx-auto mb-4 shadow-lg">
+                  <div className={`${currentItem.color} transition-colors duration-500`}>
+                    {React.cloneElement(currentItem.icon as React.ReactElement, { size: 30 })}
                   </div>
                 </div>
-                <h4 className="text-2xl font-display font-black text-white tracking-tight mb-2">
-                  {hoveredIdx !== null
-                    ? marketingDisciplines[hoveredIdx].title
-                    : "ORDERLY MARKETING"}
+
+                <h4 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight mb-2">
+                  {currentItem.title}
                 </h4>
-                <p className="text-neutral-cool text-xs font-mono uppercase tracking-wider">
+
+                <p className="text-slate-300 text-xs font-mono uppercase tracking-wider">
                   {isAr
                     ? "بيانات دقيقة • إبداع موجّه • نتائج قابلة للقياس"
                     : "Data Precision • Creative Reach • Measurable Growth"}
@@ -212,13 +243,13 @@ export const Marketing: React.FC<MarketingProps> = ({ locale }) => {
               {/* Footer Stats */}
               <div className="relative z-10 pt-5 border-t border-white/10 grid grid-cols-3 gap-2 text-center">
                 {[
-                  { label: isAr ? "قنوات" : "Channels", value: "12+" },
-                  { label: isAr ? "منصة" : "Platforms", value: "8" },
-                  { label: isAr ? "خدمة" : "Services", value: "06" },
+                  { label: isAr ? "قنوات إعلانية" : "Channels", value: "12+" },
+                  { label: isAr ? "منصات نمو" : "Platforms", value: "8" },
+                  { label: isAr ? "خدمات متكاملة" : "Services", value: "06" },
                 ].map((stat, i) => (
                   <div key={i}>
-                    <span className="text-xl font-display font-black text-white block">{stat.value}</span>
-                    <span className="text-[10px] font-mono text-neutral-cool uppercase">{stat.label}</span>
+                    <span className="text-lg font-display font-black text-white block">{stat.value}</span>
+                    <span className="text-[10px] font-mono text-slate-300 uppercase font-semibold">{stat.label}</span>
                   </div>
                 ))}
               </div>
