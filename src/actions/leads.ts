@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { sendLeadAlert } from "@/lib/notifications";
 
 export interface LeadSubmissionInput {
   name: string;
@@ -36,6 +37,18 @@ export async function submitProjectBrief(data: LeadSubmissionInput) {
 
     revalidatePath("/admin");
     revalidatePath("/admin/leads");
+
+    // Dispatch email alert to hesham.mera@gmail.com
+    await sendLeadAlert({
+      name: data.name,
+      email: data.email,
+      company: data.company,
+      country: data.country,
+      projectType: data.projectType,
+      services: data.services,
+      message: data.description,
+    });
+
     return { success: true, leadId: newLead.id };
   } catch (err) {
     console.error("Error saving lead brief:", err);
