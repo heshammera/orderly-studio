@@ -83,7 +83,7 @@ export const REAL_PROJECTS: Record<string, ProjectData> = {
     metrics: [
       { labelEn: "Load Time", labelAr: "سرعة التحميل", value: "< 55ms" },
       { labelEn: "Active Users", labelAr: "المستثمرون النشطون", value: "185K+" },
-      { labelEn: "Transactions Value", labelAr: "حجم الصفقات المدارة", value: "SAR 140M+" },
+      { labelEn: "Transactions Value", labelAr: "حجم الصفقات المدارة", value: "1.8B+ EGP (~$37M)" },
       { labelEn: "Uptime SLA", labelAr: "استمرارية التشغيل", value: "99.99%" },
     ],
     accentGradient: "from-sky-600/30 to-blue-600/10",

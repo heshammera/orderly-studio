@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
     const title = searchParams.get("title") || "ORDERLY Studio — Creative Technology";
     const category = searchParams.get("category") || "ENGINEERING × DESIGN × GROWTH";
-    const metric = searchParams.get("metric") || "SAR 140M+";
+    const metric = searchParams.get("metric") || "EGP 1.8B+ (~$37M)";
     const metricLabel = searchParams.get("metricLabel") || "Client Platform Value";
 
     return new ImageResponse(

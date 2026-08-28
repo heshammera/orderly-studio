@@ -38,7 +38,10 @@ const STATS = [
     accentBorder: "border-sky-500/20",
   },
   {
-    value: "SAR 140M+",
+    value: "1.8B+ EGP",
+    valueSub: "≈ $37M USD",
+    valueAr: "1.8 مليار ج.م",
+    valueSubAr: "≈ 37 مليون $",
     labelEn: "Transactions Handled\nAcross Client Platforms",
     labelAr: "صفقات مُدارة\nعبر المنصات الحية",
     icon: <TrendingUp className="w-5 h-5 text-emerald-400" />,
@@ -162,9 +165,14 @@ export const TrustEngine: React.FC<TrustEngineProps> = ({ locale }) => {
                   {stat.icon}
                 </div>
                 <div>
-                  <span className={`text-2xl sm:text-3xl font-display font-black ${stat.accentColor} block`}>
-                    {stat.value}
+                  <span className={`text-2xl sm:text-3xl font-display font-black ${stat.accentColor} block leading-tight`}>
+                    {isAr ? (stat.valueAr || stat.value) : stat.value}
                   </span>
+                  {stat.valueSub && (
+                    <span className="text-[11px] font-mono text-neutral-warm/80 font-bold block mb-1">
+                      {isAr ? (stat.valueSubAr || stat.valueSub) : stat.valueSub}
+                    </span>
+                  )}
                   <span className="text-xs font-mono text-neutral-warm uppercase font-semibold leading-snug whitespace-pre-line">
                     {isAr ? stat.labelAr : stat.labelEn}
                   </span>

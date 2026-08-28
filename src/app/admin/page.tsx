@@ -128,11 +128,13 @@ export default async function AdminDashboardPage() {
               <span>حجم الصفقات المدارة</span>
               <TrendingUp size={18} className="text-amber-400" />
             </div>
-            <div className="flex items-baseline justify-between">
-              <span className="text-2xl sm:text-3xl font-display font-black text-amber-400">
-                140M+ ر.س
+            <div className="flex flex-col">
+              <span className="text-2xl sm:text-3xl font-display font-black text-amber-400 leading-tight">
+                1.8B+ ج.م
               </span>
-              <span className="text-[11px] font-mono text-slate-400">عبر المنصات</span>
+              <span className="text-[11px] font-mono text-slate-400 mt-0.5">
+                ≈ $37M USD (عبر المنصات)
+              </span>
             </div>
           </div>
 

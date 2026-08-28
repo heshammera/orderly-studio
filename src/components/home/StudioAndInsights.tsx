@@ -20,7 +20,7 @@ export const StudioAndInsights: React.FC<StudioAndInsightsProps> = ({ locale }) 
   ];
 
   const realMetrics = [
-    { value: "SAR 140M+", labelAr: "حجم الصفقات المدارة عبر المنصات", labelEn: "Total Asset Transactions Managed" },
+    { value: "1.8B+ EGP", valueSub: "≈ $37M USD", valueAr: "1.8 مليار ج.م", valueSubAr: "≈ 37 مليون $", labelAr: "حجم الصفقات المدارة عبر المنصات", labelEn: "Total Asset Transactions Managed" },
     { value: "6.8×", labelAr: "متوسط العائد الإعلاني (ROAS)", labelEn: "Average Paid Media ROAS" },
     { value: "< 45ms", labelAr: "متوسط سرعة استجابة الخوادم", labelEn: "Average Global Edge Latency" },
     { value: "99.98%", labelAr: "استمرارية تشغيل الأنظمة الحية", labelEn: "Production Cloud Uptime SLA" },
@@ -98,9 +98,14 @@ export const StudioAndInsights: React.FC<StudioAndInsightsProps> = ({ locale }) 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-7 sm:p-8 rounded-3xl bg-white border border-neutral-warm/25 shadow-md">
             {realMetrics.map((m, mIdx) => (
               <div key={mIdx} className="text-center p-2">
-                <span className="text-2xl sm:text-3xl font-display font-black text-obsidian block mb-1">
-                  {m.value}
+                <span className="text-2xl sm:text-3xl font-display font-black text-obsidian block leading-tight">
+                  {isAr ? (m.valueAr || m.value) : m.value}
                 </span>
+                {m.valueSub && (
+                  <span className="text-[10px] font-mono text-neutral-warm/80 font-bold block mb-1">
+                    {isAr ? (m.valueSubAr || m.valueSub) : m.valueSub}
+                  </span>
+                )}
                 <span className="text-xs font-mono text-neutral-warm uppercase font-semibold">
                   {isAr ? m.labelAr : m.labelEn}
                 </span>

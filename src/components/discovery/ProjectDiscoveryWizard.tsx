@@ -78,10 +78,10 @@ const TIMELINES = [
 ];
 
 const BUDGETS = [
-  { id: "10k", labelEn: "Up to $10,000 / SAR 40K", labelAr: "حتى 40,000 ريال" },
-  { id: "25k", labelEn: "$10K–$25K / SAR 40K–90K", labelAr: "40,000 – 90,000 ريال" },
-  { id: "50k", labelEn: "$25K–$75K / SAR 90K–280K", labelAr: "90,000 – 280,000 ريال" },
-  { id: "100k+", labelEn: "$75K+ / SAR 280K+ Enterprise", labelAr: "280,000 ريال فأكثر (مؤسسي)" },
+  { id: "150k", labelEn: "150K–350K EGP (~$3K–$7K USD)", labelAr: "150,000 – 350,000 ج.م (~$3K–$7K)" },
+  { id: "350k", labelEn: "350K–800K EGP (~$7K–$16K USD)", labelAr: "350,000 – 800,000 ج.م (~$7K–$16K)" },
+  { id: "800k", labelEn: "800K–2.5M EGP (~$16K–$50K USD)", labelAr: "800,000 – 2,500,000 ج.م (~$16K–$50K)" },
+  { id: "2.5m+", labelEn: "2.5M+ EGP Enterprise (~$50K+ USD)", labelAr: "2,500,000+ ج.م (مؤسسي)" },
 ];
 
 export const ProjectDiscoveryWizard: React.FC<ProjectDiscoveryWizardProps> = ({

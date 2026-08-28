@@ -32,7 +32,7 @@ interface ScopeOption {
   descAr: string;
   icon: React.ReactNode;
   weeks: number;
-  baseCostSar: number;
+  baseCostEgp: number;
 }
 
 const SCOPE_OPTIONS: ScopeOption[] = [
@@ -40,11 +40,11 @@ const SCOPE_OPTIONS: ScopeOption[] = [
     id: "saas",
     labelEn: "SaaS Cloud Platform",
     labelAr: "منصة سحابية متكاملة SaaS",
-    descEn: "Multi-tenant architecture, Next.js, PostgreSQL, Auth & Stripe/HyperPay",
+    descEn: "Multi-tenant architecture, Next.js, PostgreSQL, Auth & Payment Gateways",
     descAr: "معمارية متعددة المستأجرين، Next.js، قواعد بيانات، وبوابات دفع",
     icon: <Cpu className="w-5 h-5 text-sky-400" />,
     weeks: 6,
-    baseCostSar: 65000,
+    baseCostEgp: 650000,
   },
   {
     id: "ai",
@@ -54,7 +54,7 @@ const SCOPE_OPTIONS: ScopeOption[] = [
     descAr: "أنظمة RAG مخصصة، قواعد بيانات دلالية، وعملاء أتمتة",
     icon: <Bot className="w-5 h-5 text-purple-400" />,
     weeks: 4,
-    baseCostSar: 45000,
+    baseCostEgp: 450000,
   },
   {
     id: "branding",
@@ -64,7 +64,7 @@ const SCOPE_OPTIONS: ScopeOption[] = [
     descAr: "خطوط متناغمة، نظام شعار ملكي، ودليل هوية شامل",
     icon: <Sparkles className="w-5 h-5 text-amber-400" />,
     weeks: 3,
-    baseCostSar: 35000,
+    baseCostEgp: 350000,
   },
   {
     id: "mobile",
@@ -74,7 +74,7 @@ const SCOPE_OPTIONS: ScopeOption[] = [
     descAr: "React Native، مزامنة بدون إنترنت، وتنبيهات فورية",
     icon: <Layers className="w-5 h-5 text-rose-400" />,
     weeks: 6,
-    baseCostSar: 55000,
+    baseCostEgp: 550000,
   },
   {
     id: "ecommerce",
@@ -84,7 +84,7 @@ const SCOPE_OPTIONS: ScopeOption[] = [
     descAr: "شراء في أقل من ثانية، معمارية Headless، وأتمتة مبيعات",
     icon: <ShoppingBag className="w-5 h-5 text-emerald-400" />,
     weeks: 4,
-    baseCostSar: 40000,
+    baseCostEgp: 400000,
   },
   {
     id: "growth",
@@ -94,7 +94,7 @@ const SCOPE_OPTIONS: ScopeOption[] = [
     descAr: "اختبارات إعلانات ديناميكية، تحسين محركات البحث، ومضاعفة ROAS",
     icon: <TrendingUp className="w-5 h-5 text-cyan-400" />,
     weeks: 3,
-    baseCostSar: 25000,
+    baseCostEgp: 250000,
   },
 ];
 
@@ -126,13 +126,13 @@ export default function EstimatorPage() {
   // Parallel sprint discount (approx 65% of sequential sum)
   const totalWeeks = Math.max(3, Math.round(rawWeeks * 0.65) + selectedComplexity.weeksAdd);
 
-  const rawCostSar = selectedScopes.reduce((acc, sId) => {
+  const rawCostEgp = selectedScopes.reduce((acc, sId) => {
     const opt = SCOPE_OPTIONS.find((o) => o.id === sId);
-    return acc + (opt ? opt.baseCostSar : 0);
+    return acc + (opt ? opt.baseCostEgp : 0);
   }, 0);
 
-  const totalCostSar = Math.round((rawCostSar * selectedComplexity.mult) / 1000) * 1000;
-  const totalCostUsd = Math.round(totalCostSar / 3.75 / 500) * 500;
+  const totalCostEgp = Math.round((rawCostEgp * selectedComplexity.mult) / 10000) * 10000;
+  const totalCostUsd = Math.round(totalCostEgp / 49 / 500) * 500;
 
   return (
     <main
@@ -279,12 +279,12 @@ export default function EstimatorPage() {
                 <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/5">
                   <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block mb-1 flex items-center gap-1.5">
                     <DollarSign size={12} className="text-emerald-400" />
-                    {isAr ? "نطاق الاستثمار" : "ESTIMATED RANGE"}
+                    {isAr ? "نطاق الاستثمار التقديري" : "ESTIMATED INVESTMENT"}
                   </span>
-                  <span className="text-xl sm:text-2xl font-display font-black text-emerald-400 block">
-                    SAR {totalCostSar.toLocaleString()}
+                  <span className="text-xl sm:text-2xl font-display font-black text-emerald-400 block leading-tight">
+                    {isAr ? `${totalCostEgp.toLocaleString()} ج.م` : `EGP ${totalCostEgp.toLocaleString()}`}
                   </span>
-                  <span className="text-[10px] font-mono text-slate-400">
+                  <span className="text-xs font-mono text-slate-400 font-semibold block mt-0.5">
                     ≈ ${totalCostUsd.toLocaleString()} USD
                   </span>
                 </div>
