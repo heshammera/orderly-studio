@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from "react";
 import {
   X,
-  ArrowUpRight,
   Sparkles,
-  ChevronRight,
   Layers,
   Cpu,
   Palette,
@@ -13,14 +11,17 @@ import {
   TrendingUp,
   Maximize2,
   Minimize2,
-  Compass,
   Volume2,
   VolumeX,
-  Rotate3d,
 } from "lucide-react";
 import { ThreeWorldCanvas } from "./ThreeWorldCanvas";
-import { WORLD_CONFIGS } from "./worlds-config";
 import { worldAudio } from "./world-audio";
+import { UIUXSandbox } from "@/components/sandboxes/UIUXSandbox";
+import { EngineeringSandbox } from "@/components/sandboxes/EngineeringSandbox";
+import { BrandingSandbox } from "@/components/sandboxes/BrandingSandbox";
+import { AISandbox } from "@/components/sandboxes/AISandbox";
+import { MotionSandbox } from "@/components/sandboxes/MotionSandbox";
+import { MarketingSandbox } from "@/components/sandboxes/MarketingSandbox";
 import type { WorldId } from "./WorldCanvas";
 
 interface WorldPortalProps {
@@ -40,7 +41,6 @@ export const WorldPortal: React.FC<WorldPortalProps> = ({
 }) => {
   const [activeWorld, setActiveWorld] = useState<WorldId>(worldId);
   const [visible, setVisible] = useState(false);
-  const [contentIn, setContentIn] = useState(false);
   const [isMinimalMode, setIsMinimalMode] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
 
@@ -50,22 +50,14 @@ export const WorldPortal: React.FC<WorldPortalProps> = ({
     setActiveWorld(worldId);
   }, [worldId]);
 
-  const world = WORLD_CONFIGS[activeWorld] || WORLD_CONFIGS.uiux;
-
   // Open / Close animation & Spatial Audio Trigger
   useEffect(() => {
     if (isOpen) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => setVisible(true));
       });
-      const t = setTimeout(() => setContentIn(true), 300);
-
-      // Start procedural spatial audio for this world
       worldAudio.playWorldAmbience(activeWorld);
-
-      return () => clearTimeout(t);
     } else {
-      setContentIn(false);
       worldAudio.stopAmbience();
       const t = setTimeout(() => setVisible(false), 400);
       return () => clearTimeout(t);
@@ -98,45 +90,49 @@ export const WorldPortal: React.FC<WorldPortalProps> = ({
     setIsMuted(muted);
   };
 
+  const handleStartProject = () => {
+    onClose();
+    if (onOpenProjectBuilder) {
+      setTimeout(() => onOpenProjectBuilder(activeWorld), 350);
+    }
+  };
+
   if (!isOpen && !visible) return null;
 
   const realms: { id: WorldId; labelEn: string; labelAr: string; icon: React.ReactNode }[] = [
-    { id: "uiux", labelEn: "UI/UX 3D", labelAr: "واجهات 3D", icon: <Layers size={13} /> },
-    { id: "engineering", labelEn: "Cyber Core", labelAr: "مصفوفة برمجية", icon: <Cpu size={13} /> },
-    { id: "branding", labelEn: "Gold Atelier", labelAr: "أتيليه الذهب", icon: <Palette size={13} /> },
-    { id: "ai", labelEn: "Synaptic Cosmos", labelAr: "كون الذكاء", icon: <Sparkles size={13} /> },
-    { id: "motion", labelEn: "Cinematic 3D", labelAr: "سينما 3D", icon: <Film size={13} /> },
-    { id: "marketing", labelEn: "Data Globe", labelAr: "كوكب البيانات", icon: <TrendingUp size={13} /> },
+    { id: "uiux", labelEn: "UI/UX OS", labelAr: "واجهات وتطبيقات", icon: <Layers size={13} /> },
+    { id: "engineering", labelEn: "Cloud Systems", labelAr: "أنظمة سحابية", icon: <Cpu size={13} /> },
+    { id: "branding", labelEn: "Brand Atelier", labelAr: "أتيليه الهوية", icon: <Palette size={13} /> },
+    { id: "ai", labelEn: "AI Neural Lab", labelAr: "مختبر الذكاء", icon: <Sparkles size={13} /> },
+    { id: "motion", labelEn: "3D Motion Rig", labelAr: "محرر 3D وموشن", icon: <Film size={13} /> },
+    { id: "marketing", labelEn: "Growth Engine", labelAr: "محرك النمو", icon: <TrendingUp size={13} /> },
   ];
 
   return (
     <div
-      className={`fixed inset-0 z-[999] overflow-hidden transition-all duration-700 select-none bg-black ${
+      className={`fixed inset-0 z-[999] overflow-y-auto transition-all duration-700 select-none bg-black/95 backdrop-blur-3xl ${
         visible ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
       }`}
       role="dialog"
       aria-modal="true"
       dir={isAr ? "rtl" : "ltr"}
     >
-      {/* ── 100% Fullscreen Three.js WebGL 3D World ── */}
-      <div className="absolute inset-0 z-0">
+      {/* ── Background Three.js WebGL 3D Ambience ── */}
+      <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
         <ThreeWorldCanvas worldId={activeWorld} />
       </div>
 
-      {/* ── Ambient Radial Atmosphere Overlay ── */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/85 via-transparent to-black/60" />
-
       {/* ── Top Atmospheric HUD ── */}
-      <header className="relative z-30 flex items-center justify-between px-6 md:px-12 py-6">
-        {/* Left: 3D Dream Realm Identity */}
+      <header className="sticky top-0 z-30 flex items-center justify-between px-6 md:px-12 py-5 bg-black/60 backdrop-blur-xl border-b border-white/10">
+        {/* Left: Studio Identity */}
         <div className="flex items-center gap-3">
-          <div className="w-3 h-3 rounded-full bg-emerald-400 animate-ping" />
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
           <div className="flex flex-col">
-            <span className="font-mono text-[11px] uppercase tracking-[0.3em] font-bold text-white/90">
-              ORDERLY // {isAr ? "عالم ثلاثي الأبعاد WebGL" : "SPATIAL 3D UNIVERSE"}
+            <span className="font-mono text-[11px] uppercase tracking-[0.25em] font-bold text-white/90">
+              ORDERLY // {isAr ? "مختبر التجربة التفاعلية الحية" : "LIVE INTERACTIVE SANDBOX"}
             </span>
-            <span className="text-[10px] font-mono tracking-widest text-emerald-400/80">
-              {isAr ? "انغماس مكاني كامل 60FPS" : "THREE.JS WEBGL ENGINE ∙ 60FPS"}
+            <span className="text-[10px] font-mono tracking-widest text-emerald-400">
+              {isAr ? "جرب المنتجات بنفسك في الوقت الفعلي" : "INTERACTIVE REAL-TIME ENVIRONMENT"}
             </span>
           </div>
         </div>
@@ -144,7 +140,7 @@ export const WorldPortal: React.FC<WorldPortalProps> = ({
         {/* Center: Realm Switcher Quick Bar */}
         <nav
           aria-label="Realm Switcher"
-          className="hidden lg:flex items-center gap-1.5 p-1.5 rounded-full border border-white/10 bg-black/50 backdrop-blur-2xl shadow-2xl shadow-black/80"
+          className="hidden lg:flex items-center gap-1.5 p-1.5 rounded-full border border-white/10 bg-white/[0.03] backdrop-blur-2xl"
         >
           {realms.map((r) => {
             const isCur = activeWorld === r.id;
@@ -178,11 +174,11 @@ export const WorldPortal: React.FC<WorldPortalProps> = ({
             {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
           </button>
 
-          {/* Toggle Minimal / Focus View */}
+          {/* Toggle Minimal Mode */}
           <button
             onClick={() => setIsMinimalMode(!isMinimalMode)}
             className="p-2.5 rounded-full border border-white/15 bg-black/40 backdrop-blur-md text-white/70 hover:text-white hover:border-white/40 transition-all"
-            title={isMinimalMode ? "Show HUD" : "Zen Immersion Mode"}
+            title={isMinimalMode ? "Show Sandbox UI" : "Fullscreen 3D Mode"}
           >
             {isMinimalMode ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
           </button>
@@ -193,124 +189,53 @@ export const WorldPortal: React.FC<WorldPortalProps> = ({
             className="px-4 py-2 rounded-full border border-white/20 bg-white/10 text-xs font-mono tracking-widest uppercase flex items-center gap-2 backdrop-blur-md text-white hover:bg-white hover:text-black hover:border-white transition-all"
           >
             <X size={14} />
-            <span className="hidden sm:inline">{isAr ? "خروج" : "EXIT REALM"}</span>
+            <span className="hidden sm:inline">{isAr ? "خروج" : "EXIT LAB"}</span>
           </button>
         </div>
       </header>
 
-      {/* ── Main Holographic Floating Stage ── */}
-      <main
-        className={`relative z-20 max-w-7xl mx-auto px-6 md:px-12 h-[calc(100vh-160px)] flex flex-col justify-between transition-all duration-500 pointer-events-none ${
-          isMinimalMode ? "opacity-0 translate-y-8" : "opacity-100"
-        }`}
-      >
-        {/* Floating Narrative Hero Card (pointer-events-auto for clicks) */}
-        <div
-          className={`pointer-events-auto max-w-xl mt-2 sm:mt-6 p-6 sm:p-9 rounded-[28px] border border-white/15 bg-black/60 backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.85)] text-white transition-all duration-700 ${
-            contentIn ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-6"
-          }`}
-        >
-          {/* Badge */}
-          <div className="flex items-center gap-2.5 mb-3.5">
-            <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-widest uppercase border ${world.accentBg} ${world.accentBorder} ${world.accentColor}`}
+      {/* ── Main Dynamic Interactive Sandbox Stage ── */}
+      <main className="relative z-20 max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+        {/* Mobile Realm Switcher Bar */}
+        <div className="flex lg:hidden items-center gap-2 overflow-x-auto w-full pb-4 mb-6">
+          {realms.map((r) => (
+            <button
+              key={r.id}
+              onClick={() => setActiveWorld(r.id)}
+              className={`px-3 py-1.5 rounded-full text-[10px] font-mono flex-shrink-0 border ${
+                activeWorld === r.id
+                  ? "bg-white text-black border-white font-bold"
+                  : "border-white/10 text-white/60"
+              }`}
             >
-              <Compass size={11} className="animate-spin" style={{ animationDuration: "12s" }} />
-              <span>{isAr ? world.labelAr : world.label}</span>
-            </span>
-
-            <span className="text-[10px] font-mono tracking-widest uppercase text-white/35">
-              // {isAr ? world.taglineAr : world.tagline}
-            </span>
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-2xl sm:text-4xl font-display font-black tracking-tight leading-[1.15] mb-3 text-white">
-            {isAr ? world.taglineAr : world.tagline}
-          </h1>
-
-          {/* Description */}
-          <p className="text-xs sm:text-sm leading-relaxed mb-5 font-normal text-white/70">
-            {isAr ? world.descriptionAr : world.description}
-          </p>
-
-          {/* Holographic Stats Grid */}
-          <div className="grid grid-cols-3 gap-2.5 p-3.5 rounded-2xl border border-white/10 bg-white/[0.03] mb-5">
-            {world.stats.map((st, idx) => (
-              <div key={idx} className="text-center">
-                <span className={`text-lg sm:text-xl font-display font-black block tracking-tight ${world.accentColor}`}>
-                  {st.value}
-                </span>
-                <span className="text-[9px] font-mono uppercase tracking-wider block mt-0.5 text-white/40">
-                  {isAr ? st.labelAr : st.labelEn}
-                </span>
-              </div>
-            ))}
-          </div>
-
-          {/* Capabilities Tags */}
-          <div className="flex flex-wrap gap-1.5">
-            {world.capabilities.slice(0, 4).map((cap, i) => (
-              <span
-                key={i}
-                className="px-2.5 py-1 rounded-lg text-[10px] font-medium border border-white/10 bg-white/5 text-white/80"
-              >
-                {isAr ? cap.ar : cap.en}
-              </span>
-            ))}
-          </div>
+              {isAr ? r.labelAr : r.labelEn}
+            </button>
+          ))}
         </div>
 
-        {/* ── Bottom Floating Action Deck ── */}
-        <footer
-          className={`pointer-events-auto flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl border border-white/15 bg-black/70 backdrop-blur-2xl text-white shadow-2xl transition-all duration-700 ${
-            contentIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          {/* Mobile Realm Switcher Bar */}
-          <div className="flex lg:hidden items-center gap-2 overflow-x-auto w-full pb-2 sm:pb-0">
-            {realms.map((r) => (
-              <button
-                key={r.id}
-                onClick={() => setActiveWorld(r.id)}
-                className={`px-3 py-1.5 rounded-full text-[10px] font-mono flex-shrink-0 border ${
-                  activeWorld === r.id
-                    ? "bg-white text-black border-white font-bold"
-                    : "border-white/10 text-white/60"
-                }`}
-              >
-                {isAr ? r.labelAr : r.labelEn}
-              </button>
-            ))}
+        {/* Render the Active Real-World Live Sandbox */}
+        {!isMinimalMode && (
+          <div className="animate-in fade-in zoom-in-95 duration-500">
+            {activeWorld === "uiux" && (
+              <UIUXSandbox locale={locale} onStartProject={handleStartProject} />
+            )}
+            {(activeWorld === "engineering" || activeWorld === "saas") && (
+              <EngineeringSandbox locale={locale} onStartProject={handleStartProject} />
+            )}
+            {(activeWorld === "branding" || activeWorld === "packaging") && (
+              <BrandingSandbox locale={locale} onStartProject={handleStartProject} />
+            )}
+            {activeWorld === "ai" && (
+              <AISandbox locale={locale} onStartProject={handleStartProject} />
+            )}
+            {activeWorld === "motion" && (
+              <MotionSandbox locale={locale} onStartProject={handleStartProject} />
+            )}
+            {(activeWorld === "marketing" || activeWorld === "ecommerce") && (
+              <MarketingSandbox locale={locale} onStartProject={handleStartProject} />
+            )}
           </div>
-
-          <div className="hidden sm:flex items-center gap-3 text-xs font-mono text-white/60">
-            <span className="flex items-center gap-1 text-emerald-400">
-              <Rotate3d size={13} />
-              <span>{isAr ? "اسحب الماوس للدوران في الفضاء 3D" : "DRAG MOUSE TO ROTATE 3D SPACE"}</span>
-            </span>
-            <span>•</span>
-            <span>[ESC] {isAr ? "للخروج" : "TO EXIT"}</span>
-          </div>
-
-          {/* Launch Project Brief inside this 3D World */}
-          <button
-            onClick={() => {
-              onClose();
-              if (onOpenProjectBuilder) {
-                setTimeout(() => onOpenProjectBuilder(activeWorld), 350);
-              }
-            }}
-            className="w-full sm:w-auto px-8 py-3.5 rounded-full font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-3 transition-all duration-300 shadow-xl bg-white text-black hover:bg-neutral-200 shadow-white/20"
-          >
-            <span>
-              {isAr
-                ? `ابدأ مشروعك في عالم ${world.labelAr.split(" ")[0]}`
-                : `LAUNCH BRIEF IN THIS 3D UNIVERSE`}
-            </span>
-            <ArrowUpRight size={15} />
-          </button>
-        </footer>
+        )}
       </main>
     </div>
   );
