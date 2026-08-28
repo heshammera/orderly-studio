@@ -69,7 +69,7 @@ export default function WorkPage() {
           <span className="text-xs font-mono text-engineering-blue uppercase tracking-widest block mb-3 font-bold">
             {isAr ? "معرض الأعمال والمشاريع" : "SELECTED WORKS // 2026"}
           </span>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white mb-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-white mb-6 leading-tight">
             {isAr ? "أعمال تشكّل المعيار الرقمي" : "Engineering × Creative Folio"}
           </h1>
           <p className="text-neutral-cool text-base sm:text-lg max-w-2xl leading-relaxed">

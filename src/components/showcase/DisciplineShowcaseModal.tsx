@@ -288,10 +288,10 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs font-mono text-emerald-400 mb-2 font-bold">
                 <span>{isAr ? "الخطوة 1 من 3" : "STEP 1 OF 3"}</span>
               </div>
-              <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
+              <h2 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight leading-snug">
                 {isAr ? "ما نوع المشروع الذي تود بناءه؟" : "What type of project?"}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 mt-1">
+              <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
                 {isAr
                   ? "اختر التخصص الرئيسي وسنعرض لك المخرجات المحددة وجدول التنفيذ:"
                   : "Select a primary discipline to preview deliverables and timeline:"}
@@ -360,7 +360,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
             <button
               type="button"
               onClick={() => setStep(2)}
-              className="w-full py-4 rounded-2xl bg-white hover:bg-slate-100 text-black font-display font-extrabold text-sm tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all hover:scale-[1.01] shadow-2xl shadow-white/20"
+              className="w-full py-4 rounded-2xl bg-white hover:bg-slate-100 text-black font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all hover:scale-[1.01] shadow-2xl shadow-white/20"
             >
               <span>{isAr ? "التالي — استعراض المخرجات والمدة" : "Next — See Deliverables & Timeline"}</span>
               <ChevronRight size={17} className="rtl:rotate-180" />
@@ -372,13 +372,13 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
             STEP 2 — Deliverables preview (Active, High-Contrast & Vibrant)
         ══════════════════════════════════════════════════ */}
         {step === 2 && (
-          <div className="relative z-10 p-5 sm:p-8 flex flex-col gap-6 animate-in slide-in-from-bottom-3 duration-300">
+          <div className="relative z-10 p-5 sm:p-8 flex flex-col gap-5 animate-in slide-in-from-bottom-3 duration-300">
             {/* Header Banner */}
             <div>
-              <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <div className="inline-flex items-center gap-2">
                   <span
-                    className={`px-3.5 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider border shadow-md ${current.badgeBg} ${current.badgeBorder} ${current.badgeText}`}
+                    className={`px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider border shadow-md ${current.badgeBg} ${current.badgeBorder} ${current.badgeText}`}
                   >
                     {isAr ? current.nameAr : current.nameEn}
                   </span>
@@ -389,41 +389,41 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
                 </div>
 
                 <span className="text-xs font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/25">
-                  {isAr ? "✓ 3 مخرجات متضمنة في الباقة" : "✓ 3 Deliverables Included"}
+                  {isAr ? "✓ 3 مخرجات متضمنة بالكامل" : "✓ 3 Deliverables Included"}
                 </span>
               </div>
 
-              <h2 className="text-xl sm:text-2xl font-display font-black text-white leading-snug">
+              <h2 className="text-base sm:text-lg font-display font-bold text-white leading-snug">
                 {isAr ? current.taglineAr : current.taglineEn}
               </h2>
             </div>
 
             {/* 3 Large Radiant Deliverable Cards (High-Contrast & Clearly Active) */}
-            <div className="flex flex-col gap-3.5">
+            <div className="flex flex-col gap-3">
               {current.deliverables.map((del, idx) => (
                 <div
                   key={idx}
-                  className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-white/[0.02] border border-white/20 hover:border-white/40 hover:bg-white/[0.09] transition-all flex items-start gap-4 shadow-lg group"
+                  className="p-4 rounded-2xl bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-white/[0.02] border border-white/20 hover:border-white/40 hover:bg-white/[0.09] transition-all flex items-start gap-3.5 shadow-lg group"
                 >
                   {/* Glowing Icon Container */}
                   <div
-                    className={`w-11 h-11 rounded-xl ${current.badgeBg} ${current.badgeBorder} border-2 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform`}
+                    className={`w-10 h-10 rounded-xl ${current.badgeBg} ${current.badgeBorder} border-2 flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform`}
                   >
                     <DisciplineIcon name={del.icon} className={`w-5 h-5 ${current.accentColor}`} />
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2 mb-1">
-                      <h3 className="text-sm sm:text-base font-display font-bold text-white tracking-tight">
+                      <h3 className="text-sm font-display font-bold text-white tracking-tight leading-snug">
                         {isAr ? del.titleAr : del.titleEn}
                       </h3>
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-bold flex-shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-[10px] font-mono font-bold flex-shrink-0">
                         <CheckCircle size={10} className="text-emerald-400" />
-                        <span>{isAr ? "مشمول بالكامل" : "INCLUDED"}</span>
+                        <span>{isAr ? "مشمول" : "INCLUDED"}</span>
                       </span>
                     </div>
 
-                    <p className="text-xs text-slate-200 leading-relaxed mb-3">
+                    <p className="text-xs text-slate-200 leading-relaxed mb-2.5">
                       {isAr ? del.descAr : del.descEn}
                     </p>
 
@@ -432,7 +432,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
                       {(isAr ? del.featuresAr : del.featuresEn).map((feat, fIdx) => (
                         <span
                           key={fIdx}
-                          className="text-[11px] font-mono font-medium px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white shadow-sm"
+                          className="text-[11px] font-mono font-medium px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/20 text-white shadow-sm"
                         >
                           ✦ {feat}
                         </span>
@@ -444,10 +444,10 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
             </div>
 
             {/* Guarantees Strip */}
-            <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/15 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-200">
+            <div className="p-3 rounded-2xl bg-white/[0.03] border border-white/15 flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-slate-200">
               {(isAr ? current.includedGuaranteesAr : current.includedGuaranteesEn).map((g, gIdx) => (
                 <div key={gIdx} className="flex items-center gap-1.5 font-medium">
-                  <ShieldCheck size={15} className="text-emerald-400 flex-shrink-0" />
+                  <ShieldCheck size={14} className="text-emerald-400 flex-shrink-0" />
                   <span>{g}</span>
                 </div>
               ))}
@@ -458,7 +458,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="px-5 py-4 rounded-2xl border border-white/20 text-white hover:bg-white/10 transition-all flex items-center gap-2 text-xs font-mono uppercase font-bold"
+                className="px-5 py-3.5 rounded-2xl border border-white/20 text-white hover:bg-white/10 transition-all flex items-center gap-2 text-xs font-mono uppercase font-bold"
               >
                 <ArrowLeft size={15} className="rtl:rotate-180" />
                 <span>{isAr ? "رجوع" : "Back"}</span>
@@ -467,7 +467,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="flex-1 py-4 rounded-2xl bg-white hover:bg-slate-100 text-black font-display font-extrabold text-sm tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all hover:scale-[1.01] shadow-2xl shadow-white/20"
+                className="flex-1 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-black font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2.5 transition-all hover:scale-[1.01] shadow-2xl shadow-white/20"
               >
                 <span>{isAr ? "احجز هذا المشروع الآن" : "Request This Project"}</span>
                 <ChevronRight size={17} className="rtl:rotate-180" />
@@ -486,7 +486,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
                 <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mb-4 shadow-xl shadow-emerald-500/20">
                   <CheckCircle2 size={34} />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-display font-black text-white mb-2">
+                <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
                   {isAr ? "تم استلام طلب مشروعك بنجاح!" : "Project Request Received!"}
                 </h3>
                 <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed mb-6">
@@ -508,7 +508,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-xs font-mono text-emerald-400 mb-2 font-bold">
                     <span>{isAr ? "الخطوة 3 من 3" : "STEP 3 OF 3"}</span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight leading-snug">
                     {isAr ? "معلومات التواصل والمشروع" : "Contact & Project Details"}
                   </h2>
                   <p className="text-xs sm:text-sm text-slate-300 mt-1">
@@ -588,7 +588,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
                   <button
                     type="button"
                     onClick={() => setStep(2)}
-                    className="px-5 py-4 rounded-2xl border border-white/20 text-white hover:bg-white/10 transition-all flex items-center gap-2 text-xs font-mono uppercase font-bold"
+                    className="px-5 py-3.5 rounded-2xl border border-white/20 text-white hover:bg-white/10 transition-all flex items-center gap-2 text-xs font-mono uppercase font-bold"
                   >
                     <ArrowLeft size={15} className="rtl:rotate-180" />
                     <span>{isAr ? "رجوع" : "Back"}</span>
@@ -597,7 +597,7 @@ export const DisciplineShowcaseModal: React.FC<DisciplineShowcaseModalProps> = (
                   <button
                     type="submit"
                     disabled={loading || !form.name || !form.email}
-                    className="flex-1 py-4 rounded-2xl bg-emerald-400 hover:bg-emerald-300 disabled:opacity-50 text-black font-display font-black text-sm tracking-wider uppercase flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-2xl shadow-emerald-400/30"
+                    className="flex-1 py-3.5 rounded-2xl bg-emerald-400 hover:bg-emerald-300 disabled:opacity-50 text-black font-display font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-2 transition-all hover:scale-[1.01] shadow-2xl shadow-emerald-400/30"
                   >
                     {loading ? (
                       <>

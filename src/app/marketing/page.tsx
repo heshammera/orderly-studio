@@ -165,7 +165,7 @@ export default function MarketingPage() {
               <Globe2 size={13} />
               <span>{isAr ? "خدمات التسويق الرقمي // MARKETING" : "04 // DIGITAL MARKETING"}</span>
             </div>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white leading-tight mb-6">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-white leading-tight mb-6">
               {isAr ? (
                 <>
                   نصل إلى الجمهور الصحيح

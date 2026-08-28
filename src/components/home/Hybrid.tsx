@@ -20,8 +20,7 @@ export const Hybrid: React.FC<HybridProps> = ({ locale }) => {
           <span>{isAr ? "الاندماج الثلاثي" : "06 // THE TRIPLE EQUATION"}</span>
         </div>
 
-        {/* Master Headline — three disciplines */}
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight uppercase mb-6 leading-tight">
+        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black tracking-normal uppercase mb-6 leading-snug">
           <span className="text-engineering-blue">TECHNOLOGY</span>{" "}
           <span className="text-white/40">×</span>{" "}
           <span className="text-creative-coral">DESIGN</span>{" "}

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { Symbol } from "../brand/Symbol";
@@ -23,8 +23,7 @@ export const Transformation: React.FC<TransformationProps> = ({ locale }) => {
           <span>{isAr ? "نقطة التحول البصري // 07" : "07 // THE METAMORPHOSIS"}</span>
         </div>
 
-        {/* Master Transition Headline */}
-        <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black text-white max-w-3xl leading-tight mb-8 drop-shadow-lg">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-bold text-white max-w-3xl leading-snug mb-8 drop-shadow-lg">
           {isAr ? (
             <>
               عندما تلتقي <span className="text-engineering-blue drop-shadow-[0_0_20px_rgba(43,108,255,0.4)]">الهندسة الصارمة</span> مع{" "}

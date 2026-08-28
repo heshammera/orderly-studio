@@ -31,7 +31,13 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Arabic Typography Polish */
+  /* Universal Heading Overlap Protection */
+  h1, h2, h3, h4, h5, h6, .font-display {
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+
+  /* Arabic Typography Polish & Safe Line Heights */
   html[dir="rtl"],
   html[lang="ar"],
   .font-arabic {
@@ -47,6 +53,7 @@
   html[dir="rtl"] .font-display {
     font-family: var(--font-display), var(--font-arabic), "Alexandria", "Cairo", sans-serif;
     letter-spacing: 0em !important;
+    line-height: 1.38 !important;
   }
 
   body {

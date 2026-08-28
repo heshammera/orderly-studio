@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
@@ -326,8 +326,7 @@ export const ScrollPortalHero: React.FC<ScrollPortalHeroProps> = ({
             <span>{isAr ? "استوديو التكنولوجيا الإبداعية" : "CREATIVE TECHNOLOGY STUDIO"}</span>
           </div>
 
-          {/* Master Wordmark */}
-          <h1 className="text-6xl sm:text-8xl lg:text-9xl font-display font-black tracking-tighter text-white uppercase leading-none mb-6 drop-shadow-2xl">
+          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-display font-black tracking-tight text-white uppercase leading-tight mb-6 drop-shadow-2xl">
             ORDERLY
           </h1>
 

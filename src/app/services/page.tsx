@@ -32,7 +32,7 @@ export default function ServicesPage() {
             <Sparkles size={13} />
             <span>{isAr ? "الخدمات والمخرجات الكاملة" : "CORE DISCIPLINES & DELIVERABLES"}</span>
           </div>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white mb-6">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-display font-bold tracking-tight text-white mb-6 leading-tight">
             {isAr ? "تكنولوجيا × تصميم × تسويق" : "Engineering × Design × Marketing"}
           </h1>
           <p className="text-neutral-cool text-base sm:text-lg max-w-2xl leading-relaxed">

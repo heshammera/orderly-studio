@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 
@@ -9,24 +9,22 @@ interface ManifestoProps {
 export const Manifesto: React.FC<ManifestoProps> = ({ locale }) => {
   const isAr = locale === "ar";
 
-  const coreWords = isAr
-    ? ["الأفكار // IDEAS", "الأنظمة // SYSTEMS", "التصميم // DESIGN", "التكنولوجيا // TECH", "التجربة // EXPERIENCE"]
-    : ["IDEAS", "SYSTEMS", "DESIGN", "TECHNOLOGY", "EXPERIENCE"];
+  const tickerWords = isAr
+    ? ["كود نقي", "تصميم بصري فاخر", "ذكاء اصطناعي مخصص", "هندسة سحابية", "هوية ملكية", "أنيميشن سينمائي", "تسويق استراتيجي"]
+    : ["SCALABLE SYSTEMS", "LUXURY AESTHETICS", "BESPOKE AI", "CLOUD ENGINEERING", "ROYAL BRANDING", "CINEMATIC MOTION", "GROWTH MARKETING"];
 
   return (
-    <section
-      id="manifesto"
-      className="relative py-28 sm:py-36 bg-off-white text-obsidian transition-colors duration-700 overflow-hidden"
-    >
-      {/* 03 First Scroll Word Dissolve Stream */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-16">
-        <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-b border-neutral-warm/20 text-xs sm:text-sm font-mono uppercase tracking-widest text-neutral-warm">
-          {coreWords.map((word, idx) => (
+    <section className="py-24 bg-off-white text-obsidian relative overflow-hidden">
+      {/* Dynamic Animated Core Ticker Bar */}
+      <div className="w-full overflow-hidden border-y border-neutral-warm/20 py-4 mb-20 bg-neutral-warm/5">
+        <div className="flex items-center gap-12 whitespace-nowrap animate-marquee">
+          {tickerWords.concat(tickerWords).map((word, idx) => (
             <span
               key={idx}
-              className="px-3 py-1.5 rounded-full bg-obsidian/[0.04] border border-obsidian/10 font-bold hover:text-creative-coral transition-colors"
+              className="text-xs font-mono font-bold tracking-widest text-obsidian/70 flex items-center gap-4 uppercase"
             >
-              {word}
+              <span>{word}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-creative-coral" />
             </span>
           ))}
         </div>
@@ -41,15 +39,15 @@ export const Manifesto: React.FC<ManifestoProps> = ({ locale }) => {
           </span>
         </div>
 
-        {/* The 3 Core Pillars */}
-        <div className="flex flex-col gap-2 sm:gap-4 mb-14">
-          <h2 className="text-4xl sm:text-7xl lg:text-8xl font-display font-black tracking-tight uppercase text-obsidian leading-[0.95]">
+        {/* The 3 Core Pillars with safe line-height */}
+        <div className="flex flex-col gap-3 sm:gap-4 mb-14">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight uppercase text-obsidian leading-tight">
             {isAr ? "نبني." : "WE BUILD."}
           </h2>
-          <h2 className="text-4xl sm:text-7xl lg:text-8xl font-display font-black tracking-tight uppercase text-neutral-warm leading-[0.95]">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight uppercase text-neutral-warm leading-tight">
             {isAr ? "نصمّم." : "WE DESIGN."}
           </h2>
-          <h2 className="text-4xl sm:text-7xl lg:text-8xl font-display font-black tracking-tight uppercase text-creative-coral leading-[0.95]">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-black tracking-tight uppercase text-creative-coral leading-tight">
             {isAr ? "ونربط بين الاثنين." : "WE CONNECT THE TWO."}
           </h2>
         </div>
@@ -57,23 +55,23 @@ export const Manifesto: React.FC<ManifestoProps> = ({ locale }) => {
         {/* Pure Typography Manifesto Hero */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start pt-8 border-t border-neutral-warm/20">
           <div className="md:col-span-6">
-            <h3 className="text-2xl sm:text-4xl font-display font-extrabold text-obsidian leading-snug">
+            <h3 className="text-xl sm:text-3xl font-display font-bold text-obsidian leading-snug">
               {isAr
-                ? "Technology should work beautifully.\nDesign should work intelligently."
-                : "Technology should work beautifully.\nDesign should work intelligently."}
+                ? "الفجوة بين التكنولوجيا المعقدة والتصميم البصري الفاخر هي المكان الذي نصنع فيه قيمتنا."
+                : "The gap between deep engineering and art-directed design is where we build enduring value."}
             </h3>
           </div>
 
-          <div className="md:col-span-6 flex flex-col gap-4 text-neutral-warm text-base sm:text-lg leading-relaxed">
+          <div className="md:col-span-6 flex flex-col gap-6 text-neutral-warm text-sm sm:text-base leading-relaxed">
             <p>
               {isAr
-                ? "أوردرلي هو استوديو تكنولوجيا إبداعية يجمع بين الهندسة البرمجية، التصميم الرقمي، والتقنيات الناشئة لبناء تجارب رقمية ذات أثر حقيقي."
-                : "ORDERLY is a creative technology studio combining engineering, design and emerging technology to build digital experiences that matter."}
+                ? "معظم الوكالات إما تقنية بحتة تفتقر للروح والجمال، أو إبداعية بحتة تفتقر للقوة الهندسية وقابلية التوسع. نحن نوحد الاثنين تحت سقف واحد."
+                : "Most studios are either purely technical and lack aesthetic soul, or purely artistic and lack software rigor. We unite both disciplines under one roof."}
             </p>
-            <p className="font-mono text-xs text-obsidian tracking-wider uppercase font-semibold">
+            <p>
               {isAr
-                ? "الفوضى ← النظام ← البنية ← التجربة"
-                : "CHAOS → ORDER → SYSTEM → EXPERIENCE"}
+                ? "كل سطر برمجي، وكل خطوة في تجربة المستخدم، وكل عنصر في الهوية البصرية يُصاغ بدقة متناهية ليخدم أهداف نموك التجاري."
+                : "Every line of code, every pixel of interface design, and every brand touchpoint is crafted to perform flawlessly and scale infinitely."}
             </p>
           </div>
         </div>
