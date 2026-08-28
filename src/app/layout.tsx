@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Cairo, Alexandria, JetBrains_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "../styles/globals.css";
 import { LocaleProvider } from "@/context/LocaleContext";
+import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -32,32 +34,59 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ORDERLY — Creative Technology Studio | التكنولوجيا × التصميم",
+  metadataBase: new URL("https://orderly-studio.vercel.app"),
+  title: {
+    default: "ORDERLY Studio — Creative Technology | Engineering × Design × Growth",
+    template: "%s | ORDERLY Studio",
+  },
   description:
-    "An independent creative technology studio engineering scalable software, custom AI systems, and art-directed digital brand experiences.",
+    "ORDERLY is an independent senior creative technology studio in Egypt engineering scalable SaaS platforms, custom AI systems, luxury brand identities, and performance marketing systems.",
   keywords: [
-    "Creative Technology Studio",
-    "Software Engineering",
-    "AI & Automation",
-    "SaaS Platforms",
-    "Brand Identity",
-    "UI/UX Design",
+    "creative technology studio egypt",
+    "SaaS engineering cairo",
+    "AI automation egypt",
+    "brand identity design",
+    "UI UX studio",
+    "digital studio egypt",
     "ORDERLY",
     "أوردرلي",
-    "استوديو تكنولوجيا إبداعية",
+    "استوديو تكنولوجيا إبداعية مصر",
+    "تطوير تطبيقات مصر",
+    "هوية بصرية",
+    "ذكاء اصطناعي مصر",
   ],
-  authors: [{ name: "ORDERLY Studio" }],
+  authors: [{ name: "ORDERLY Studio", url: "https://orderly-studio.vercel.app" }],
+  creator: "ORDERLY Studio",
+  publisher: "ORDERLY Studio",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "ORDERLY — Creative Technology Studio",
-    description: "We turn ambitious ideas into digital experiences. Technology × Design.",
-    url: "https://orderlyshops.com",
-    siteName: "ORDERLY",
+    title: "ORDERLY — Creative Technology Studio | Engineering × Design × Growth",
+    description:
+      "Senior multidisciplinary studio engineering SaaS platforms, AI systems, luxury brand identities, and performance marketing. 185K+ users. 1.8B+ EGP managed.",
+    url: "https://orderly-studio.vercel.app",
+    siteName: "ORDERLY Studio",
     type: "website",
+    locale: "ar_EG",
+    alternateLocale: ["en_US"],
   },
   twitter: {
     card: "summary_large_image",
     title: "ORDERLY — Creative Technology Studio",
-    description: "We turn ambitious ideas into digital experiences. Technology × Design.",
+    description:
+      "Engineering × Design × Growth. Senior studio in Egypt delivering SaaS, AI, brand identity, and performance marketing.",
+    creator: "@orderlyStudio",
+  },
+  alternates: {
+    canonical: "https://orderly-studio.vercel.app",
   },
 };
 
@@ -68,12 +97,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="ar"
       className={`dark ${jakarta.variable} ${cairo.variable} ${alexandria.variable} ${mono.variable}`}
     >
       <body className="font-sans antialiased bg-obsidian text-white selection:bg-engineering-blue selection:text-white">
         <div className="noise-overlay" />
         <LocaleProvider>{children}</LocaleProvider>
+        <FloatingWhatsApp />
+        <Analytics />
       </body>
     </html>
   );

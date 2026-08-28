@@ -198,12 +198,12 @@ export const Footer: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-6">
-            <span className="hover:text-slate-200 cursor-pointer">
-              {isAr ? "الخصوصية" : "Privacy"}
-            </span>
-            <span className="hover:text-slate-200 cursor-pointer">
-              {isAr ? "الشروط" : "Terms"}
-            </span>
+            <a href="/privacy" className="hover:text-slate-200 transition-colors">
+              {isAr ? "سياسة الخصوصية" : "Privacy Policy"}
+            </a>
+            <a href="/privacy" className="hover:text-slate-200 transition-colors">
+              {isAr ? "الشروط والأحكام" : "Terms of Service"}
+            </a>
             <span className="text-emerald-400 font-bold">
               {isAr ? "99.98% استمرارية" : "99.98% SLA"}
             </span>
