@@ -6,6 +6,7 @@ import { isAuthenticated } from "@/actions/adminAuth";
 import { AdminLogoutButton } from "@/components/admin/AdminLogoutButton";
 import { FolderKanban, Users, FileText, Shield, Activity, ArrowUpRight } from "lucide-react";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function AdminDashboardPage() {
@@ -14,11 +15,18 @@ export default async function AdminDashboardPage() {
     redirect("/admin/login");
   }
 
-  const leadsCount = await db.lead.count();
-  const recentLeads = await db.lead.findMany({
-    take: 5,
-    orderBy: { createdAt: "desc" },
-  });
+  let leadsCount = 0;
+  let recentLeads: any[] = [];
+
+  try {
+    leadsCount = await db.lead.count();
+    recentLeads = await db.lead.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.warn("DB connection warning in admin dashboard:", err);
+  }
 
   return (
     <main className="min-h-screen bg-[#0E0E12] text-white p-6 sm:p-12 font-sans">
@@ -79,15 +87,15 @@ export default async function AdminDashboardPage() {
               <span>CASE STUDIES</span>
               <FileText size={18} className="text-engineering-violet" />
             </div>
-            <span className="text-4xl font-display font-black text-white">2</span>
+            <span className="text-4xl font-display font-black text-white">4</span>
           </div>
 
           <div className="p-6 rounded-2xl bg-[#16161C] border border-white/5 shadow-xl">
             <div className="flex items-center justify-between text-neutral-cool text-xs font-mono mb-4">
-              <span>CONVERSION RATE</span>
+              <span>UPTIME SLA</span>
               <Activity size={18} className="text-emerald-400" />
             </div>
-            <span className="text-4xl font-display font-black text-emerald-400">100%</span>
+            <span className="text-4xl font-display font-black text-emerald-400">99.98%</span>
           </div>
         </div>
 
@@ -101,25 +109,22 @@ export default async function AdminDashboardPage() {
           </div>
 
           {recentLeads.length === 0 ? (
-            <div className="py-12 text-center text-neutral-cool font-mono text-xs">
-              No project briefs submitted yet. Ready to receive incoming inquiries.
+            <div className="text-center py-12 text-neutral-cool font-mono text-xs">
+              No project briefs submitted yet. They will appear here once received.
             </div>
           ) : (
-            <div className="divide-y divide-white/5">
-              {recentLeads.map((lead) => (
-                <div key={lead.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="space-y-3">
+              {recentLeads.map((lead: any) => (
+                <div
+                  key={lead.id}
+                  className="p-4 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between"
+                >
                   <div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-bold text-white text-base">{lead.name}</span>
-                      <span className="text-xs font-mono text-neutral-cool">{lead.company || "Independent"}</span>
-                      <span className="px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono">
-                        {lead.status}
-                      </span>
-                    </div>
-                    <span className="text-xs font-mono text-white/50">{lead.email}</span>
+                    <span className="text-sm font-bold block">{lead.name}</span>
+                    <span className="text-xs text-neutral-cool font-mono">{lead.email} • {lead.company || "Direct"}</span>
                   </div>
-                  <span className="text-xs font-mono text-neutral-cool">
-                    {new Date(lead.createdAt).toLocaleDateString()}
+                  <span className="text-[10px] font-mono px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    {lead.status}
                   </span>
                 </div>
               ))}

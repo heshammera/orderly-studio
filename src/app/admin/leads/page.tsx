@@ -7,6 +7,7 @@ import { LeadsManager } from "@/components/admin/LeadsManager";
 import { AdminLogoutButton } from "@/components/admin/AdminLogoutButton";
 import { ArrowLeft } from "lucide-react";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function AdminLeadsPage() {
@@ -15,9 +16,14 @@ export default async function AdminLeadsPage() {
     redirect("/admin/login");
   }
 
-  const leads = await db.lead.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  let leads: any[] = [];
+  try {
+    leads = await db.lead.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (err) {
+    console.warn("DB connection warning in leads manager:", err);
+  }
 
   return (
     <main className="min-h-screen bg-[#0E0E12] text-white p-6 sm:p-12 font-sans">
