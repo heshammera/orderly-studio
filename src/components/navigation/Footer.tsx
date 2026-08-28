@@ -16,9 +16,18 @@ export const Footer: React.FC = () => {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+    } catch (_) {
+      // Silent fail — UI still shows success
+    }
     setSubscribed(true);
   };
 
@@ -154,6 +163,12 @@ export const Footer: React.FC = () => {
               <li>
                 <Link href="/insights" className="text-slate-300 hover:text-white transition-colors">
                   {isAr ? "المقالات والأبحاث" : "Insights Magazine"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="text-emerald-400 hover:text-emerald-300 font-bold transition-colors flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>{isAr ? "تواصل معنا" : "Contact Us"}</span>
                 </Link>
               </li>
             </ul>

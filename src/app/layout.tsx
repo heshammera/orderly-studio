@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import "../styles/globals.css";
 import { LocaleProvider } from "@/context/LocaleContext";
 import { FloatingWhatsApp } from "@/components/ui/FloatingWhatsApp";
+import { CookieBanner } from "@/components/ui/CookieBanner";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -104,6 +105,7 @@ export default function RootLayout({
         <div className="noise-overlay" />
         <LocaleProvider>{children}</LocaleProvider>
         <FloatingWhatsApp />
+        <CookieBanner />
         <Analytics />
       </body>
     </html>
