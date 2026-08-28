@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 
-const WHATSAPP_NUMBER = "201000000000"; // ← غيّر هذا الرقم لرقم واتساب الاستوديو
+const WHATSAPP_NUMBER = "201003705046";
 
 const WHATSAPP_MESSAGES = {
   en: "Hello ORDERLY Studio! I came across your platform and I'm interested in discussing a project. Could we schedule a discovery call?",
