@@ -19,17 +19,17 @@ import { Capabilities } from "@/components/home/Capabilities";
 import { Process } from "@/components/home/Process";
 import { StudioAndInsights } from "@/components/home/StudioAndInsights";
 import { CallToAction } from "@/components/home/CallToAction";
-import { ProjectBuilderModal } from "@/components/home/ProjectBuilderModal";
-import type { WorldId } from "@/components/worlds/WorldCanvas";
+import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
+import type { DisciplineId } from "@/data/disciplines";
 
 export default function HomePage() {
   const [locale, setLocale] = useState<"en" | "ar">("en");
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
-  const [builderInitialWorld, setBuilderInitialWorld] = useState<WorldId>("uiux");
+  const [builderInitialDiscipline, setBuilderInitialDiscipline] = useState<DisciplineId>("uiux");
   const [currentWorld, setCurrentWorld] = useState<"engineering" | "creative" | "neutral">("neutral");
 
-  const handleOpenBuilder = (worldId?: WorldId) => {
-    if (worldId) setBuilderInitialWorld(worldId);
+  const handleOpenBuilder = (disciplineId?: DisciplineId) => {
+    if (disciplineId) setBuilderInitialDiscipline(disciplineId);
     setIsBuilderOpen(true);
   };
 
@@ -140,10 +140,7 @@ export default function HomePage() {
       <Hybrid locale={locale} />
 
       {/* 14 Capabilities Matrix */}
-      <Capabilities
-        locale={locale}
-        onOpenProjectBuilder={(wid) => handleOpenBuilder(wid)}
-      />
+      <Capabilities locale={locale} />
 
       {/* 15 Process Methodology */}
       <Process locale={locale} />
@@ -157,12 +154,12 @@ export default function HomePage() {
         onOpenProjectBuilder={() => handleOpenBuilder()}
       />
 
-      {/* 19 & 20 5-Step Interactive Project Builder Modal */}
-      <ProjectBuilderModal
+      {/* Unified 6-Discipline Showcase & Booking Modal */}
+      <DisciplineShowcaseModal
         isOpen={isBuilderOpen}
         onClose={() => setIsBuilderOpen(false)}
         locale={locale}
-        initialWorld={builderInitialWorld}
+        initialDiscipline={builderInitialDiscipline}
       />
     </main>
   );

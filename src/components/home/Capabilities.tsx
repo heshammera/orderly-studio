@@ -2,144 +2,150 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Orbit } from "lucide-react";
-import { WorldPortal } from "@/components/worlds/WorldPortal";
-import type { WorldId } from "@/components/worlds/WorldCanvas";
+import { ArrowUpRight, Check } from "lucide-react";
+import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
+import type { DisciplineId } from "@/data/disciplines";
 
 interface CapabilitiesProps {
   locale: "en" | "ar";
-  onOpenProjectBuilder?: (worldId?: WorldId) => void;
 }
 
-export const Capabilities: React.FC<CapabilitiesProps> = ({ locale, onOpenProjectBuilder }) => {
+export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
   const isAr = locale === "ar";
-  const [activeWorld, setActiveWorld] = useState<WorldId | null>(null);
+  const [selectedDiscipline, setSelectedDiscipline] = useState<DisciplineId | null>(null);
 
   const matrix: {
     category: string;
     accent: string;
-    worldId: WorldId;
+    disciplineId: DisciplineId;
+    title: string;
     items: string[];
   }[] = [
     {
-      category: isAr ? "نبني // BUILD" : "BUILD",
-      accent: "border-engineering-blue text-engineering-blue",
-      worldId: "engineering",
+      category: isAr ? "01 // نبني" : "01 // BUILD",
+      accent: "border-sky-500 text-sky-400",
+      disciplineId: "engineering",
+      title: isAr ? "الهندسة والبرمجيات" : "Software Engineering",
       items: isAr
-        ? ["مواقع الويب الفاخرة", "تطبيقات الويب (Web Apps)", "منصات SaaS السحابية", "الواجهات البرمجية APIs", "الأنظمة الموزعة"]
-        : ["Studio Websites", "Web Applications", "SaaS Platforms", "API Gateways", "Distributed Systems"],
+        ? ["منصات SaaS السحابية", "مواقع الويب الفاخرة Next.js", "الواجهات البرمجية APIs", "لوحات التحكم الإدارية"]
+        : ["SaaS Cloud Platforms", "Studio Next.js Websites", "Connected APIs & DB", "Custom Admin Portals"],
     },
     {
-      category: isAr ? "نؤتمت // AUTOMATE" : "AUTOMATE",
-      accent: "border-engineering-violet text-engineering-violet",
-      worldId: "ai",
+      category: isAr ? "02 // نصمم" : "02 // DESIGN",
+      accent: "border-violet-500 text-violet-400",
+      disciplineId: "uiux",
+      title: isAr ? "تصميم الواجهات UI/UX" : "UI / UX Design",
       items: isAr
-        ? ["حلول الذكاء الاصطناعي AI", "أتمتة العمليات التجارية", "محركات سير العمل", "التكاملات السحابية", "تحليل البيانات الفوري"]
-        : ["Custom AI & LLMs", "Workflow Automation", "Event Pipelines", "Cloud Integrations", "Real-Time Telemetry"],
+        ? ["شاشات التطبيق الكاملة", "نظام التصميم Design System", "النماذج التفاعلية الحية", "هندسة تجربة المستخدم"]
+        : ["Complete Mobile/Web UI", "Scalable Design Systems", "Clickable Prototypes", "Conversion Architecture"],
     },
     {
-      category: isAr ? "نصمم // DESIGN" : "DESIGN",
-      accent: "border-creative-coral text-creative-coral",
-      worldId: "uiux",
+      category: isAr ? "03 // نبتكر" : "03 // IDENTITY",
+      accent: "border-amber-500 text-amber-400",
+      disciplineId: "branding",
+      title: isAr ? "الهوية البصرية والعلامة" : "Brand Identity",
       items: isAr
-        ? ["بناء الهوية التجارية", "واجهات وتجربة المستخدم UI/UX", "الخطوط الطباعية", "تصميم التغليف", "أنظمة التصميم Design Systems"]
-        : ["Brand Identity", "UI / UX Design", "Custom Typography", "Structural Packaging", "Design Systems"],
+        ? ["الشعار والرمز الملكي", "الخطوط وبنية الألوان", "دليل الهوية الكامل", "تصميم التغليف الفاخر"]
+        : ["Primary Logo Mark", "Typography & Palettes", "Comprehensive Brand Book", "Luxury Packaging"],
     },
     {
-      category: isAr ? "نبتكر // CREATE" : "CREATE",
-      accent: "border-creative-peach text-creative-peach",
-      worldId: "motion",
+      category: isAr ? "04 // نؤتمت" : "04 // AUTOMATE",
+      accent: "border-purple-500 text-purple-400",
+      disciplineId: "ai",
+      title: isAr ? "الذكاء الاصطناعي والأتمتة" : "AI & Automations",
       items: isAr
-        ? ["الرسوم ثلاثية الأبعاد 3D", "الموشن جرافيكس", "التصوير التجاري الفني", "الإخراج الإبداعي", "التجارب المكانية Spatial"]
-        : ["3D Art & Shaders", "Motion Graphics", "Art Direction", "Commercial Photography", "Spatial Experiences"],
+        ? ["مساعد ذكاء اصطناعي مخصص", "أتمتة العمليات التجارية", "ربط الأنظمة والفواتير", "تحليلات البيانات الذكية"]
+        : ["Custom AI Assistants", "Workflow Automations", "CRM & Billing Pipelines", "Predictive Analytics"],
     },
     {
-      category: isAr ? "نسوّق // MARKET" : "MARKET",
-      accent: "border-emerald-400 text-emerald-400",
-      worldId: "marketing",
+      category: isAr ? "05 // نحرك" : "05 // MOTION",
+      accent: "border-rose-500 text-rose-400",
+      disciplineId: "motion",
+      title: isAr ? "الموشن والـ 3D" : "3D & Motion Craft",
       items: isAr
-        ? ["استراتيجية التسويق الرقمي", "تحسين محركات البحث SEO", "إدارة منصات التواصل", "الإعلانات المدفوعة Paid Media", "التسويق عبر البريد CRM"]
-        : ["Digital Strategy", "SEO & Organic Growth", "Social Media & Content", "Paid Media & Ads", "Email Marketing & CRM"],
+        ? ["فيديو إعلاني 3D سينمائي", "تحريك الشعار والواجهات", "مكتبة مجسمات 3D", "إعلانات الإطلاق 4K"]
+        : ["Cinematic 3D Video", "Logo & UI Motion", "3D Digital Assets", "4K Product Trailers"],
+    },
+    {
+      category: isAr ? "06 // نسوّق" : "06 // GROW",
+      accent: "border-emerald-500 text-emerald-400",
+      disciplineId: "marketing",
+      title: isAr ? "التسويق الرقمي" : "Digital Marketing",
+      items: isAr
+        ? ["إعلانات ممولة عالية العائد", "تصدر نتائج البحث SEO", "قمع المبيعات والتسويق الآلي", "تقارير أداء أسبوعية"]
+        : ["High-ROAS Paid Ads", "Organic Search SEO", "Automated CRM Funnels", "Weekly ROI Reports"],
     },
   ];
 
   return (
-    <section className="py-28 bg-obsidian text-white border-t border-white/10">
+    <section className="py-28 bg-[#07070A] text-white border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-16 gap-6">
           <div>
             <span className="text-xs font-mono text-neutral-cool uppercase tracking-widest block mb-2 font-bold">
-              {isAr ? "مصفوفة القدرات الشاملة" : "05 // CAPABILITY MATRIX"}
+              {isAr ? "مصفوفة القدرات والخدمات" : "05 // CAPABILITIES & DISCIPLINES"}
             </span>
             <h2 className="text-3xl sm:text-5xl font-display font-extrabold text-white">
-              {isAr ? "كل ما تحتاجه لبناء منتج استثنائي" : "Full-Spectrum Execution"}
+              {isAr ? "كل ما تحتاجه لبناء منتج رقمي استثنائي" : "Full-Spectrum Digital Mastery"}
             </h2>
           </div>
 
           <Link
             href="/services"
-            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-engineering-blue hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-emerald-400 hover:text-white transition-colors"
           >
-            <span>{isAr ? "صفحة الخدمات الكاملة ←" : "EXPLORE ALL SERVICES →"}</span>
+            <span>{isAr ? "صفحة الخدمات الشاملة ←" : "EXPLORE ALL SERVICES →"}</span>
             <ArrowUpRight size={14} />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {matrix.map((col, idx) => (
             <div
               key={idx}
-              className="group p-8 rounded-3xl bg-soft-black border border-white/10 hover:border-white/25 transition-all flex flex-col justify-between cursor-pointer"
-              onClick={() => setActiveWorld(col.worldId)}
-              data-cursor="EXPLORE"
+              className="group p-8 rounded-3xl bg-soft-black border border-white/10 hover:border-white/25 transition-all duration-300 flex flex-col justify-between cursor-pointer shadow-xl"
+              onClick={() => setSelectedDiscipline(col.disciplineId)}
             >
               <div>
-                <span className={`text-xs font-mono font-bold tracking-widest block pb-4 mb-6 border-b ${col.accent}`}>
-                  {col.category}
-                </span>
+                <div className="flex items-center justify-between pb-4 mb-6 border-b border-white/10">
+                  <span className={`text-xs font-mono font-bold tracking-widest ${col.accent}`}>
+                    {col.category}
+                  </span>
+                  <span className="text-[10px] font-mono text-white/40 group-hover:text-emerald-400 transition-colors">
+                    {isAr ? "عرض التفاصيل ↗" : "DETAILS ↗"}
+                  </span>
+                </div>
 
-                <ul className="flex flex-col gap-3">
+                <h3 className="text-lg font-display font-bold text-white mb-4 group-hover:text-emerald-400 transition-colors">
+                  {col.title}
+                </h3>
+
+                <ul className="flex flex-col gap-2.5">
                   {col.items.map((item, itemIdx) => (
-                    <li key={itemIdx} className="text-sm font-medium text-white/80 flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+                    <li key={itemIdx} className="text-xs font-medium text-white/80 flex items-center gap-2">
+                      <Check size={13} className="text-emerald-400 flex-shrink-0" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="pt-8 flex items-center justify-between">
-                <span className="text-[11px] font-mono text-white/30">DISCIPLINE 0{idx + 1}</span>
-                {/* Subtle Enter World hint on hover */}
-                <span className={`opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-mono flex items-center gap-1 ${col.accent}`}>
-                  <Orbit size={10} />
-                  <span>{isAr ? "ادخل" : "ENTER"}</span>
-                </span>
+              <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between text-xs font-mono text-white/40">
+                <span>{isAr ? "اضغط للمعاينة والطلب" : "Click to view & order"}</span>
+                <ArrowUpRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
           ))}
         </div>
-
-        {/* Dedicated Navigation Button */}
-        <div className="flex justify-center pt-6">
-          <Link
-            href="/services"
-            className="px-8 py-4 rounded-full bg-white/5 border border-white/15 hover:border-engineering-blue hover:bg-engineering-blue/10 text-white font-mono text-xs uppercase tracking-widest flex items-center gap-3 transition-all duration-300 shadow-lg"
-          >
-            <span>{isAr ? "دخول صفحة الخدمات والقدرات الشاملة ←" : "EXPLORE ALL SERVICES & CAPABILITIES →"}</span>
-            <ArrowUpRight size={14} className="text-engineering-blue" />
-          </Link>
-        </div>
       </div>
 
-      {/* World Portal overlay */}
-      {activeWorld && (
-        <WorldPortal
-          worldId={activeWorld}
-          isOpen={activeWorld !== null}
-          onClose={() => setActiveWorld(null)}
+      {/* Discipline Showcase Modal */}
+      {selectedDiscipline && (
+        <DisciplineShowcaseModal
+          isOpen={selectedDiscipline !== null}
+          onClose={() => setSelectedDiscipline(null)}
           locale={locale}
-          onOpenProjectBuilder={onOpenProjectBuilder}
+          initialDiscipline={selectedDiscipline}
         />
       )}
     </section>
