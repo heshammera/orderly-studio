@@ -92,7 +92,7 @@ export default function HomePage() {
       />
 
       <Manifesto locale={locale} />
-      <Engineering locale={locale} />
+      <Engineering locale={locale} onOpenProjectBuilder={() => handleOpenBuilder("engineering")} />
       <EngineeringWork locale={locale} onOpenProjectBuilder={() => handleOpenBuilder("engineering")} />
       <Transformation locale={locale} />
       <Creative locale={locale} />
