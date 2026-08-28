@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, company, website, message } = body;
+    const { name, email, company, website, message, country } = body;
 
     if (!name || !email) {
       return NextResponse.json(
@@ -12,18 +14,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const leadPayload = {
-      timestamp: new Date().toISOString(),
-      name,
-      email,
-      company: company || "N/A",
-      website: website || "N/A",
-      message: message || "N/A",
-    };
+    // Persist to database
+    let savedLeadId: string | null = null;
+    try {
+      const created = await db.lead.create({
+        data: {
+          name,
+          email,
+          company: company || "",
+          country: country || (website ? `URL: ${website}` : ""),
+          projectType: JSON.stringify(["DISCOVERY_WIZARD"]),
+          services: JSON.stringify(["FULL_STUDIO_BRIEF"]),
+          description: message || "",
+          status: "NEW",
+        },
+      });
+      savedLeadId = created.id;
+      revalidatePath("/admin");
+      revalidatePath("/admin/leads");
+    } catch (dbErr) {
+      console.warn("Could not write lead to DB directly, continuing:", dbErr);
+    }
 
-    console.log("=== [NEW ORDERLY LEAD] ===", leadPayload);
-
-    // Optional: Webhook alert (Discord / Slack / Telegram) if env var exists
+    // Webhook alert (Discord / Slack / Telegram) if env var exists
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL || process.env.SLACK_WEBHOOK_URL;
     if (webhookUrl) {
       try {
@@ -42,6 +55,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Lead recorded successfully",
+      leadId: savedLeadId,
       data: { name, email, company },
     });
   } catch (error) {
