@@ -20,8 +20,9 @@ import { Header } from "@/components/navigation/Header";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
 import { Symbol } from "@/components/brand/Symbol";
 import { submitProjectBrief } from "@/actions/leads";
-import { WorldCanvas, type WorldId } from "@/components/worlds/WorldCanvas";
+import { ThreeWorldCanvas } from "@/components/worlds/ThreeWorldCanvas";
 import { WORLD_CONFIGS } from "@/components/worlds/worlds-config";
+import type { WorldId } from "@/components/worlds/WorldCanvas";
 
 export default function StartAProjectPage() {
   const [locale, setLocale] = useState<"en" | "ar">("en");
@@ -45,7 +46,7 @@ export default function StartAProjectPage() {
   });
 
   const activeWorldId = hoveredWorld || selectedWorld;
-  const currentWorldConfig = WORLD_CONFIGS[activeWorldId];
+  const currentWorldConfig = WORLD_CONFIGS[activeWorldId] || WORLD_CONFIGS.uiux;
 
   const worldsList: {
     id: WorldId;
@@ -63,8 +64,8 @@ export default function StartAProjectPage() {
       icon: <Layers size={22} />,
       titleEn: "UI / UX & Product Design",
       titleAr: "تصميم الواجهات وتجربة المستخدم",
-      subEn: "Design systems, spatial UI, conversion flows & prototypes",
-      subAr: "أنظمة تصميم متكاملة، تجارب مستخدم تفاعلية، ونماذج أولية",
+      subEn: "Spatial glass UI, design systems & high-conversion prototypes",
+      subAr: "أنظمة تصميم متكاملة، واجهات زجاجية تفاعلية، ونماذج أولية",
       accent: "text-violet-400",
       border: "border-violet-500/40",
       bg: "bg-violet-500/10",
@@ -74,7 +75,7 @@ export default function StartAProjectPage() {
       icon: <Cpu size={22} />,
       titleEn: "Software Engineering & SaaS",
       titleAr: "الهندسة والبرمجيات السحابية",
-      subEn: "Cloud architectures, APIs, full-stack web apps & scale",
+      subEn: "Quantum matrix architecture, APIs, distributed cloud systems",
       subAr: "معماريات سحابية، واجهات برمجية، وتطبيقات ويب متقدمة",
       accent: "text-sky-400",
       border: "border-sky-500/40",
@@ -85,7 +86,7 @@ export default function StartAProjectPage() {
       icon: <Palette size={22} />,
       titleEn: "Brand Identity & Systems",
       titleAr: "الهوية البصرية والعلامة التجارية",
-      subEn: "Strategic positioning, visual identity & typography",
+      subEn: "Luxury metamorphic gold aesthetic, strategic positioning",
       subAr: "استراتيجية التموضع، الهوية البصرية، والخطوط المخصصة",
       accent: "text-amber-400",
       border: "border-amber-500/40",
@@ -96,8 +97,8 @@ export default function StartAProjectPage() {
       icon: <Sparkles size={22} />,
       titleEn: "AI & Neural Automation",
       titleAr: "الذكاء الاصطناعي والأتمتة",
-      subEn: "Custom LLMs, autonomous workflows & intelligence",
-      subAr: "نماذج لغوية مخصصة، أتمتة العمليات، ووكلاء أذكياء",
+      subEn: "Synaptic neural networks, custom LLMs & autonomous agents",
+      subAr: "نماذج لغوية مخصصة، شبكات عصبية، ووكلاء أذكياء",
       accent: "text-purple-400",
       border: "border-purple-500/40",
       bg: "bg-purple-500/10",
@@ -107,7 +108,7 @@ export default function StartAProjectPage() {
       icon: <Film size={22} />,
       titleEn: "Motion Design & 3D Craft",
       titleAr: "الموشن جرافيكس والرسوم ثلاثية الأبعاد",
-      subEn: "Cinematic brand films, 3D assets & shaders",
+      subEn: "Cinematic kinetic sculptures, gyro mechanics & 3D shaders",
       subAr: "أفلام سينمائية للعلامة التجارية وتجسيد ثلاثي الأبعاد",
       accent: "text-rose-400",
       border: "border-rose-500/40",
@@ -118,7 +119,7 @@ export default function StartAProjectPage() {
       icon: <TrendingUp size={22} />,
       titleEn: "Digital Marketing & Growth",
       titleAr: "التسويق الرقمي ونمو الأعمال",
-      subEn: "Full-funnel strategy, SEO, paid ads & analytics",
+      subEn: "Global data metropolis, full-funnel strategy & paid performance",
       subAr: "استراتيجيات التسويق الرقمي، تحسين SEO، والإعلانات",
       accent: "text-emerald-400",
       border: "border-emerald-500/40",
@@ -213,9 +214,9 @@ export default function StartAProjectPage() {
         currentWorld="neutral"
       />
 
-      {/* ── Live Canvas Background of active world ── */}
-      <div className="fixed inset-0 pointer-events-none opacity-40 z-0 transition-opacity duration-700">
-        <WorldCanvas worldId={activeWorldId} />
+      {/* ── Live Three.js WebGL 3D Canvas Background ── */}
+      <div className="fixed inset-0 pointer-events-none opacity-50 z-0 transition-opacity duration-700">
+        <ThreeWorldCanvas worldId={activeWorldId} />
       </div>
       <div className="fixed inset-0 bg-gradient-to-b from-[#07070A]/85 via-[#07070A]/90 to-[#07070A]/98 pointer-events-none z-0" />
 
@@ -332,9 +333,11 @@ export default function StartAProjectPage() {
                             >
                               {world.icon}
                             </div>
-                            <h3 className={`text-lg font-display font-bold mb-1.5 ${
-                              isSelected ? world.accent : "text-white"
-                            }`}>
+                            <h3
+                              className={`text-lg font-display font-bold mb-1.5 ${
+                                isSelected ? world.accent : "text-white"
+                              }`}
+                            >
                               {isAr ? world.titleAr : world.titleEn}
                             </h3>
                             <p className="text-white/45 text-xs leading-relaxed">
@@ -344,7 +347,7 @@ export default function StartAProjectPage() {
 
                           <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono">
                             <span className={isSelected ? world.accent : "text-white/30"}>
-                              {isSelected ? (isAr ? "العالم المختار ✓" : "SELECTED ✓") : (isAr ? "اضغط للدخول" : "ENTER WORLD")}
+                              {isSelected ? (isAr ? "العالم المختار ✓" : "SELECTED ✓") : (isAr ? "اضغط للدخول 3D" : "ENTER 3D WORLD")}
                             </span>
                             <Orbit size={12} className={isSelected ? "text-white" : "text-white/20"} />
                           </div>
