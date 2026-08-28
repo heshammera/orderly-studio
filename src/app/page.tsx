@@ -19,7 +19,10 @@ import { Capabilities } from "@/components/home/Capabilities";
 import { Process } from "@/components/home/Process";
 import { StudioAndInsights } from "@/components/home/StudioAndInsights";
 import { CallToAction } from "@/components/home/CallToAction";
+import { TrustEngine } from "@/components/home/TrustEngine";
+import { Footer } from "@/components/navigation/Footer";
 import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
+import { ProjectDiscoveryWizard } from "@/components/discovery/ProjectDiscoveryWizard";
 import { useLocale } from "@/context/LocaleContext";
 import type { DisciplineId } from "@/data/disciplines";
 
@@ -28,6 +31,7 @@ export default function HomePage() {
   const { locale, isAr } = useLocale();
 
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [builderInitialDiscipline, setBuilderInitialDiscipline] = useState<DisciplineId>("uiux");
   const [currentWorld, setCurrentWorld] = useState<"engineering" | "creative" | "neutral">("neutral");
 
@@ -88,8 +92,11 @@ export default function HomePage() {
 
       <ScrollPortalHero
         locale={locale}
-        onOpenProjectBuilder={() => handleOpenBuilder()}
+        onOpenProjectBuilder={() => setIsWizardOpen(true)}
       />
+
+      {/* Phase 1 — Trust Engine: Sector Strip, Verified Stats, Testimonials */}
+      <TrustEngine locale={locale} />
 
       <Manifesto locale={locale} />
       <Engineering locale={locale} onOpenProjectBuilder={() => handleOpenBuilder("engineering")} />
@@ -103,9 +110,19 @@ export default function HomePage() {
       <Capabilities locale={locale} />
       <Process locale={locale} />
       <StudioAndInsights locale={locale} />
-      <CallToAction locale={locale} onOpenProjectBuilder={() => handleOpenBuilder()} />
+      <CallToAction locale={locale} onOpenProjectBuilder={() => setIsWizardOpen(true)} />
 
-      {/* Unified 6-Discipline Showcase & Booking Modal */}
+      {/* Global Enterprise Footer (Phase 8) */}
+      <Footer />
+
+      {/* Intelligent Project Discovery Wizard (Phase 2) */}
+      <ProjectDiscoveryWizard
+        isOpen={isWizardOpen}
+        onClose={() => setIsWizardOpen(false)}
+        locale={locale}
+      />
+
+      {/* Discipline Showcase Modal — internal discipline details */}
       <DisciplineShowcaseModal
         isOpen={isBuilderOpen}
         onClose={() => setIsBuilderOpen(false)}

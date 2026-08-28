@@ -24,29 +24,35 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
   const navLinks = [
     {
       title: isAr ? "الأعمال والمشاريع" : "Selected Work",
-      href: "#work",
+      href: "/work",
       sub: isAr ? "الهندسة، التصميم، والأنظمة الهجينة" : "Engineering, Creative & Hybrid",
     },
     {
       title: isAr ? "الخدمات والقدرات" : "Services",
-      href: "#services",
+      href: "/services",
       sub: isAr ? "البرمجيات، الذكاء الاصطناعي، والهوية البصرية" : "Software, AI, Branding & Products",
     },
     {
-      title: isAr ? "الاستوديو والفلسفة" : "Studio",
-      href: "#manifesto",
-      sub: isAr ? "فلسفة التكنولوجيا × التصميم" : "Philosophy, Process & Standards",
+      title: isAr ? "مختبر الأبحاث (LABS)" : "ORDERLY LABS",
+      href: "/labs",
+      sub: isAr ? "الأدوات والمكتبات مفتوحة المصدر والتجارب" : "Proprietary tools, R&D & open source",
+      accentPurple: true,
     },
     {
-      title: isAr ? "منهجية العمل" : "Process",
-      href: "#process",
-      sub: isAr ? "من الفكرة إلى الإطلاق والتطوير" : "From Concept to Scale",
+      title: isAr ? "بوابة العميل (ORDERLY OS)" : "ORDERLY OS",
+      href: "/orderly-os",
+      sub: isAr ? "بوابة إدارة المشاريع ومساعد الذكاء الاصطناعي" : "Client operating system & live dashboard",
+      accentSky: true,
     },
     {
-      title: isAr ? "التسويق الرقمي" : "Marketing",
-      href: "/marketing",
-      sub: isAr ? "استراتيجية، SEO، إعلانات، وتحليلات النمو" : "Strategy, SEO, Paid Media & Growth Analytics",
-      accent: true,
+      title: isAr ? "المقالات والرؤى" : "Insights",
+      href: "/insights",
+      sub: isAr ? "أبحاث في التكنولوجيا وتصميم الهويات" : "Engineering, AI & Design perspectives",
+    },
+    {
+      title: isAr ? "انضم للشبكة" : "Join the Network",
+      href: "/careers",
+      sub: isAr ? "فرص التعاون للمتخصصين الاستثنائيين" : "Collaboration for senior specialists",
     },
   ];
 
@@ -84,20 +90,24 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
             >
               <div className="flex items-center justify-between">
                 <span
-                  className={`text-3xl md:text-5xl font-display font-bold tracking-tight transition-colors ${
-                    (link as { accent?: boolean }).accent
-                      ? "text-emerald-400 group-hover:text-emerald-300"
-                      : "text-white group-hover:text-engineering-blue"
+                  className={`text-2xl md:text-4xl font-display font-bold tracking-tight transition-colors ${
+                    (link as any).accentPurple
+                      ? "text-purple-400 group-hover:text-purple-300"
+                      : (link as any).accentSky
+                      ? "text-sky-400 group-hover:text-sky-300"
+                      : "text-white group-hover:text-emerald-400"
                   }`}
                 >
                   {link.title}
                 </span>
                 <ArrowUpRight
-                  size={28}
+                  size={24}
                   className={`group-hover:translate-x-1 group-hover:-translate-y-1 transition-all ${
-                    (link as { accent?: boolean }).accent
-                      ? "text-emerald-400/30 group-hover:text-emerald-400"
-                      : "text-white/20 group-hover:text-engineering-blue"
+                    (link as any).accentPurple
+                      ? "text-purple-400/40 group-hover:text-purple-400"
+                      : (link as any).accentSky
+                      ? "text-sky-400/40 group-hover:text-sky-400"
+                      : "text-white/20 group-hover:text-emerald-400"
                   }`}
                 />
               </div>

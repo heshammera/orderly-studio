@@ -5,14 +5,15 @@ import Link from "next/link";
 import { ArrowUpRight, Sparkles, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/navigation/Header";
 import { CustomCursor } from "@/components/cursor/CustomCursor";
-import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
+import { Footer } from "@/components/navigation/Footer";
+import { ProjectDiscoveryWizard } from "@/components/discovery/ProjectDiscoveryWizard";
 import { REAL_PROJECTS, PROJECTS_LIST } from "@/data/projects";
 import { useLocale } from "@/context/LocaleContext";
 
 export default function WorkPage() {
-  const { isAr } = useLocale();
+  const { locale, isAr } = useLocale();
   const [activeFilter, setActiveFilter] = useState<"ALL" | "ENGINEERING" | "CREATIVE" | "MARKETING" | "HYBRID">("ALL");
-  const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   const filtered =
     activeFilter === "ALL"
@@ -33,7 +34,7 @@ export default function WorkPage() {
       className={`min-h-screen bg-[#07070A] text-white pt-32 pb-24 ${isAr ? "font-arabic" : "font-sans"}`}
     >
       <CustomCursor />
-      <Header onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
+      <Header onOpenProjectBuilder={() => setIsWizardOpen(true)} />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Page Header */}
@@ -125,9 +126,12 @@ export default function WorkPage() {
         </div>
       </div>
 
-      <DisciplineShowcaseModal
-        isOpen={isBuilderOpen}
-        onClose={() => setIsBuilderOpen(false)}
+      <Footer />
+
+      <ProjectDiscoveryWizard
+        isOpen={isWizardOpen}
+        onClose={() => setIsWizardOpen(false)}
+        locale={locale}
       />
     </main>
   );

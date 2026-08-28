@@ -54,12 +54,12 @@ export const Header: React.FC<HeaderProps> = ({
           />
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-            <a href="#work"      className="text-white/80 hover:text-white transition-colors" data-cursor="VIEW">    {isAr ? "الأعمال"   : "WORK"}      </a>
-            <a href="#services"  className="text-white/80 hover:text-white transition-colors" data-cursor="EXPLORE"> {isAr ? "الخدمات"   : "SERVICES"}   </a>
-            <a href="#manifesto" className="text-white/80 hover:text-white transition-colors" data-cursor="READ">    {isAr ? "الاستوديو" : "STUDIO"}     </a>
-            <a href="#process"   className="text-white/80 hover:text-white transition-colors" data-cursor="EXPLORE"> {isAr ? "المنهجية"  : "PROCESS"}    </a>
-            <a href="#marketing" className="text-emerald-400/90 hover:text-emerald-300 transition-colors" data-cursor="EXPLORE"> {isAr ? "التسويق"   : "MARKETING"}  </a>
+          <nav className="hidden md:flex items-center gap-6 text-xs font-mono font-bold tracking-widest uppercase">
+            <a href="/work"       className="text-white/70 hover:text-white transition-colors" data-cursor="VIEW">    {isAr ? "الأعمال"   : "WORK"}      </a>
+            <a href="/services"   className="text-white/70 hover:text-white transition-colors" data-cursor="EXPLORE"> {isAr ? "الخدمات"   : "SERVICES"}   </a>
+            <a href="/labs"       className="text-purple-400/90 hover:text-purple-300 transition-colors" data-cursor="EXPLORE">{isAr ? "المختبر"   : "LABS"}      </a>
+            <a href="/orderly-os" className="text-sky-400/90 hover:text-sky-300 transition-colors" data-cursor="EXPLORE">{isAr ? "ORDERLY OS" : "OS"}        </a>
+            <a href="/insights"   className="text-white/70 hover:text-white transition-colors" data-cursor="READ">    {isAr ? "المقالات"  : "INSIGHTS"}  </a>
           </nav>
 
           {/* Actions */}
