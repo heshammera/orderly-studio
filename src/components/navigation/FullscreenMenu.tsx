@@ -4,23 +4,22 @@ import React from "react";
 import Link from "next/link";
 import { X, ArrowUpRight } from "lucide-react";
 import { Symbol } from "../brand/Symbol";
+import { useLocale } from "@/context/LocaleContext";
 
 interface FullscreenMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  locale: "en" | "ar";
   onOpenProjectBuilder: () => void;
 }
 
 export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
   isOpen,
   onClose,
-  locale,
   onOpenProjectBuilder,
 }) => {
-  if (!isOpen) return null;
+  const { isAr } = useLocale();
 
-  const isAr = locale === "ar";
+  if (!isOpen) return null;
 
   const navLinks = [
     {
@@ -52,7 +51,10 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col justify-between bg-obsidian/95 backdrop-blur-2xl p-6 md:p-16 animate-in fade-in duration-300">
+    <div
+      className="fixed inset-0 z-50 flex flex-col justify-between bg-obsidian/95 backdrop-blur-2xl p-6 md:p-16 animate-in fade-in duration-300"
+      dir={isAr ? "rtl" : "ltr"}
+    >
       {/* Top Bar */}
       <div className="flex items-center justify-between border-b border-white/10 pb-6">
         <div className="flex items-center gap-3">
@@ -69,7 +71,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
         </button>
       </div>
 
-      {/* Main Navigation Links */}
+      {/* Nav Links */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 my-auto max-w-6xl w-full mx-auto">
         <div className="flex flex-col gap-6">
           {navLinks.map((link, idx) => (
@@ -81,11 +83,13 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
               data-cursor="GO"
             >
               <div className="flex items-center justify-between">
-                <span className={`text-3xl md:text-5xl font-display font-bold tracking-tight transition-colors ${
-                  (link as { accent?: boolean }).accent
-                    ? "text-emerald-400 group-hover:text-emerald-300"
-                    : "text-white group-hover:text-engineering-blue"
-                }`}>
+                <span
+                  className={`text-3xl md:text-5xl font-display font-bold tracking-tight transition-colors ${
+                    (link as { accent?: boolean }).accent
+                      ? "text-emerald-400 group-hover:text-emerald-300"
+                      : "text-white group-hover:text-engineering-blue"
+                  }`}
+                >
                   {link.title}
                 </span>
                 <ArrowUpRight
@@ -104,7 +108,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
           ))}
         </div>
 
-        {/* Studio Statement / Fast CTA */}
+        {/* Studio Statement */}
         <div className="hidden md:flex flex-col justify-between p-8 rounded-2xl bg-white/[0.02] border border-white/10">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-engineering-blue/10 border border-engineering-blue/20 text-engineering-blue text-xs font-mono mb-6">
@@ -116,13 +120,9 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
                 : "We engineer systems and shape identities that transform ambitious ideas into reality."}
             </h3>
           </div>
-
           <div className="pt-8">
             <button
-              onClick={() => {
-                onClose();
-                onOpenProjectBuilder();
-              }}
+              onClick={() => { onClose(); onOpenProjectBuilder(); }}
               className="w-full py-4 px-6 rounded-full bg-white text-obsidian font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 hover:bg-engineering-blue hover:text-white transition-all duration-300 shadow-xl"
               data-cursor="START"
             >
@@ -135,9 +135,7 @@ export const FullscreenMenu: React.FC<FullscreenMenuProps> = ({
 
       {/* Footer Info */}
       <div className="flex flex-col sm:flex-row items-center justify-between border-t border-white/10 pt-6 text-xs font-mono text-neutral-cool gap-4">
-        <div>
-          <span>{isAr ? "أوردرلي — التكنولوجيا × التصميم" : "ORDERLY — TECHNOLOGY × DESIGN"}</span>
-        </div>
+        <span>{isAr ? "أوردرلي — التكنولوجيا × التصميم" : "ORDERLY — TECHNOLOGY × DESIGN"}</span>
         <div className="flex items-center gap-6">
           <a href="mailto:hello@orderlyshops.com" className="hover:text-white transition-colors">
             hello@orderlyshops.com

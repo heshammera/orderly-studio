@@ -20,10 +20,13 @@ import { Process } from "@/components/home/Process";
 import { StudioAndInsights } from "@/components/home/StudioAndInsights";
 import { CallToAction } from "@/components/home/CallToAction";
 import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
+import { useLocale } from "@/context/LocaleContext";
 import type { DisciplineId } from "@/data/disciplines";
 
 export default function HomePage() {
-  const [locale, setLocale] = useState<"en" | "ar">("en");
+  // ── Locale comes from global context — no local useState needed ──
+  const { locale, isAr } = useLocale();
+
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
   const [builderInitialDiscipline, setBuilderInitialDiscipline] = useState<DisciplineId>("uiux");
   const [currentWorld, setCurrentWorld] = useState<"engineering" | "creative" | "neutral">("neutral");
@@ -50,11 +53,9 @@ export default function HomePage() {
     }
     requestAnimationFrame(raf);
 
-    // Scroll listener for dynamic world detection
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const height = window.innerHeight;
-
       if (scrollY > height * 1.6 && scrollY < height * 4.5) {
         setCurrentWorld("engineering");
       } else if (scrollY >= height * 4.5 && scrollY < height * 8.5) {
@@ -72,93 +73,42 @@ export default function HomePage() {
     };
   }, []);
 
-  const toggleLocale = () => {
-    setLocale((prev) => (prev === "en" ? "ar" : "en"));
-  };
-
-  const isAr = locale === "ar";
-
   return (
     <main
       dir={isAr ? "rtl" : "ltr"}
       className={`min-h-screen relative ${isAr ? "font-arabic" : "font-sans"}`}
     >
-      {/* Dynamic Desktop Cursor */}
       <CustomCursor />
-
-      {/* Global Unified Ambient Constellation Network */}
       <GlobalConstellationCanvas />
 
-      {/* Persistent Context-Aware Navigation */}
       <Header
-        locale={locale}
-        onToggleLocale={toggleLocale}
         onOpenProjectBuilder={() => handleOpenBuilder()}
         currentWorld={currentWorld}
       />
 
-      {/* 01 & 02 Seamless Full-Screen Scroll Portal Hero */}
       <ScrollPortalHero
         locale={locale}
         onOpenProjectBuilder={() => handleOpenBuilder()}
       />
 
-      {/* 03 & 04 Manifesto and Core Words */}
       <Manifesto locale={locale} />
-
-      {/* 05 & 06 Engineering & Orbit Service Field */}
       <Engineering locale={locale} />
-
-      {/* 07 Selected Engineering Case Studies */}
-      <EngineeringWork
-        locale={locale}
-        onOpenProjectBuilder={() => handleOpenBuilder("engineering")}
-      />
-
-      {/* 08 Transformation Moment (Black to Off-White) */}
+      <EngineeringWork locale={locale} onOpenProjectBuilder={() => handleOpenBuilder("engineering")} />
       <Transformation locale={locale} />
-
-      {/* 09 & 10 Creative World & Typographic Services Stack */}
       <Creative locale={locale} />
-
-      {/* 11 & 12 Creative Editorial Art Gallery */}
-      <CreativeWork
-        locale={locale}
-        onOpenProjectBuilder={() => handleOpenBuilder("branding")}
-      />
-
-      {/* 13 Marketing World — Strategy, Growth & Performance */}
+      <CreativeWork locale={locale} onOpenProjectBuilder={() => handleOpenBuilder("branding")} />
       <Marketing locale={locale} />
-
-      {/* 14 Selected Marketing Work */}
-      <MarketingWork
-        locale={locale}
-        onOpenProjectBuilder={() => handleOpenBuilder("marketing")}
-      />
-
-      {/* 15 Hybrid World (Technology × Design × Marketing) */}
+      <MarketingWork locale={locale} onOpenProjectBuilder={() => handleOpenBuilder("marketing")} />
       <Hybrid locale={locale} />
-
-      {/* 14 Capabilities Matrix */}
       <Capabilities locale={locale} />
-
-      {/* 15 Process Methodology */}
       <Process locale={locale} />
-
-      {/* 16, 17, 18 Studio, Selected Work & Insights Magazine */}
       <StudioAndInsights locale={locale} />
-
-      {/* 21 Final Scene & Call To Action Footer */}
-      <CallToAction
-        locale={locale}
-        onOpenProjectBuilder={() => handleOpenBuilder()}
-      />
+      <CallToAction locale={locale} onOpenProjectBuilder={() => handleOpenBuilder()} />
 
       {/* Unified 6-Discipline Showcase & Booking Modal */}
       <DisciplineShowcaseModal
         isOpen={isBuilderOpen}
         onClose={() => setIsBuilderOpen(false)}
-        locale={locale}
         initialDiscipline={builderInitialDiscipline}
       />
     </main>

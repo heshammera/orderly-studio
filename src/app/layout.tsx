@@ -1,5 +1,6 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "../styles/globals.css";
+import { LocaleProvider } from "@/context/LocaleContext";
 
 export const metadata: Metadata = {
   title: "ORDERLY — Creative Technology Studio | التكنولوجيا × التصميم",
@@ -48,7 +49,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased bg-obsidian text-white selection:bg-engineering-blue selection:text-white">
         <div className="noise-overlay" />
-        {children}
+        <LocaleProvider>{children}</LocaleProvider>
       </body>
     </html>
   );

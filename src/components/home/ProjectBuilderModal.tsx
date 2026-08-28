@@ -7,21 +7,21 @@ import type { DisciplineId } from "@/data/disciplines";
 interface ProjectBuilderModalProps {
   isOpen: boolean;
   onClose: () => void;
-  locale: "en" | "ar";
   initialDiscipline?: DisciplineId;
+  // locale kept for any external callers that still pass it — ignored here
+  locale?: "en" | "ar";
+  initialWorld?: string;
 }
 
 export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
   isOpen,
   onClose,
-  locale,
   initialDiscipline = "uiux",
 }) => {
   return (
     <DisciplineShowcaseModal
       isOpen={isOpen}
       onClose={onClose}
-      locale={locale}
       initialDiscipline={initialDiscipline}
     />
   );

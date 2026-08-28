@@ -145,8 +145,6 @@ export default function MarketingPage() {
     >
       <CustomCursor />
       <Header
-        locale={locale}
-        onToggleLocale={() => setLocale((l) => (l === "en" ? "ar" : "en"))}
         onOpenProjectBuilder={() => setIsBuilderOpen(true)}
         currentWorld="neutral"
       />

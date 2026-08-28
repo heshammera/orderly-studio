@@ -2,16 +2,18 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check, Clock } from "lucide-react";
 import { DisciplineShowcaseModal } from "@/components/showcase/DisciplineShowcaseModal";
-import type { DisciplineId } from "@/data/disciplines";
+import { DISCIPLINES, type DisciplineId } from "@/data/disciplines";
+import { useLocale } from "@/context/LocaleContext";
 
 interface CapabilitiesProps {
-  locale: "en" | "ar";
+  locale: "en" | "ar"; // kept for compatibility with page.tsx prop passing
 }
 
-export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
-  const isAr = locale === "ar";
+export const Capabilities: React.FC<CapabilitiesProps> = () => {
+  // Always read from global context — ignores the passed prop
+  const { isAr } = useLocale();
   const [selectedDiscipline, setSelectedDiscipline] = useState<DisciplineId | null>(null);
 
   const matrix: {
@@ -89,12 +91,11 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
               {isAr ? "كل ما تحتاجه لبناء منتج رقمي استثنائي" : "Full-Spectrum Digital Mastery"}
             </h2>
           </div>
-
           <Link
             href="/services"
             className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-emerald-400 hover:text-white transition-colors"
           >
-            <span>{isAr ? "صفحة الخدمات الشاملة ←" : "EXPLORE ALL SERVICES →"}</span>
+            <span>{isAr ? "صفحة الخدمات الشاملة" : "EXPLORE ALL SERVICES"}</span>
             <ArrowUpRight size={14} />
           </Link>
         </div>
@@ -115,11 +116,9 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
                     {isAr ? "عرض التفاصيل ↗" : "DETAILS ↗"}
                   </span>
                 </div>
-
                 <h3 className="text-lg font-display font-bold text-white mb-4 group-hover:text-emerald-400 transition-colors">
                   {col.title}
                 </h3>
-
                 <ul className="flex flex-col gap-2.5">
                   {col.items.map((item, itemIdx) => (
                     <li key={itemIdx} className="text-xs font-medium text-white/80 flex items-center gap-2">
@@ -129,7 +128,6 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
                   ))}
                 </ul>
               </div>
-
               <div className="pt-6 mt-6 border-t border-white/5 flex items-center justify-between text-xs font-mono text-white/40">
                 <span>{isAr ? "اضغط للمعاينة والطلب" : "Click to view & order"}</span>
                 <ArrowUpRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -139,12 +137,10 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
         </div>
       </div>
 
-      {/* Discipline Showcase Modal */}
       {selectedDiscipline && (
         <DisciplineShowcaseModal
-          isOpen={selectedDiscipline !== null}
+          isOpen={true}
           onClose={() => setSelectedDiscipline(null)}
-          locale={locale}
           initialDiscipline={selectedDiscipline}
         />
       )}

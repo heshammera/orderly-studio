@@ -48,7 +48,7 @@ export default function InsightsPage() {
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-off-white text-obsidian pt-32 pb-24 ${isAr ? "font-arabic" : "font-sans"}`}>
       <CustomCursor />
-      <Header locale={locale} onToggleLocale={() => setLocale(l => l === "en" ? "ar" : "en")} onOpenProjectBuilder={() => setIsBuilderOpen(true)} currentWorld="creative" />
+      <Header onOpenProjectBuilder={() => setIsBuilderOpen(true)} currentWorld="creative" />
 
       <div className="max-w-6xl mx-auto px-6 md:px-12">
         <div className="mb-16 border-b border-neutral-warm/20 pb-8">

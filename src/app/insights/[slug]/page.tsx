@@ -52,7 +52,7 @@ export default function ArticleReaderPage({ params }: { params: { slug: string }
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-off-white text-obsidian pt-28 pb-32 ${isAr ? "font-arabic" : "font-sans"}`}>
       <CustomCursor />
-      <Header locale={locale} onToggleLocale={() => setLocale(l => l === "en" ? "ar" : "en")} onOpenProjectBuilder={() => setIsBuilderOpen(true)} currentWorld="creative" />
+      <Header onOpenProjectBuilder={() => setIsBuilderOpen(true)} currentWorld="creative" />
 
       <article className="max-w-3xl mx-auto px-6 md:px-12">
         <Link href="/insights" className="inline-flex items-center gap-2 text-xs font-mono text-neutral-warm hover:text-obsidian uppercase tracking-wider mb-10 transition-colors">

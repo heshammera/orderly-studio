@@ -61,7 +61,7 @@ export default function WorkPage() {
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-obsidian text-white pt-32 pb-24 ${isAr ? "font-arabic" : "font-sans"}`}>
       <CustomCursor />
-      <Header locale={locale} onToggleLocale={() => setLocale(l => l === "en" ? "ar" : "en")} onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
+      <Header onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         {/* Page Header */}

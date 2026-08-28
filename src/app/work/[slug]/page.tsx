@@ -60,7 +60,7 @@ export default function CaseStudyPage({ params }: { params: { slug: string } }) 
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-obsidian text-white pt-28 pb-32 ${isAr ? "font-arabic" : "font-sans"}`}>
       <CustomCursor />
-      <Header locale={locale} onToggleLocale={() => setLocale(l => l === "en" ? "ar" : "en")} onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
+      <Header onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
 
       <div className="max-w-5xl mx-auto px-6 md:px-12">
         {/* Back Link */}
