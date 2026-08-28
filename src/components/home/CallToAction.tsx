@@ -26,20 +26,18 @@ export const CallToAction: React.FC<CallToActionProps> = ({
           <Symbol size={56} variant="engineering" animated={true} />
         </div>
 
-        {/* 21 — Balanced Typography Finale */}
+        {/* 21 — Headline Finale */}
         <span className="text-xs font-mono text-engineering-blue uppercase tracking-widest mb-4 block font-bold">
           {isAr ? "المشهد الختامي // ابدأ مشروعك" : "21 // THE FINAL SCENE"}
         </span>
 
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white mb-2 leading-tight">
-          LET'S
+        {/* LET'S BUILD on a single line */}
+        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white mb-3 leading-tight">
+          LET&apos;S BUILD
         </h2>
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-white mb-2 leading-tight">
-          BUILD
-        </h2>
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-creative-coral mb-10 leading-tight">
-          {isAr ? "تجارب لا تُنسى." : "SOMETHING."}
-        </h2>
+        <h3 className="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight text-creative-coral mb-10 leading-tight">
+          {isAr ? "تجارب لا تُنسى." : "SOMETHING EXTRAORDINARY."}
+        </h3>
 
         {/* Action Button */}
         <button
