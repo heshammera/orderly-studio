@@ -20,11 +20,18 @@ import { Process } from "@/components/home/Process";
 import { StudioAndInsights } from "@/components/home/StudioAndInsights";
 import { CallToAction } from "@/components/home/CallToAction";
 import { ProjectBuilderModal } from "@/components/home/ProjectBuilderModal";
+import type { WorldId } from "@/components/worlds/WorldCanvas";
 
 export default function HomePage() {
   const [locale, setLocale] = useState<"en" | "ar">("en");
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [builderInitialWorld, setBuilderInitialWorld] = useState<WorldId>("uiux");
   const [currentWorld, setCurrentWorld] = useState<"engineering" | "creative" | "neutral">("neutral");
+
+  const handleOpenBuilder = (worldId?: WorldId) => {
+    if (worldId) setBuilderInitialWorld(worldId);
+    setIsBuilderOpen(true);
+  };
 
   // Initialize Lenis smooth scroll
   useEffect(() => {
@@ -79,21 +86,21 @@ export default function HomePage() {
       {/* Dynamic Desktop Cursor */}
       <CustomCursor />
 
-      {/* Global Unified Ambient Constellation Network (Calm & Non-Intrusive) */}
+      {/* Global Unified Ambient Constellation Network */}
       <GlobalConstellationCanvas />
 
       {/* Persistent Context-Aware Navigation */}
       <Header
         locale={locale}
         onToggleLocale={toggleLocale}
-        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        onOpenProjectBuilder={() => handleOpenBuilder()}
         currentWorld={currentWorld}
       />
 
       {/* 01 & 02 Seamless Full-Screen Scroll Portal Hero */}
       <ScrollPortalHero
         locale={locale}
-        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        onOpenProjectBuilder={() => handleOpenBuilder()}
       />
 
       {/* 03 & 04 Manifesto and Core Words */}
@@ -105,7 +112,7 @@ export default function HomePage() {
       {/* 07 Selected Engineering Case Studies */}
       <EngineeringWork
         locale={locale}
-        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        onOpenProjectBuilder={() => handleOpenBuilder("engineering")}
       />
 
       {/* 08 Transformation Moment (Black to Off-White) */}
@@ -117,7 +124,7 @@ export default function HomePage() {
       {/* 11 & 12 Creative Editorial Art Gallery */}
       <CreativeWork
         locale={locale}
-        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        onOpenProjectBuilder={() => handleOpenBuilder("branding")}
       />
 
       {/* 13 Marketing World — Strategy, Growth & Performance */}
@@ -126,14 +133,17 @@ export default function HomePage() {
       {/* 14 Selected Marketing Work */}
       <MarketingWork
         locale={locale}
-        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        onOpenProjectBuilder={() => handleOpenBuilder("marketing")}
       />
 
       {/* 15 Hybrid World (Technology × Design × Marketing) */}
       <Hybrid locale={locale} />
 
       {/* 14 Capabilities Matrix */}
-      <Capabilities locale={locale} />
+      <Capabilities
+        locale={locale}
+        onOpenProjectBuilder={(wid) => handleOpenBuilder(wid)}
+      />
 
       {/* 15 Process Methodology */}
       <Process locale={locale} />
@@ -144,7 +154,7 @@ export default function HomePage() {
       {/* 21 Final Scene & Call To Action Footer */}
       <CallToAction
         locale={locale}
-        onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+        onOpenProjectBuilder={() => handleOpenBuilder()}
       />
 
       {/* 19 & 20 5-Step Interactive Project Builder Modal */}
@@ -152,6 +162,7 @@ export default function HomePage() {
         isOpen={isBuilderOpen}
         onClose={() => setIsBuilderOpen(false)}
         locale={locale}
+        initialWorld={builderInitialWorld}
       />
     </main>
   );

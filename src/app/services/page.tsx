@@ -12,8 +12,14 @@ import type { WorldId } from "@/components/worlds/WorldCanvas";
 export default function ServicesPage() {
   const [locale, setLocale] = useState<"en" | "ar">("en");
   const [isBuilderOpen, setIsBuilderOpen] = useState(false);
+  const [builderInitialWorld, setBuilderInitialWorld] = useState<WorldId>("uiux");
   const [activeWorld, setActiveWorld] = useState<WorldId | null>(null);
   const isAr = locale === "ar";
+
+  const handleOpenBuilder = (worldId?: WorldId) => {
+    if (worldId) setBuilderInitialWorld(worldId);
+    setIsBuilderOpen(true);
+  };
 
   const categories: {
     title: string;
@@ -68,7 +74,11 @@ export default function ServicesPage() {
   return (
     <main dir={isAr ? "rtl" : "ltr"} className={`min-h-screen bg-obsidian text-white pt-32 pb-24 ${isAr ? "font-arabic" : "font-sans"}`}>
       <CustomCursor />
-      <Header locale={locale} onToggleLocale={() => setLocale(l => l === "en" ? "ar" : "en")} onOpenProjectBuilder={() => setIsBuilderOpen(true)} />
+      <Header
+        locale={locale}
+        onToggleLocale={() => setLocale((l) => (l === "en" ? "ar" : "en"))}
+        onOpenProjectBuilder={() => handleOpenBuilder()}
+      />
 
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="mb-16">
@@ -105,7 +115,7 @@ export default function ServicesPage() {
 
               <div className="pt-8 mt-8 border-t border-white/5 flex items-center justify-between gap-3">
                 <button
-                  onClick={() => setIsBuilderOpen(true)}
+                  onClick={() => handleOpenBuilder(cat.worldId)}
                   className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white hover:text-engineering-blue transition-colors"
                 >
                   <span>{isAr ? "طلب استشارة ←" : "Request a consultation →"}</span>
@@ -114,11 +124,11 @@ export default function ServicesPage() {
                 {/* ── Enter World button ── */}
                 <button
                   onClick={() => setActiveWorld(cat.worldId)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-mono font-bold tracking-widest uppercase transition-all duration-300 ${cat.color} border-current opacity-50 hover:opacity-100 hover:bg-white/5`}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] font-mono font-bold tracking-widest uppercase transition-all duration-300 ${cat.color} border-current opacity-60 hover:opacity-100 hover:bg-white/5`}
                   data-cursor="EXPLORE"
                 >
                   <Orbit size={11} />
-                  <span>{isAr ? "ادخل العالم" : "ENTER WORLD"}</span>
+                  <span>{isAr ? "ادخل العالم" : "ENTER REALM"}</span>
                 </button>
               </div>
             </div>
@@ -136,7 +146,7 @@ export default function ServicesPage() {
               : "We specialize in end-to-end projects combining engineering, creative, and marketing disciplines under one roof."}
           </p>
           <button
-            onClick={() => setIsBuilderOpen(true)}
+            onClick={() => handleOpenBuilder()}
             className="px-8 py-4 rounded-full bg-white text-obsidian font-bold text-xs tracking-wider uppercase flex items-center gap-3 hover:bg-engineering-blue hover:text-white transition-all shadow-xl"
           >
             <span>{isAr ? "ابدأ مشروعك الآن" : "START A PROJECT"}</span>
@@ -145,7 +155,12 @@ export default function ServicesPage() {
         </div>
       </div>
 
-      <ProjectBuilderModal isOpen={isBuilderOpen} onClose={() => setIsBuilderOpen(false)} locale={locale} />
+      <ProjectBuilderModal
+        isOpen={isBuilderOpen}
+        onClose={() => setIsBuilderOpen(false)}
+        locale={locale}
+        initialWorld={builderInitialWorld}
+      />
 
       {/* World Portal — opens on top of everything */}
       {activeWorld && (
@@ -154,7 +169,7 @@ export default function ServicesPage() {
           isOpen={activeWorld !== null}
           onClose={() => setActiveWorld(null)}
           locale={locale}
-          onOpenProjectBuilder={() => setIsBuilderOpen(true)}
+          onOpenProjectBuilder={(wid) => handleOpenBuilder(wid)}
         />
       )}
     </main>

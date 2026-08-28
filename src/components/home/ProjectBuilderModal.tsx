@@ -15,7 +15,6 @@ import {
   Palette,
   Film,
   TrendingUp,
-  Globe2,
 } from "lucide-react";
 import { Symbol } from "../brand/Symbol";
 import { submitProjectBrief } from "@/actions/leads";
@@ -55,7 +54,8 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
 
   const isAr = locale === "ar";
   const activeWorldId = hoveredWorld || selectedWorld;
-  const currentWorldConfig = WORLD_CONFIGS[activeWorldId];
+  const currentWorldConfig = WORLD_CONFIGS[activeWorldId] || WORLD_CONFIGS.uiux;
+  const isLightWorld = activeWorldId === "uiux";
 
   useEffect(() => {
     if (initialWorld) {
@@ -104,7 +104,7 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
       titleAr: "تصميم الواجهات وتجربة المستخدم",
       subEn: "Design systems, spatial UI, conversion flows & prototypes",
       subAr: "أنظمة تصميم متكاملة، تجارب مستخدم تفاعلية، ونماذج أولية",
-      accent: "text-violet-400",
+      accent: "text-violet-600 dark:text-violet-400",
       border: "border-violet-500/40",
       bg: "bg-violet-500/10",
     },
@@ -245,28 +245,54 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
     >
       {/* ── Outer Modal Container ── */}
       <div
-        className="relative w-full h-full md:max-w-6xl md:h-[90vh] md:rounded-[32px] overflow-hidden flex flex-col bg-[#07070A] border border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.8)]"
+        className={`relative w-full h-full md:max-w-6xl md:h-[90vh] md:rounded-[32px] overflow-hidden flex flex-col border shadow-[0_0_80px_rgba(0,0,0,0.8)] transition-colors duration-700 ${
+          isLightWorld
+            ? "bg-[#F7F5FF] border-violet-300/80 text-violet-950 shadow-violet-500/10"
+            : "bg-[#07070A] border-white/10 text-white"
+        }`}
         dir={isAr ? "rtl" : "ltr"}
       >
         {/* ── Live World Canvas Background ── */}
-        <div className="absolute inset-0 pointer-events-none opacity-40 transition-opacity duration-700">
+        <div className="absolute inset-0 pointer-events-none opacity-50 transition-opacity duration-700">
           <WorldCanvas worldId={activeWorldId} />
         </div>
 
         {/* Ambient Gradient Layer */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#07070A]/85 via-[#07070A]/90 to-[#07070A]/98 pointer-events-none" />
+        <div
+          className={`absolute inset-0 pointer-events-none transition-colors duration-700 ${
+            isLightWorld
+              ? "bg-gradient-to-b from-[#F7F5FF]/85 via-[#F7F5FF]/90 to-[#F7F5FF]/98"
+              : "bg-gradient-to-b from-[#07070A]/85 via-[#07070A]/90 to-[#07070A]/98"
+          }`}
+        />
 
         {/* ── Top Bar ── */}
-        <div className="relative z-10 flex items-center justify-between px-6 md:px-10 py-5 border-b border-white/10 backdrop-blur-md">
+        <div
+          className={`relative z-10 flex items-center justify-between px-6 md:px-10 py-5 border-b backdrop-blur-md transition-colors duration-700 ${
+            isLightWorld ? "border-violet-200/80" : "border-white/10"
+          }`}
+        >
           <div className="flex items-center gap-3">
             <Symbol size={24} variant="engineering" />
             <div className="flex flex-col">
-              <span className="font-display font-black text-sm uppercase tracking-widest text-white">
+              <span
+                className={`font-display font-black text-sm uppercase tracking-widest ${
+                  isLightWorld ? "text-violet-950" : "text-white"
+                }`}
+              >
                 ORDERLY // {isAr ? "بوابة المشاريع" : "PROJECT PORTAL"}
               </span>
-              <span className="text-[10px] font-mono text-white/40">
+              <span
+                className={`text-[10px] font-mono ${
+                  isLightWorld ? "text-violet-900/50" : "text-white/40"
+                }`}
+              >
                 {isAr ? "عالم المشروع:" : "Active Universe:"}{" "}
-                <span className={currentWorldConfig.accentColor}>
+                <span
+                  className={
+                    isLightWorld ? "text-violet-700 font-bold" : currentWorldConfig.accentColor
+                  }
+                >
                   {isAr ? currentWorldConfig.labelAr : currentWorldConfig.label}
                 </span>
               </span>
@@ -281,9 +307,15 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                   key={s}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     s === step
-                      ? "w-8 bg-white"
+                      ? isLightWorld
+                        ? "w-8 bg-violet-700"
+                        : "w-8 bg-white"
                       : s < step
-                      ? "w-4 bg-white/40"
+                      ? isLightWorld
+                        ? "w-4 bg-violet-400"
+                        : "w-4 bg-white/40"
+                      : isLightWorld
+                      ? "w-2 bg-violet-200"
                       : "w-2 bg-white/15"
                   }`}
                 />
@@ -293,7 +325,11 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
             {/* Close button */}
             <button
               onClick={onClose}
-              className="p-2 rounded-full border border-white/10 hover:border-white/30 text-white/70 hover:text-white transition-colors bg-white/5"
+              className={`p-2 rounded-full border transition-colors ${
+                isLightWorld
+                  ? "border-violet-200 text-violet-900 hover:bg-violet-100"
+                  : "border-white/10 hover:border-white/30 text-white/70 hover:text-white bg-white/5"
+              }`}
               aria-label="Close portal"
             >
               <X size={18} />
@@ -306,20 +342,32 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
           {submitted ? (
             /* ── Success Screen ── */
             <div className="my-auto text-center max-w-xl mx-auto py-12 animate-in zoom-in-95 duration-500">
-              <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center mx-auto mb-6">
+              <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-500 flex items-center justify-center mx-auto mb-6">
                 <CheckCircle2 size={40} />
               </div>
-              <h2 className="text-3xl sm:text-4xl font-display font-black text-white mb-4">
+              <h2
+                className={`text-3xl sm:text-4xl font-display font-black mb-4 ${
+                  isLightWorld ? "text-violet-950" : "text-white"
+                }`}
+              >
                 {isAr ? "تم إطلاق طلبك بنجاح!" : "Project Brief Launched!"}
               </h2>
-              <p className="text-neutral-cool text-sm sm:text-base leading-relaxed mb-8">
+              <p
+                className={`text-sm sm:text-base leading-relaxed mb-8 ${
+                  isLightWorld ? "text-violet-900/70" : "text-neutral-cool"
+                }`}
+              >
                 {isAr
                   ? "شكراً لتواصلك مع ORDERLY. فريقنا الهندسي والإبداعي يراجع متطلباتك الآن وسنتواصل معك خلال 24 ساعة بمقترح مفصل."
                   : "Thank you for reaching out to ORDERLY. Our multidisciplinary team is analyzing your project brief and will follow up within 24 hours."}
               </p>
               <button
                 onClick={onClose}
-                className="px-8 py-3.5 rounded-full bg-white text-obsidian font-bold text-xs tracking-widest uppercase hover:bg-neutral-200 transition-colors"
+                className={`px-8 py-3.5 rounded-full font-bold text-xs tracking-widest uppercase transition-colors ${
+                  isLightWorld
+                    ? "bg-violet-700 text-white hover:bg-violet-800"
+                    : "bg-white text-obsidian hover:bg-neutral-200"
+                }`}
               >
                 {isAr ? "إغلاق البوابة" : "CLOSE PORTAL"}
               </button>
@@ -330,13 +378,25 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
               {step === 1 && (
                 <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
                   <div className="mb-8 text-center sm:text-start">
-                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest block mb-2 font-bold ${
+                        isLightWorld ? "text-violet-700" : "text-white/40"
+                      }`}
+                    >
                       {isAr ? "الخطوة 01 // اختيار البيئة" : "STEP 01 // UNIVERSE GATEWAY"}
                     </span>
-                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white">
+                    <h2
+                      className={`text-2xl sm:text-4xl font-display font-black ${
+                        isLightWorld ? "text-violet-950" : "text-white"
+                      }`}
+                    >
                       {isAr ? "اختر عالم مشروعك الأساسي" : "Choose Your Project Universe"}
                     </h2>
-                    <p className="text-white/50 text-xs sm:text-sm mt-2">
+                    <p
+                      className={`text-xs sm:text-sm mt-2 ${
+                        isLightWorld ? "text-violet-900/60" : "text-white/50"
+                      }`}
+                    >
                       {isAr
                         ? "حدد التخصص الرئيسي لمشروعك لندخلك العالم المناسب ونخصص المتطلبات بدقة."
                         : "Select the primary domain for your initiative to immerse in the matching workspace."}
@@ -362,36 +422,84 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                           }}
                           className={`group p-6 rounded-2xl border cursor-pointer transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${
                             isSelected
-                              ? `${world.border} ${world.bg} shadow-2xl scale-[1.02]`
+                              ? isLightWorld && world.id === "uiux"
+                                ? "border-violet-600 bg-violet-100/90 shadow-xl scale-[1.02]"
+                                : `${world.border} ${world.bg} shadow-2xl scale-[1.02]`
+                              : isLightWorld
+                              ? "border-violet-200/70 bg-white/60 hover:border-violet-300 hover:bg-white/90"
                               : "border-white/10 bg-white/[0.02] hover:border-white/25 hover:bg-white/[0.04]"
                           }`}
                         >
                           <div>
                             <div
                               className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors ${
-                                isSelected ? `${world.bg} ${world.accent}` : "bg-white/5 text-white/60"
+                                isSelected
+                                  ? isLightWorld && world.id === "uiux"
+                                    ? "bg-violet-600 text-white"
+                                    : `${world.bg} ${world.accent}`
+                                  : isLightWorld
+                                  ? "bg-violet-100 text-violet-700"
+                                  : "bg-white/5 text-white/60"
                               }`}
                             >
                               {world.icon}
                             </div>
-                            <h3 className={`text-lg font-display font-bold mb-1.5 transition-colors ${
-                              isSelected ? world.accent : "text-white"
-                            }`}>
+                            <h3
+                              className={`text-lg font-display font-bold mb-1.5 transition-colors ${
+                                isSelected
+                                  ? isLightWorld && world.id === "uiux"
+                                    ? "text-violet-950"
+                                    : world.accent
+                                  : isLightWorld
+                                  ? "text-violet-900"
+                                  : "text-white"
+                              }`}
+                            >
                               {isAr ? world.titleAr : world.titleEn}
                             </h3>
-                            <p className="text-white/45 text-xs leading-relaxed">
+                            <p
+                              className={`text-xs leading-relaxed ${
+                                isLightWorld ? "text-violet-900/60" : "text-white/45"
+                              }`}
+                            >
                               {isAr ? world.subAr : world.subEn}
                             </p>
                           </div>
 
-                          <div className="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[11px] font-mono">
-                            <span className={isSelected ? world.accent : "text-white/30"}>
-                              {isSelected ? (isAr ? "العالم المختار ✓" : "SELECTED ✓") : (isAr ? "اضغط للدخول" : "ENTER WORLD")}
+                          <div
+                            className={`pt-4 mt-4 border-t flex items-center justify-between text-[11px] font-mono ${
+                              isLightWorld ? "border-violet-200/50" : "border-white/5"
+                            }`}
+                          >
+                            <span
+                              className={
+                                isSelected
+                                  ? isLightWorld && world.id === "uiux"
+                                    ? "text-violet-700 font-bold"
+                                    : world.accent
+                                  : isLightWorld
+                                  ? "text-violet-900/40"
+                                  : "text-white/30"
+                              }
+                            >
+                              {isSelected
+                                ? isAr
+                                  ? "العالم المختار ✓"
+                                  : "SELECTED ✓"
+                                : isAr
+                                ? "اضغط للدخول"
+                                : "ENTER WORLD"}
                             </span>
                             <Orbit
                               size={12}
                               className={`transition-transform duration-500 ${
-                                isSelected ? "rotate-180 text-white" : "text-white/20"
+                                isSelected
+                                  ? isLightWorld
+                                    ? "rotate-180 text-violet-700"
+                                    : "rotate-180 text-white"
+                                  : isLightWorld
+                                  ? "text-violet-300"
+                                  : "text-white/20"
                               }`}
                             />
                           </div>
@@ -406,13 +514,25 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
               {step === 2 && (
                 <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
                   <div className="mb-8 text-center sm:text-start">
-                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest block mb-2 font-bold ${
+                        isLightWorld ? "text-violet-700" : "text-white/40"
+                      }`}
+                    >
                       {isAr ? "الخطوة 02 // الخدمات المطلوبة" : "STEP 02 // CAPABILITIES"}
                     </span>
-                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white">
+                    <h2
+                      className={`text-2xl sm:text-4xl font-display font-black ${
+                        isLightWorld ? "text-violet-950" : "text-white"
+                      }`}
+                    >
                       {isAr ? "ما هي الخدمات المحددة التي تحتاجها؟" : "Select Required Disciplines"}
                     </h2>
-                    <p className="text-white/50 text-xs sm:text-sm mt-2">
+                    <p
+                      className={`text-xs sm:text-sm mt-2 ${
+                        isLightWorld ? "text-violet-900/60" : "text-white/50"
+                      }`}
+                    >
                       {isAr
                         ? "يمكنك اختيار أكثر من خدمة لبناء مشروع متكامل يجمع عدة تخصصات."
                         : "Select all disciplines that apply to your initiative."}
@@ -429,12 +549,23 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                           onClick={() => toggleSelection("services", svc)}
                           className={`p-4 rounded-xl text-start text-xs sm:text-sm font-medium border transition-all duration-200 flex items-center justify-between ${
                             isSelected
-                              ? "border-white bg-white text-obsidian font-bold shadow-lg"
+                              ? isLightWorld
+                                ? "border-violet-700 bg-violet-700 text-white font-bold shadow-lg"
+                                : "border-white bg-white text-obsidian font-bold shadow-lg"
+                              : isLightWorld
+                              ? "border-violet-200/80 bg-white/70 text-violet-900 hover:border-violet-400"
                               : "border-white/10 bg-white/[0.03] text-white/80 hover:border-white/25"
                           }`}
                         >
                           <span>{svc}</span>
-                          {isSelected && <CheckCircle2 size={16} className="text-obsidian flex-shrink-0" />}
+                          {isSelected && (
+                            <CheckCircle2
+                              size={16}
+                              className={`flex-shrink-0 ${
+                                isLightWorld ? "text-white" : "text-obsidian"
+                              }`}
+                            />
+                          )}
                         </button>
                       );
                     })}
@@ -446,17 +577,29 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
               {step === 3 && (
                 <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
                   <div className="mb-8 text-center sm:text-start">
-                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest block mb-2 font-bold ${
+                        isLightWorld ? "text-violet-700" : "text-white/40"
+                      }`}
+                    >
                       {isAr ? "الخطوة 03 // الرؤية والهدف" : "STEP 03 // VISION & GOALS"}
                     </span>
-                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white">
+                    <h2
+                      className={`text-2xl sm:text-4xl font-display font-black ${
+                        isLightWorld ? "text-violet-950" : "text-white"
+                      }`}
+                    >
                       {isAr ? "ما هو هدف النجاح الأساسي؟" : "What is Your Primary Success Goal?"}
                     </h2>
                   </div>
 
                   <div className="space-y-6 mb-8">
                     <div>
-                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                      <label
+                        className={`block text-xs font-mono mb-2 uppercase tracking-wider ${
+                          isLightWorld ? "text-violet-900/70" : "text-white/60"
+                        }`}
+                      >
                         {isAr ? "الهدف الرئيسي للنجاح" : "PRIMARY SUCCESS METRIC / GOAL"}
                       </label>
                       <input
@@ -468,12 +611,20 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                             ? "مثال: إطلاق MVP خلال 6 أسابيع / مضاعفة التحويلات 3× / بناء هوية لجمع تمويل"
                             : "e.g., Launch MVP in 6 weeks / Triple conversion rate / Series A Brand Identity"
                         }
-                        className="w-full px-5 py-4 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                        className={`w-full px-5 py-4 rounded-xl border text-sm focus:outline-none ${
+                          isLightWorld
+                            ? "bg-white border-violet-200 text-violet-950 placeholder:text-violet-900/30 focus:border-violet-600"
+                            : "bg-white/[0.04] border-white/15 text-white placeholder:text-white/30 focus:border-white"
+                        }`}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                      <label
+                        className={`block text-xs font-mono mb-2 uppercase tracking-wider ${
+                          isLightWorld ? "text-violet-900/70" : "text-white/60"
+                        }`}
+                      >
                         {isAr ? "نبذة عن المشروع أو الفكرة (اختياري)" : "PROJECT BRIEF / VISION (OPTIONAL)"}
                       </label>
                       <textarea
@@ -485,7 +636,11 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                             ? "صف رؤيتك للمشروع، الفئة المستهدفة، أو أي مراجع تفضلها..."
                             : "Describe your vision, target audience, technical needs, or references..."
                         }
-                        className="w-full px-5 py-4 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white resize-none"
+                        className={`w-full px-5 py-4 rounded-xl border text-sm focus:outline-none resize-none ${
+                          isLightWorld
+                            ? "bg-white border-violet-200 text-violet-950 placeholder:text-violet-900/30 focus:border-violet-600"
+                            : "bg-white/[0.04] border-white/15 text-white placeholder:text-white/30 focus:border-white"
+                        }`}
                       />
                     </div>
                   </div>
@@ -496,17 +651,29 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
               {step === 4 && (
                 <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
                   <div className="mb-8 text-center sm:text-start">
-                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest block mb-2 font-bold ${
+                        isLightWorld ? "text-violet-700" : "text-white/40"
+                      }`}
+                    >
                       {isAr ? "الخطوة 04 // بيانات التواصل" : "STEP 04 // CONTACT DETAILS"}
                     </span>
-                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white">
+                    <h2
+                      className={`text-2xl sm:text-4xl font-display font-black ${
+                        isLightWorld ? "text-violet-950" : "text-white"
+                      }`}
+                    >
                       {isAr ? "من نتواصل معه؟" : "Who Are We Partnering With?"}
                     </h2>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     <div>
-                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                      <label
+                        className={`block text-xs font-mono mb-2 uppercase tracking-wider ${
+                          isLightWorld ? "text-violet-900/70" : "text-white/60"
+                        }`}
+                      >
                         {isAr ? "الاسم الكامل *" : "FULL NAME *"}
                       </label>
                       <input
@@ -515,12 +682,20 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={isAr ? "هشام مرعي" : "John Doe"}
-                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                        className={`w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none ${
+                          isLightWorld
+                            ? "bg-white border-violet-200 text-violet-950 placeholder:text-violet-900/30 focus:border-violet-600"
+                            : "bg-white/[0.04] border-white/15 text-white placeholder:text-white/30 focus:border-white"
+                        }`}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                      <label
+                        className={`block text-xs font-mono mb-2 uppercase tracking-wider ${
+                          isLightWorld ? "text-violet-900/70" : "text-white/60"
+                        }`}
+                      >
                         {isAr ? "البريد الإلكتروني *" : "EMAIL ADDRESS *"}
                       </label>
                       <input
@@ -529,12 +704,20 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="name@company.com"
-                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                        className={`w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none ${
+                          isLightWorld
+                            ? "bg-white border-violet-200 text-violet-950 placeholder:text-violet-900/30 focus:border-violet-600"
+                            : "bg-white/[0.04] border-white/15 text-white placeholder:text-white/30 focus:border-white"
+                        }`}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                      <label
+                        className={`block text-xs font-mono mb-2 uppercase tracking-wider ${
+                          isLightWorld ? "text-violet-900/70" : "text-white/60"
+                        }`}
+                      >
                         {isAr ? "اسم الشركة / العلامة التجارية" : "COMPANY / BRAND NAME"}
                       </label>
                       <input
@@ -542,12 +725,20 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                         placeholder={isAr ? "شركة المستقبل" : "Acme Corp"}
-                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                        className={`w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none ${
+                          isLightWorld
+                            ? "bg-white border-violet-200 text-violet-950 placeholder:text-violet-900/30 focus:border-violet-600"
+                            : "bg-white/[0.04] border-white/15 text-white placeholder:text-white/30 focus:border-white"
+                        }`}
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono text-white/60 mb-2 uppercase tracking-wider">
+                      <label
+                        className={`block text-xs font-mono mb-2 uppercase tracking-wider ${
+                          isLightWorld ? "text-violet-900/70" : "text-white/60"
+                        }`}
+                      >
                         {isAr ? "الدولة / المدينة" : "COUNTRY / CITY"}
                       </label>
                       <input
@@ -555,7 +746,11 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                         value={formData.country}
                         onChange={(e) => setFormData({ ...formData, country: e.target.value })}
                         placeholder={isAr ? "الرياض، المملكة العربية السعودية" : "Dubai, UAE"}
-                        className="w-full px-5 py-3.5 rounded-xl bg-white/[0.04] border border-white/15 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-white"
+                        className={`w-full px-5 py-3.5 rounded-xl border text-sm focus:outline-none ${
+                          isLightWorld
+                            ? "bg-white border-violet-200 text-violet-950 placeholder:text-violet-900/30 focus:border-violet-600"
+                            : "bg-white/[0.04] border-white/15 text-white placeholder:text-white/30 focus:border-white"
+                        }`}
                       />
                     </div>
                   </div>
@@ -566,35 +761,82 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
               {step === 5 && (
                 <div className="animate-in fade-in slide-in-from-bottom-3 duration-300">
                   <div className="mb-8 text-center sm:text-start">
-                    <span className="text-xs font-mono text-white/40 uppercase tracking-widest block mb-2 font-bold">
+                    <span
+                      className={`text-xs font-mono uppercase tracking-widest block mb-2 font-bold ${
+                        isLightWorld ? "text-violet-700" : "text-white/40"
+                      }`}
+                    >
                       {isAr ? "الخطوة 05 // مراجعة وإطلاق الطلب" : "STEP 05 // REVIEW & LAUNCH"}
                     </span>
-                    <h2 className="text-2xl sm:text-4xl font-display font-black text-white">
+                    <h2
+                      className={`text-2xl sm:text-4xl font-display font-black ${
+                        isLightWorld ? "text-violet-950" : "text-white"
+                      }`}
+                    >
                       {isAr ? "تأكيد تفاصيل المشروع" : "Ready to Launch Your Brief"}
                     </h2>
                   </div>
 
-                  <div className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 space-y-4 mb-8 text-xs sm:text-sm">
-                    <div className="flex items-center justify-between pb-3 border-b border-white/5">
-                      <span className="text-white/50">{isAr ? "العالم المختار:" : "Chosen Universe:"}</span>
-                      <span className={`font-bold uppercase ${currentWorldConfig.accentColor}`}>
+                  <div
+                    className={`p-6 rounded-2xl border space-y-4 mb-8 text-xs sm:text-sm ${
+                      isLightWorld
+                        ? "bg-white/80 border-violet-200/80 text-violet-950"
+                        : "bg-white/[0.03] border-white/10 text-white"
+                    }`}
+                  >
+                    <div
+                      className={`flex items-center justify-between pb-3 border-b ${
+                        isLightWorld ? "border-violet-100" : "border-white/5"
+                      }`}
+                    >
+                      <span className={isLightWorld ? "text-violet-900/60" : "text-white/50"}>
+                        {isAr ? "العالم المختار:" : "Chosen Universe:"}
+                      </span>
+                      <span
+                        className={`font-bold uppercase ${
+                          isLightWorld ? "text-violet-700" : currentWorldConfig.accentColor
+                        }`}
+                      >
                         {isAr ? currentWorldConfig.labelAr : currentWorldConfig.label}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between pb-3 border-b border-white/5">
-                      <span className="text-white/50">{isAr ? "صاحب الطلب:" : "Contact:"}</span>
-                      <span className="text-white font-medium">
+                    <div
+                      className={`flex items-center justify-between pb-3 border-b ${
+                        isLightWorld ? "border-violet-100" : "border-white/5"
+                      }`}
+                    >
+                      <span className={isLightWorld ? "text-violet-900/60" : "text-white/50"}>
+                        {isAr ? "صاحب الطلب:" : "Contact:"}
+                      </span>
+                      <span className="font-medium">
                         {formData.name || "—"} ({formData.email || "—"})
                       </span>
                     </div>
 
                     {formData.services.length > 0 && (
-                      <div className="pb-3 border-b border-white/5">
-                        <span className="text-white/50 block mb-2">{isAr ? "الخدمات المحددة:" : "Services:"}</span>
+                      <div
+                        className={`pb-3 border-b ${
+                          isLightWorld ? "border-violet-100" : "border-white/5"
+                        }`}
+                      >
+                        <span
+                          className={`block mb-2 ${
+                            isLightWorld ? "text-violet-900/60" : "text-white/50"
+                          }`}
+                        >
+                          {isAr ? "الخدمات المحددة:" : "Services:"}
+                        </span>
                         <div className="flex flex-wrap gap-1.5">
                           {formData.services.map((s) => (
-                            <span key={s} className="px-2.5 py-1 rounded-md bg-white/10 text-[11px] text-white">
+                            <span
+                              key={s}
+                              className={`px-2.5 py-1 rounded-md text-[11px] ${
+                                isLightWorld
+                                  ? "bg-violet-100 text-violet-900"
+                                  : "bg-white/10 text-white"
+                              }`}
+                            >
                               {s}
                             </span>
                           ))}
@@ -604,14 +846,20 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
 
                     {formData.successGoal && (
                       <div>
-                        <span className="text-white/50 block mb-1">{isAr ? "هدف النجاح:" : "Goal:"}</span>
-                        <span className="text-white font-medium">{formData.successGoal}</span>
+                        <span
+                          className={`block mb-1 ${
+                            isLightWorld ? "text-violet-900/60" : "text-white/50"
+                          }`}
+                        >
+                          {isAr ? "هدف النجاح:" : "Goal:"}
+                        </span>
+                        <span className="font-medium">{formData.successGoal}</span>
                       </div>
                     )}
                   </div>
 
                   {errorMsg && (
-                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs mb-6">
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-500 text-xs mb-6">
                       {errorMsg}
                     </div>
                   )}
@@ -622,12 +870,20 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
 
           {/* ── Bottom Controls ── */}
           {!submitted && (
-            <div className="max-w-4xl mx-auto w-full pt-6 border-t border-white/10 flex items-center justify-between">
+            <div
+              className={`max-w-4xl mx-auto w-full pt-6 border-t flex items-center justify-between ${
+                isLightWorld ? "border-violet-200" : "border-white/10"
+              }`}
+            >
               {step > 1 ? (
                 <button
                   type="button"
                   onClick={handlePrev}
-                  className="px-6 py-3 rounded-full border border-white/15 text-white/70 hover:text-white text-xs font-mono uppercase tracking-wider flex items-center gap-2 hover:bg-white/5 transition-all"
+                  className={`px-6 py-3 rounded-full border text-xs font-mono uppercase tracking-wider flex items-center gap-2 transition-all ${
+                    isLightWorld
+                      ? "border-violet-200 text-violet-900 hover:bg-violet-100"
+                      : "border-white/15 text-white/70 hover:text-white hover:bg-white/5"
+                  }`}
                 >
                   <ArrowLeft size={14} className="rtl:rotate-180" />
                   <span>{isAr ? "السابق" : "BACK"}</span>
@@ -640,7 +896,11 @@ export const ProjectBuilderModal: React.FC<ProjectBuilderModalProps> = ({
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="px-8 py-3.5 rounded-full bg-white text-obsidian font-bold text-xs tracking-widest uppercase flex items-center gap-2 hover:bg-neutral-200 transition-all shadow-xl"
+                  className={`px-8 py-3.5 rounded-full font-bold text-xs tracking-widest uppercase flex items-center gap-2 transition-all shadow-xl ${
+                    isLightWorld
+                      ? "bg-violet-700 text-white hover:bg-violet-800 shadow-violet-500/20"
+                      : "bg-white text-obsidian hover:bg-neutral-200"
+                  }`}
                 >
                   <span>{isAr ? "متابعة" : "NEXT STEP"}</span>
                   <ArrowRight size={14} className="rtl:rotate-180" />

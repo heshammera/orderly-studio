@@ -8,9 +8,10 @@ import type { WorldId } from "@/components/worlds/WorldCanvas";
 
 interface CapabilitiesProps {
   locale: "en" | "ar";
+  onOpenProjectBuilder?: (worldId?: WorldId) => void;
 }
 
-export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
+export const Capabilities: React.FC<CapabilitiesProps> = ({ locale, onOpenProjectBuilder }) => {
   const isAr = locale === "ar";
   const [activeWorld, setActiveWorld] = useState<WorldId | null>(null);
 
@@ -138,6 +139,7 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({ locale }) => {
           isOpen={activeWorld !== null}
           onClose={() => setActiveWorld(null)}
           locale={locale}
+          onOpenProjectBuilder={onOpenProjectBuilder}
         />
       )}
     </section>
